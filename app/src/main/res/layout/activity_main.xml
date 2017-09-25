@@ -1,13 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.examples.weibao.MainActivity">
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context="com.examples.weibao.ui.MainActivity">
+
+    <include
+        android:id="@+id/op"
+        layout="@layout/base_title"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_below="@+id/op"
+        android:id="@+id/l1"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="66dp">
+
+        <TextView
+            android:textColor="@color/heise"
+            android:textSize="16sp"
+            android:text="账号"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:hint="请输入账号"
+            android:textSize="16sp"
+            android:textColorHint="@color/hint"
+            android:background="@null"
+            android:id="@+id/zhanghao"
+            android:textColor="@color/tabtextcolo"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_width="match_parent"
+            android:gravity="center_vertical|right"
+            android:layout_height="match_parent" />
+
+
+    </LinearLayout>
+    
+    <View
+        android:background="@color/LAVENDER"
+        android:layout_width="match_parent"
+        android:layout_height="0.8dp"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_below="@+id/op"
+        android:id="@+id/l2"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="66dp">
+        <TextView
+            android:textColor="@color/heise"
+            android:textSize="16sp"
+            android:text="密码"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:hint="请输入密码"
+            android:textSize="16sp"
+            android:textColorHint="@color/hint"
+            android:background="@null"
+            android:id="@+id/mima"
+            android:inputType="textPassword"
+            android:textColor="@color/tabtextcolo"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_width="match_parent"
+            android:gravity="center_vertical|right"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+    <View
+        android:background="@color/LAVENDER"
+        android:layout_width="match_parent"
+        android:layout_height="0.8dp"/>
+<LinearLayout
+    android:background="@color/LAVENDER"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <Button
+        android:layout_marginTop="20dp"
+        android:text="登  录"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:id="@+id/login"
+        android:background="@drawable/jiaohu"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_height="50dp" />
+
+
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"/>
+        android:layout_width="100dp"
+        android:text="忘记密码"
+        android:textSize="16sp"
+        android:id="@+id/wangji"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:textColor="@color/colorBar_bg"
+        android:layout_height="40dp" />
+</LinearLayout>
 
-</RelativeLayout>
+
+
+</LinearLayout>

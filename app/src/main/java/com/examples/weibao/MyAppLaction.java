@@ -30,9 +30,7 @@ public class MyAppLaction extends Application {
         setDatabase();
 
         try {
-            Bugly.init(getApplicationContext(), "eee134398a", false);
-
-
+            Bugly.init(getApplicationContext(), "d25944f49f", false);
 
 //            //搜集本地tbs内核信息并上报服务器，服务器返回结果决定使用哪个内核。
 //            QbSdk.PreInitCallback cb = new QbSdk.PreInitCallback() {
