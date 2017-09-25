@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.examples.weibao.ui.HomePageActivity">
+
+    <android.support.v4.view.ViewPager
+        android:layout_above="@+id/l1"
+        android:id="@+id/viewpage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+  <LinearLayout
+      android:id="@+id/l1"
+      android:orientation="horizontal"
+      android:layout_alignParentBottom="true"
+      android:layout_width="match_parent"
+      android:layout_height="70dp">
+      <include
+          android:id="@+id/homeLayout"
+          layout="@layout/layout_tab_item"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:layout_weight="1" />
+
+      <include
+          android:id="@+id/chosenLayout"
+          layout="@layout/layout_tab_item"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:layout_weight="1" />
+
+      <LinearLayout
+          android:orientation="vertical"
+          android:id="@+id/searchLayout"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:layout_weight="1" />
+
+      <include
+          android:id="@+id/localLayout"
+          layout="@layout/layout_tab_item"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:layout_weight="1" />
+
+      <include
+          android:id="@+id/settingLayout"
+          layout="@layout/layout_tab_item"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:layout_weight="1" />
+
+  </LinearLayout>
+
+</RelativeLayout>
