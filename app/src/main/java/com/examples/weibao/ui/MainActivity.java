@@ -23,21 +23,21 @@ public class MainActivity extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        fanhui=findViewById(R.id.leftim);
+        fanhui= (ImageView) findViewById(R.id.leftim);
         fanhui.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
-        title=findViewById(R.id.title);
+        title= (TextView) findViewById(R.id.title);
         title.setText("用户登录");
 
-        wangji=findViewById(R.id.wangji);
+        wangji= (TextView) findViewById(R.id.wangji);
         wangji.setOnClickListener(this);
-        zhanghao=findViewById(R.id.zhanghao);
-        mima=findViewById(R.id.mima);
-        login=findViewById(R.id.login);
+        zhanghao= (EditText) findViewById(R.id.zhanghao);
+        mima= (EditText) findViewById(R.id.mima);
+        login= (Button) findViewById(R.id.login);
         login.setOnClickListener(this);
 
 

@@ -1,6 +1,8 @@
 package com.examples.weibao.ui;
 
 import android.app.Activity;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -8,17 +10,18 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.examples.weibao.R;
 import com.examples.weibao.fargments.Fragment1;
 import com.examples.weibao.fargments.Fragment2;
 import com.examples.weibao.fargments.Fragment3;
 import com.examples.weibao.fargments.Fragment4;
 import com.examples.weibao.views.ViewPagerFragmentAdapter;
+import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,14 +34,35 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
     private FragmentManager mFragmentManager;
     private String[] titleName = new String[] {"首页","维保","消息","资讯"};
     private List<Fragment> mFragmentList = new ArrayList<>();
-    private ImageView tabIm;
-    private TextView tabText;
+    private ImageView tabIm,tabIm2,tabIm3,tabIm4;
+    private TextView tabText,tabText2,tabText3,tabText4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mFragmentManager = getSupportFragmentManager();
         setContentView(R.layout.activity_home_page);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            //透明状态栏
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            //透明导航栏
+          //  getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            SystemBarTintManager tintManager = new SystemBarTintManager(this);
+            // 激活状态栏
+            tintManager.setStatusBarTintEnabled(true);
+            // enable navigation bar tint 激活导航栏
+          //  tintManager.setNavigationBarTintEnabled(true);
+            //设置系统栏设置颜色
+            //tintManager.setTintColor(R.color.red);
+            //给状态栏设置颜色
+            tintManager.setStatusBarTintResource(R.color.lanse33);
+            //Apply the specified drawable or color resource to the system navigation bar.
+            //给导航栏设置资源
+           // tintManager.setNavigationBarTintResource(R.color.dark_grey);
+        }
+
+
+
         initFragmetList();
 
         mViewPagerFragmentAdapter = new ViewPagerFragmentAdapter(mFragmentManager,mFragmentList);
@@ -53,8 +77,7 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
         mViewPager.addOnPageChangeListener(new ViewPagetOnPagerChangedLisenter());
         mViewPager.setAdapter(mViewPagerFragmentAdapter);
         mViewPager.setCurrentItem(0);
-        tabText.setText(titleName[0]);
-        updateBottomLinearLayoutSelect(true,false,false,false);
+        updateBottomLinearLayoutSelect(0);
     }
 
     private void initFragmetList() {
@@ -71,12 +94,22 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
     private void initView() {
         mViewPager= (ViewPager) findViewById(R.id.viewpage);
         r1= (RelativeLayout) findViewById(R.id.homeLayout);
+        r1.setOnClickListener(this);
         r2= (RelativeLayout) findViewById(R.id.chosenLayout);
+        r2.setOnClickListener(this);
         r3= (RelativeLayout) findViewById(R.id.localLayout);
+        r3.setOnClickListener(this);
         r4= (RelativeLayout) findViewById(R.id.settingLayout);
+        r4.setOnClickListener(this);
         zhong_ll= (LinearLayout) findViewById(R.id.searchLayout);
         tabIm= (ImageView) findViewById(R.id.tabImg);
+        tabIm2= (ImageView) findViewById(R.id.tabImg2);
+        tabIm3= (ImageView) findViewById(R.id.tabImg3);
+        tabIm4= (ImageView) findViewById(R.id.tabImg4);
         tabText= (TextView) findViewById(R.id.tabText);
+        tabText2= (TextView) findViewById(R.id.tabText2);
+        tabText3= (TextView) findViewById(R.id.tabText3);
+        tabText4= (TextView) findViewById(R.id.tabText4);
     }
 
     @Override
@@ -84,19 +117,19 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
         switch (v.getId()) {
             case R.id.homeLayout:
                 mViewPager.setCurrentItem(0);
-                updateBottomLinearLayoutSelect(true,false,false,false);
+                updateBottomLinearLayoutSelect(0);
                 break;
             case R.id.chosenLayout:
                 mViewPager.setCurrentItem(1);
-                updateBottomLinearLayoutSelect(false,true,false,false);
+                updateBottomLinearLayoutSelect(1);
                 break;
             case R.id.localLayout:
                 mViewPager.setCurrentItem(2);
-                updateBottomLinearLayoutSelect(false,false,true,false);
+                updateBottomLinearLayoutSelect(2);
                 break;
             case R.id.settingLayout:
                 mViewPager.setCurrentItem(3);
-                updateBottomLinearLayoutSelect(false,false,false,true);
+                updateBottomLinearLayoutSelect(3);
                 break;
 
             case R.id.searchLayout:
@@ -106,25 +139,37 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
                 break;
         }
     }
-    private void updateBottomLinearLayoutSelect(boolean f, boolean s, boolean t,boolean g) {
-        r1.setSelected(f);
-        r2.setSelected(s);
-        r3.setSelected(t);
-        r4.setSelected(g);
+    private void updateBottomLinearLayoutSelect(int position) {
+        tabText.setTextColor(Color.parseColor("#8c050505"));
+        tabText2.setTextColor(Color.parseColor("#8c050505"));
+        tabText3.setTextColor(Color.parseColor("#8c050505"));
+        tabText4.setTextColor(Color.parseColor("#8c050505"));
+
+        switch (position){
+            case 0:
+                tabText.setTextColor(Color.parseColor("#FF1c97fe"));
+                break;
+            case 1:
+                tabText2.setTextColor(Color.parseColor("#FF1c97fe"));
+                break;
+            case 2:
+                tabText3.setTextColor(Color.parseColor("#FF1c97fe"));
+                break;
+            case 3:
+                tabText4.setTextColor(Color.parseColor("#FF1c97fe"));
+                break;
+        }
 
     }
-    class ViewPagetOnPagerChangedLisenter implements ViewPager.OnPageChangeListener {
+   private class ViewPagetOnPagerChangedLisenter implements ViewPager.OnPageChangeListener {
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 //            Log.d(TAG,"onPageScrooled");
         }
         @Override
         public void onPageSelected(int position) {
-            Log.d("home","onPageSelected");
-            boolean[] state = new boolean[titleName.length];
-            state[position] = true;
-            tabText.setText(titleName[position]);
-            updateBottomLinearLayoutSelect(state[0],state[1],state[2],state[3]);
+
+            updateBottomLinearLayoutSelect(position);
         }
         @Override
         public void onPageScrollStateChanged(int state) {

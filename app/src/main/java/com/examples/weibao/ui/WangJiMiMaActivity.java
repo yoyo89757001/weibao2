@@ -11,10 +11,10 @@ import android.widget.TextView;
 import com.examples.weibao.R;
 
 public class WangJiMiMaActivity extends Activity {
-    private TextView title;
+    private TextView title,huoqu;
     private ImageView fanhui;
     private Button tijiao;
-    private EditText shouji,yanzhengma,huoqu,mima1,mima2;
+    private EditText shouji,yanzhengma,mima1,mima2;
 
 
     @Override
@@ -27,27 +27,27 @@ public class WangJiMiMaActivity extends Activity {
     }
 
     private void initView() {
-        tijiao=findViewById(R.id.baocun);
+        tijiao= (Button) findViewById(R.id.baocun);
         tijiao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
             }
         });
-        fanhui=findViewById(R.id.leftim);
+        fanhui= (ImageView) findViewById(R.id.leftim);
         fanhui.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
-        title=findViewById(R.id.title);
+        title= (TextView) findViewById(R.id.title);
         title.setText("忘记密码");
-        shouji=findViewById(R.id.shouji);
-        yanzhengma=findViewById(R.id.yanzhengma);
-        huoqu=findViewById(R.id.huoqu);
-        mima1=findViewById(R.id.mima1);
-        mima2=findViewById(R.id.mima2);
+        shouji= (EditText) findViewById(R.id.shouji);
+        yanzhengma= (EditText) findViewById(R.id.yanzhengma);
+        huoqu= (TextView) findViewById(R.id.huoqu);
+        mima1= (EditText) findViewById(R.id.mima1);
+        mima2= (EditText) findViewById(R.id.mima2);
 
 
     }
