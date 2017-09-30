@@ -28,6 +28,7 @@
           android:layout_height="match_parent">
           <ImageView
               android:id="@+id/tabImg"
+              android:src="@drawable/nav_me_hover"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"/>
 
@@ -36,7 +37,7 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_below="@+id/tabImg"
-              android:text="首页"
+              android:text="维保"
               android:textColor="@color/textcolor"
               android:textSize="16sp" />
 
@@ -50,6 +51,7 @@
           android:layout_height="match_parent">
           <ImageView
               android:id="@+id/tabImg2"
+              android:src="@drawable/nav_msg"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"/>
 
@@ -58,7 +60,7 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_below="@+id/tabImg2"
-              android:text="维保"
+              android:text="消息"
               android:textColor="@color/textcolor"
               android:textSize="16sp" />
 
@@ -85,6 +87,7 @@
           android:layout_height="match_parent">
           <ImageView
               android:id="@+id/tabImg3"
+              android:src="@drawable/nav_news"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"/>
 
@@ -92,7 +95,7 @@
               android:id="@+id/tabText3"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:text="消息"
+              android:text="资讯"
               android:textColor="@color/textcolor"
               android:textSize="16sp"
               android:layout_below="@+id/tabImg3"
@@ -103,26 +106,27 @@
 
       <RelativeLayout
           android:id="@+id/settingLayout"
-          android:layout_weight="1"
           android:layout_width="0dp"
-          android:gravity="center"
-          android:layout_height="match_parent">
+          android:layout_height="match_parent"
+          android:layout_weight="1"
+          android:gravity="center">
+
           <ImageView
               android:id="@+id/tabImg4"
+              android:src="@drawable/nav_me"
               android:layout_width="wrap_content"
-              android:layout_height="wrap_content"/>
+              android:layout_height="wrap_content" />
 
           <TextView
               android:id="@+id/tabText4"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_below="@+id/tabImg4"
-              android:text="资讯"
+              android:text="我的"
               android:textColor="@color/textcolor"
               android:textSize="16sp" />
 
       </RelativeLayout>
-
 
 
   </LinearLayout>

@@ -139,7 +139,7 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
                 break;
         }
     }
-    private void updateBottomLinearLayoutSelect(int position) {
+    private void  updateBottomLinearLayoutSelect(int position) {
         tabText.setTextColor(Color.parseColor("#8c050505"));
         tabText2.setTextColor(Color.parseColor("#8c050505"));
         tabText3.setTextColor(Color.parseColor("#8c050505"));
@@ -147,16 +147,33 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
 
         switch (position){
             case 0:
+                tabIm.setImageResource(R.drawable.nav_me_hover);
+                tabIm2.setImageResource(R.drawable.nav_msg);
+                tabIm3.setImageResource(R.drawable.nav_news);
+                tabIm4.setImageResource(R.drawable.nav_me);
                 tabText.setTextColor(Color.parseColor("#FF1c97fe"));
                 break;
             case 1:
                 tabText2.setTextColor(Color.parseColor("#FF1c97fe"));
+                tabIm.setImageResource(R.drawable.nav_mt);
+                tabIm2.setImageResource(R.drawable.nav_msg_hover);
+                tabIm3.setImageResource(R.drawable.nav_news);
+                tabIm4.setImageResource(R.drawable.nav_me);
+
                 break;
             case 2:
                 tabText3.setTextColor(Color.parseColor("#FF1c97fe"));
+                tabIm.setImageResource(R.drawable.nav_mt);
+                tabIm2.setImageResource(R.drawable.nav_msg);
+                tabIm3.setImageResource(R.drawable.nav_news_hover);
+                tabIm4.setImageResource(R.drawable.nav_me);
                 break;
             case 3:
                 tabText4.setTextColor(Color.parseColor("#FF1c97fe"));
+                tabIm.setImageResource(R.drawable.nav_mt);
+                tabIm2.setImageResource(R.drawable.nav_msg);
+                tabIm3.setImageResource(R.drawable.nav_news);
+                tabIm4.setImageResource(R.drawable.nav_me_hover);
                 break;
         }
 
