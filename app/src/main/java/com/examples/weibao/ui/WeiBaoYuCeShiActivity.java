@@ -74,8 +74,6 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
         r4.setOnClickListener(this);
         button= (Button) findViewById(R.id.xiayibu);
         button.setOnClickListener(this);
-
-
     }
 
 
