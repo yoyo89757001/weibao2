@@ -54,7 +54,7 @@
         android:id="@+id/rl_1"
         android:duplicateParentState="true"
         android:layout_width="match_parent"
-        android:layout_height="52dp">
+        android:layout_height="48dp">
 
         <TextView
             android:layout_width="match_parent"
@@ -100,7 +100,7 @@
         android:id="@+id/rl_2"
         android:duplicateParentState="true"
         android:layout_width="match_parent"
-        android:layout_height="52dp">
+        android:layout_height="48dp">
         <TextView
             android:textSize="14sp"
             android:textColor="@color/blake2"
@@ -145,7 +145,7 @@
         android:id="@+id/rl_3"
         android:duplicateParentState="true"
         android:layout_width="match_parent"
-        android:layout_height="52dp">
+        android:layout_height="48dp">
         <TextView
             android:textSize="14sp"
             android:textColor="@color/blake2"
@@ -204,7 +204,7 @@
         android:id="@+id/rl_4"
         android:duplicateParentState="true"
         android:layout_width="match_parent"
-        android:layout_height="52dp">
+        android:layout_height="48dp">
         <TextView
             android:textSize="14sp"
             android:textColor="@color/blake2"
@@ -249,7 +249,7 @@
         android:id="@+id/rl_5"
         android:duplicateParentState="true"
         android:layout_width="match_parent"
-        android:layout_height="52dp">
+        android:layout_height="48dp">
         <TextView
             android:textSize="14sp"
             android:textColor="@color/blake2"

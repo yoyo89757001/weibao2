@@ -11,6 +11,36 @@
         android:layout_width="300dp"
         android:layout_height="260dp">
 
+        <TextView
+            android:text="其它"
+            android:textColor="@color/lansezi"
+            android:textSize="18sp"
+            android:layout_weight="1"
+            android:id="@+id/top_tv"
+            android:visibility="gone"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="0dp" />
+
+        <View
+            android:background="@color/view_bg"
+            android:id="@+id/v1"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="0.8dp"/>
+
+        <EditText
+            android:layout_weight="3"
+            android:visibility="gone"
+            android:id="@+id/et"
+            android:gravity="top|left"
+            android:hint="请输入描述..."
+            android:padding="10dp"
+            android:maxLength="100"
+            android:background="@null"
+            android:layout_width="match_parent"
+            android:layout_height="0dp" />
 
         <com.examples.weibao.views.RadioButton
             android:layout_width="match_parent"
@@ -18,24 +48,30 @@
             android:id="@+id/rb1"
             android:layout_weight="1"
             android:layout_height="0dp"/>
+
         <View
             android:background="@color/view_bg"
             android:layout_marginLeft="16dp"
+            android:id="@+id/v2"
             android:layout_marginRight="16dp"
             android:layout_width="match_parent"
             android:layout_height="0.8dp"/>
+
         <com.examples.weibao.views.RadioButton
             android:layout_width="match_parent"
             android:gravity="center_vertical"
             android:layout_weight="1"
             android:id="@+id/rb2"
             android:layout_height="0dp"/>
+
         <View
             android:background="@color/view_bg"
             android:layout_marginLeft="16dp"
+            android:id="@+id/v3"
             android:layout_marginRight="16dp"
             android:layout_width="match_parent"
             android:layout_height="0.8dp"/>
+
         <com.examples.weibao.views.RadioButton
             android:layout_width="match_parent"
             android:gravity="center_vertical"
@@ -46,6 +82,7 @@
             android:background="@color/view_bg"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            android:id="@+id/v4"
             android:layout_width="match_parent"
             android:layout_height="0.8dp"/>
 
@@ -94,4 +131,5 @@
         </LinearLayout>
 
     </LinearLayout>
+
 </LinearLayout>

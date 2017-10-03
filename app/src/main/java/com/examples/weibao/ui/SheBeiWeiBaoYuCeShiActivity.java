@@ -30,6 +30,8 @@ public class SheBeiWeiBaoYuCeShiActivity extends Activity implements ClickIntfac
     private SheBeiAdapter sheBeiAdapter;
     private LRecyclerViewAdapter lRecyclerViewAdapter;
     private LinearLayoutManager linearLayoutManager;
+    private int isTrue;
+    private String miaoshu;
 
 
     @Override
@@ -93,18 +95,65 @@ public class SheBeiWeiBaoYuCeShiActivity extends Activity implements ClickIntfac
 
     @Override
     public int BackId(int id) {
-        Log.d("SheBeiWeiBaoYuCeShiActi", "id:" + id);
+
         switch (id){
           case   R.id.rl_1:
-              ZhuangTaiXuanZeDialog dialog=new ZhuangTaiXuanZeDialog(this);
+              final ZhuangTaiXuanZeDialog dialog=new ZhuangTaiXuanZeDialog(this,0);
+              dialog.setOnPositiveListener(new View.OnClickListener() {
+                  @Override
+                  public void onClick(View v) {
+                      isTrue=dialog.getIsTrue();
+                      miaoshu=dialog.getET();
+                      dialog.dismiss();
+
+                  }
+              });
+              dialog.setOnQuXiaoListener(new View.OnClickListener() {
+                  @Override
+                  public void onClick(View v) {
+                      dialog.dismiss();
+                  }
+              });
               dialog.show();
 
             break;
             case   R.id.rl_2:
+                final ZhuangTaiXuanZeDialog dialog2=new ZhuangTaiXuanZeDialog(this,1);
+                dialog2.setOnPositiveListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        isTrue=dialog2.getIsTrue();
+                        miaoshu=dialog2.getET();
+                        dialog2.dismiss();
 
+                    }
+                });
+                dialog2.setOnQuXiaoListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog2.dismiss();
+                    }
+                });
+                dialog2.show();
                 break;
             case   R.id.rl_3:
+                final ZhuangTaiXuanZeDialog dialog3=new ZhuangTaiXuanZeDialog(this,2);
+                dialog3.setOnPositiveListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        isTrue=dialog3.getIsTrue();
+                        miaoshu=dialog3.getET();
+                        dialog3.dismiss();
 
+                    }
+                });
+                dialog3.setOnQuXiaoListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog3.dismiss();
+                    }
+                });
+                dialog3.show();
                 break;
             case   R.id.rl_4:
 
