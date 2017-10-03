@@ -5,9 +5,9 @@
     android:layout_height="50dp">
 
 <ImageView
-    android:src="@drawable/fanhui_top"
+    android:src="@drawable/ic_back"
     android:id="@+id/leftim"
-    android:padding="16dp"
+    android:padding="8dp"
     android:layout_width="50dp"
     android:layout_height="50dp" />
 

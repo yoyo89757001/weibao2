@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:focusable="true"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/bianhao"
+            android:text="设备编号"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/ceshi"
+            android:text="待维护/测试"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="16dp"
+            android:padding="6dp"
+            android:background="@drawable/ju"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:textSize="14sp"
+        android:text="维保项"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:paddingTop="4dp"
+        android:background="@color/view_bg"
+        android:paddingBottom="4dp"
+        android:gravity="center"
+        android:layout_marginTop="6dp"
+        android:textColor="@color/lansezi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <RelativeLayout
+        android:id="@+id/rl_1"
+        android:duplicateParentState="true"
+        android:layout_width="match_parent"
+        android:layout_height="52dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16sp"
+            android:layout_marginRight="16dp"
+            android:layout_toLeftOf="@+id/zhuangtai"
+            android:text="fdfdsfsfsf"
+            android:textColor="@color/blake2"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/zhuangtai"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@+id/ii"
+            android:text="正常"
+            android:textColor="@color/testdi"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/ii"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="16dp"
+            android:src="@drawable/ic_go" />
+
+    </RelativeLayout>
+
+    <View
+        android:background="@color/view_bg"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="0.8dp"/>
+    <RelativeLayout
+        android:id="@+id/rl_2"
+        android:duplicateParentState="true"
+        android:layout_width="match_parent"
+        android:layout_height="52dp">
+        <TextView
+            android:textSize="14sp"
+            android:textColor="@color/blake2"
+            android:text="fdfdsfsfsf"
+            android:layout_marginLeft="16sp"
+            android:layout_toLeftOf="@+id/zhuangtai2"
+            android:layout_marginRight="16dp"
+            android:layout_centerVertical="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:text="正常"
+            android:id="@+id/zhuangtai2"
+            android:textSize="14sp"
+            android:textColor="@color/testdi"
+            android:layout_toLeftOf="@+id/ii3"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:src="@drawable/ic_go"
+            android:id="@+id/ii3"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="16dp"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+    <View
+        android:background="@color/view_bg"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="0.8dp"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_3"
+        android:duplicateParentState="true"
+        android:layout_width="match_parent"
+        android:layout_height="52dp">
+        <TextView
+            android:textSize="14sp"
+            android:textColor="@color/blake2"
+            android:text="fdfdsfsfsf"
+            android:layout_marginLeft="16sp"
+            android:layout_toLeftOf="@+id/zhuangtai3"
+            android:layout_marginRight="16dp"
+            android:layout_centerVertical="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:text="正常"
+            android:id="@+id/zhuangtai3"
+            android:textSize="14sp"
+            android:textColor="@color/testdi"
+            android:layout_toLeftOf="@+id/ii2"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:src="@drawable/ic_go"
+            android:id="@+id/ii2"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="16dp"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+    <View
+        android:background="@color/view_bg"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="0.8dp"/>
+
+    <TextView
+        android:textSize="14sp"
+        android:text="测试项"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:paddingTop="4dp"
+        android:background="@color/view_bg"
+        android:paddingBottom="4dp"
+        android:gravity="center"
+        android:layout_marginTop="6dp"
+        android:textColor="@color/lansezi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <RelativeLayout
+        android:id="@+id/rl_4"
+        android:duplicateParentState="true"
+        android:layout_width="match_parent"
+        android:layout_height="52dp">
+        <TextView
+            android:textSize="14sp"
+            android:textColor="@color/blake2"
+            android:text="火警信号"
+            android:layout_marginLeft="16sp"
+            android:layout_toLeftOf="@+id/zhuangtai4"
+            android:layout_marginRight="16dp"
+            android:layout_centerVertical="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:text="正常"
+            android:id="@+id/zhuangtai4"
+            android:textSize="14sp"
+            android:textColor="@color/testdi"
+            android:layout_toLeftOf="@+id/ii23"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:src="@drawable/ic_go"
+            android:id="@+id/ii23"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="16dp"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+    <View
+        android:background="@color/view_bg"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="0.8dp"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_5"
+        android:duplicateParentState="true"
+        android:layout_width="match_parent"
+        android:layout_height="52dp">
+        <TextView
+            android:textSize="14sp"
+            android:textColor="@color/blake2"
+            android:text="启动信号"
+            android:layout_marginLeft="16sp"
+            android:layout_toLeftOf="@+id/zhuangtai5"
+            android:layout_marginRight="16dp"
+            android:layout_centerVertical="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:text="正常"
+            android:id="@+id/zhuangtai5"
+            android:textSize="14sp"
+            android:textColor="@color/testdi"
+            android:layout_toLeftOf="@+id/ii22"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:src="@drawable/ic_go"
+            android:id="@+id/ii22"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="16dp"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+    <View
+        android:background="@color/view_bg"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="0.8dp"/>
+
+</LinearLayout>

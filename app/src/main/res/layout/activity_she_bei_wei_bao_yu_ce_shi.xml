@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context="com.examples.weibao.ui.SheBeiWeiBaoYuCeShiActivity">
+
+    <include
+        android:id="@+id/ee"
+        layout="@layout/base_title"/>
+
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/tl"
+        android:gravity="center_vertical"
+        android:background="@drawable/bg_set"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:text="fff"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:id="@+id/t1"
+            android:layout_marginLeft="16dp"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:text="fff"
+            android:id="@+id/t2"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:text="fff"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:id="@+id/t3"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="2dp"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <com.github.jdsjlzx.recyclerview.LRecyclerView
+        android:layout_width="match_parent"
+        android:id="@+id/lrecyclerview"
+        android:descendantFocusability="afterDescendants"
+        android:layout_height="match_parent">
+
+    </com.github.jdsjlzx.recyclerview.LRecyclerView>
+
+
+</LinearLayout>

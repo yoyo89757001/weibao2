@@ -152,7 +152,7 @@
     <color name="MEDIUMSLATEBLUE">#ff7b68ee</color>
 
     <color name="cc">#59a9ff</color>
-
+    <color name="view_bg">#EDEDED</color>
     <color name="bg_color">#EDEDED</color>
     <color name="contents_text">#ff000000</color>
     <color name="encode_view">#ffffffff</color>
@@ -198,6 +198,7 @@
     <color name="textcolor">#8c050505</color>
     <color name="statusbar_bg">#1c97fe</color>
     <color name="statusbar_bg3">#2a5ee2</color>
+    <color name="lansezi">#2287F9</color>
 
 
     <color name="semi_transparent">#22ffffff</color><!-- 半透明 -->
@@ -210,6 +211,7 @@
     <color name="blue">#ff0288ce</color><!-- 红色 -->
     <color name="igray_et">#ff999999</color><!-- 辅助文字-->
     <color name="Orange">#F5A100</color><!-- 橙色 -->
+    <color name="orange">#FE5D15</color>
     <color name="dark_grey">#D2D2D2</color><!-- 深灰 -->
     <color name="wxnavpage">#FFE1E8EB</color>
     <color name="heise">#333333</color>

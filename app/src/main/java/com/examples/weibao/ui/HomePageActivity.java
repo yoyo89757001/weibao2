@@ -22,7 +22,6 @@ import com.examples.weibao.fargments.Fragment3;
 import com.examples.weibao.fargments.Fragment4;
 import com.examples.weibao.views.ViewPagerFragmentAdapter;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -133,6 +132,7 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
                 break;
 
             case R.id.searchLayout:
+                //扫描
 
                 break;
             default:
@@ -147,7 +147,7 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
 
         switch (position){
             case 0:
-                tabIm.setImageResource(R.drawable.nav_me_hover);
+                tabIm.setImageResource(R.drawable.nav_mt_hover);
                 tabIm2.setImageResource(R.drawable.nav_msg);
                 tabIm3.setImageResource(R.drawable.nav_news);
                 tabIm4.setImageResource(R.drawable.nav_me);

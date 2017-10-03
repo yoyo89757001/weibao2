@@ -20,7 +20,8 @@
         <activity android:name=".ui.WangJiMiMaActivity" />
         <!-- <activity android:name=".ui.HomePageActivity"/> -->
 
-        <activity android:name=".ui.WeiBaoActivity"></activity>
+        <activity android:name=".ui.WeiBaoYuCeShiActivity" />
+        <activity android:name=".ui.SheBeiWeiBaoYuCeShiActivity"></activity>
     </application>
 
 </manifest>

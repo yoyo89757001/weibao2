@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_width="300dp"
+        android:layout_height="260dp">
+
+
+        <com.examples.weibao.views.RadioButton
+            android:layout_width="match_parent"
+            android:gravity="center_vertical"
+            android:id="@+id/rb1"
+            android:layout_weight="1"
+            android:layout_height="0dp"/>
+        <View
+            android:background="@color/view_bg"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="0.8dp"/>
+        <com.examples.weibao.views.RadioButton
+            android:layout_width="match_parent"
+            android:gravity="center_vertical"
+            android:layout_weight="1"
+            android:id="@+id/rb2"
+            android:layout_height="0dp"/>
+        <View
+            android:background="@color/view_bg"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="0.8dp"/>
+        <com.examples.weibao.views.RadioButton
+            android:layout_width="match_parent"
+            android:gravity="center_vertical"
+            android:id="@+id/rb3"
+            android:layout_weight="1"
+            android:layout_height="0dp"/>
+        <View
+            android:background="@color/view_bg"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="0.8dp"/>
+
+    <com.examples.weibao.views.RadioButton
+        android:layout_width="match_parent"
+        android:gravity="center_vertical"
+        android:layout_weight="1"
+        android:id="@+id/rb4"
+        android:layout_height="0dp"/>
+
+        <View
+            android:background="@color/view_bg"
+            android:layout_width="match_parent"
+            android:layout_height="0.8dp"/>
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textSize="16sp"
+                android:textColor="@color/textcolor"
+                android:gravity="center"
+                android:id="@+id/queding"
+                android:text="取 消"
+                android:layout_height="match_parent" />
+            <View
+                android:layout_width="0.8dp"
+                android:background="@color/view_bg"
+                android:layout_height="match_parent"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:id="@+id/quxiao"
+                android:textSize="16sp"
+                android:textColor="@color/lansezi"
+                android:gravity="center"
+                android:text="确 定"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>
