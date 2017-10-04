@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.examples.weibao.R;
+import com.examples.weibao.ui.BaoZhangChuLiActivity;
 import com.examples.weibao.ui.WeiBaoYuCeShiActivity;
 import com.examples.weibao.utils.Utils;
 
@@ -93,7 +94,7 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
 
                 break;
             case R.id.l2:
-
+                startActivity(new Intent(getContext(), BaoZhangChuLiActivity.class));
                 break;
             case R.id.l3:
 

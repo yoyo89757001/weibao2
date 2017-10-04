@@ -21,7 +21,8 @@
         <!-- <activity android:name=".ui.HomePageActivity"/> -->
 
         <activity android:name=".ui.WeiBaoYuCeShiActivity" />
-        <activity android:name=".ui.SheBeiWeiBaoYuCeShiActivity"></activity>
+        <activity android:name=".ui.SheBeiWeiBaoYuCeShiActivity" />
+        <activity android:name=".ui.BaoZhangChuLiActivity"></activity>
     </application>
 
 </manifest>
