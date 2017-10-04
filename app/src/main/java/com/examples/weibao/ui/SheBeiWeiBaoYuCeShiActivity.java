@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.examples.weibao.R;
 import com.examples.weibao.adapters.SheBeiAdapter;
+import com.examples.weibao.dialogs.ZhuangTaiXuanZe2Dialog;
 import com.examples.weibao.dialogs.ZhuangTaiXuanZeDialog;
 import com.examples.weibao.intface.ClickIntface;
 import com.examples.weibao.utils.Utils;
@@ -114,6 +115,29 @@ public class SheBeiWeiBaoYuCeShiActivity extends Activity implements ClickIntfac
                       dialog.dismiss();
                   }
               });
+              dialog.setOnR2Listener(new View.OnClickListener() {
+                  @Override
+                  public void onClick(View v) {
+                      final ZhuangTaiXuanZe2Dialog ze2Dialog=new ZhuangTaiXuanZe2Dialog(SheBeiWeiBaoYuCeShiActivity.this,1);
+                      ze2Dialog.setOnPositiveListener(new View.OnClickListener() {
+                          @Override
+                          public void onClick(View v) {
+
+                              dialog.dismiss();
+                              ze2Dialog.dismiss();
+                          }
+                      });
+                      ze2Dialog.setOnQuXiaoListener(new View.OnClickListener() {
+                          @Override
+                          public void onClick(View v) {
+
+                              dialog.dismiss();
+                              ze2Dialog.dismiss();
+                          }
+                      });
+                      ze2Dialog.show();
+                  }
+              });
               dialog.show();
 
             break;
@@ -132,6 +156,28 @@ public class SheBeiWeiBaoYuCeShiActivity extends Activity implements ClickIntfac
                     @Override
                     public void onClick(View v) {
                         dialog2.dismiss();
+                    }
+                });
+                dialog2.setOnR2Listener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final ZhuangTaiXuanZe2Dialog ze2Dialog=new ZhuangTaiXuanZe2Dialog(SheBeiWeiBaoYuCeShiActivity.this,1);
+                        ze2Dialog.setOnPositiveListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                dialog2.dismiss();
+                                ze2Dialog.dismiss();
+                            }
+                        });
+                        ze2Dialog.setOnQuXiaoListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog2.dismiss();
+                                ze2Dialog.dismiss();
+                            }
+                        });
+                        ze2Dialog.show();
                     }
                 });
                 dialog2.show();
@@ -153,13 +199,115 @@ public class SheBeiWeiBaoYuCeShiActivity extends Activity implements ClickIntfac
                         dialog3.dismiss();
                     }
                 });
+                dialog3.setOnR2Listener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final ZhuangTaiXuanZe2Dialog ze2Dialog=new ZhuangTaiXuanZe2Dialog(SheBeiWeiBaoYuCeShiActivity.this,1);
+                        ze2Dialog.setOnPositiveListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                dialog3.dismiss();
+                                ze2Dialog.dismiss();
+                            }
+                        });
+                        ze2Dialog.setOnQuXiaoListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                dialog3.dismiss();
+                                ze2Dialog.dismiss();
+                            }
+                        });
+                        ze2Dialog.show();
+                    }
+                });
                 dialog3.show();
                 break;
             case   R.id.rl_4:
+                final ZhuangTaiXuanZeDialog dialog4=new ZhuangTaiXuanZeDialog(this,2);
+                dialog4.setOnPositiveListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        isTrue=dialog4.getIsTrue();
+                        miaoshu=dialog4.getET();
+                        dialog4.dismiss();
 
+                    }
+                });
+                dialog4.setOnQuXiaoListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog4.dismiss();
+                    }
+                });
+                dialog4.setOnR2Listener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final ZhuangTaiXuanZe2Dialog ze2Dialog=new ZhuangTaiXuanZe2Dialog(SheBeiWeiBaoYuCeShiActivity.this,1);
+                        ze2Dialog.setOnPositiveListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                dialog4.dismiss();
+                                ze2Dialog.dismiss();
+                            }
+                        });
+                        ze2Dialog.setOnQuXiaoListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                dialog4.dismiss();
+                                ze2Dialog.dismiss();
+                            }
+                        });
+                        ze2Dialog.show();
+                    }
+                });
+                dialog4.show();
                 break;
             case   R.id.rl_5:
+                final ZhuangTaiXuanZeDialog dialog5=new ZhuangTaiXuanZeDialog(this,2);
+                dialog5.setOnPositiveListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        isTrue=dialog5.getIsTrue();
+                        miaoshu=dialog5.getET();
+                        dialog5.dismiss();
 
+                    }
+                });
+                dialog5.setOnQuXiaoListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        dialog5.dismiss();
+                    }
+                });
+                dialog5.setOnR2Listener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final ZhuangTaiXuanZe2Dialog ze2Dialog=new ZhuangTaiXuanZe2Dialog(SheBeiWeiBaoYuCeShiActivity.this,1);
+                        ze2Dialog.setOnPositiveListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                dialog5.dismiss();
+                                ze2Dialog.dismiss();
+                            }
+                        });
+                        ze2Dialog.setOnQuXiaoListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog5.dismiss();
+                                ze2Dialog.dismiss();
+
+                            }
+                        });
+                        ze2Dialog.show();
+                    }
+                });
+                dialog5.show();
                 break;
         }
 

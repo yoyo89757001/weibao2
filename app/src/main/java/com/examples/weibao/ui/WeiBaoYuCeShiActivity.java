@@ -8,11 +8,9 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.examples.weibao.R;
-import com.examples.weibao.utils.Utils;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListener {
