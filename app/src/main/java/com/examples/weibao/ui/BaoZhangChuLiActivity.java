@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -81,6 +82,22 @@ public class BaoZhangChuLiActivity extends AppCompatActivity implements View.OnC
     }
 
     private void findById() {
+        TextView tit= (TextView) findViewById(R.id.title);
+        tit.setText("保障列表");
+        ImageView f= (ImageView) findViewById(R.id.leftim);
+        f.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        Button baozhangdengji= (Button) findViewById(R.id.dengji);
+        baozhangdengji.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         mTabContactsTv = (TextView) findViewById(R.id.id_contacts_tv);
         mTabChatTv = (TextView) findViewById(R.id.id_chat_tv);
         mTabFriendTv = (TextView) findViewById(R.id.id_friend_tv);
