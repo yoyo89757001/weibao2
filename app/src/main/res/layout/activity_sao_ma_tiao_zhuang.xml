@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context="com.examples.weibao.ui.SaoMaTiaoZhuangActivity">
+
+    <include
+        android:id="@+id/dh"
+        layout="@layout/base_title"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_below="@+id/dh"
+        android:id="@+id/ttt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+    <RelativeLayout
+        android:layout_below="@+id/dh"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <TextView
+            android:text="名称"
+            android:textSize="16sp"
+            android:layout_centerVertical="true"
+            android:textColor="@color/blake"
+            android:layout_marginLeft="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:text="名称"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:textSize="16sp"
+            android:layout_marginRight="16dp"
+            android:textColor="@color/textcolor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+        <View
+            android:background="@color/view_bg"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="0.8dp"/>
+        <RelativeLayout
+            android:layout_below="@+id/dh"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+
+            <TextView
+                android:text="编号"
+                android:textSize="16sp"
+                android:layout_centerVertical="true"
+                android:textColor="@color/blake"
+                android:layout_marginLeft="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:text="名称"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:textSize="16sp"
+                android:layout_marginRight="16dp"
+                android:textColor="@color/textcolor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+
+        <View
+            android:background="@color/view_bg"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="0.8dp"/>
+        <RelativeLayout
+            android:layout_below="@+id/dh"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+
+            <TextView
+                android:text="地址"
+                android:textSize="16sp"
+                android:layout_centerVertical="true"
+                android:textColor="@color/blake"
+                android:layout_marginLeft="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:text="名称"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:textSize="16sp"
+                android:layout_marginRight="16dp"
+                android:textColor="@color/textcolor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+
+        <View
+            android:background="@color/view_bg"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="0.8dp"/>
+        <RelativeLayout
+            android:layout_below="@+id/dh"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+
+            <TextView
+                android:text="项目"
+                android:textSize="16sp"
+                android:layout_centerVertical="true"
+                android:textColor="@color/blake"
+                android:layout_marginLeft="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:text="名称"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:textSize="16sp"
+                android:layout_marginRight="16dp"
+                android:textColor="@color/textcolor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+
+        <View
+            android:background="@color/view_bg"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="0.8dp"/>
+
+        <RelativeLayout
+            android:layout_below="@+id/dh"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+
+            <TextView
+                android:text="公司"
+                android:textSize="16sp"
+                android:layout_centerVertical="true"
+                android:textColor="@color/blake"
+                android:layout_marginLeft="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:text="名称"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:textSize="16sp"
+                android:layout_marginRight="16dp"
+                android:textColor="@color/textcolor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+
+        <View
+            android:background="@color/view_bg"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="0.8dp"/>
+        <RelativeLayout
+            android:layout_below="@+id/dh"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+
+            <TextView
+                android:text="维保项"
+                android:textSize="16sp"
+                android:layout_centerVertical="true"
+                android:textColor="@color/blake"
+                android:layout_marginLeft="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:text="名称"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:textSize="16sp"
+                android:layout_marginRight="16dp"
+                android:textColor="@color/textcolor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+
+        <View
+            android:background="@color/view_bg"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="0.8dp"/>
+        <RelativeLayout
+
+            android:layout_below="@+id/dh"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+
+            <TextView
+                android:text="状态"
+                android:textSize="16sp"
+                android:layout_centerVertical="true"
+                android:textColor="@color/blake"
+                android:layout_marginLeft="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:text="名称"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:textSize="16sp"
+                android:layout_marginRight="16dp"
+                android:textColor="@color/textcolor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+
+        <View
+            android:background="@color/view_bg"
+            android:layout_width="match_parent"
+            android:layout_height="0.8dp"/>
+
+</LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="42dp">
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textColor="@color/white"
+                android:background="@drawable/jiaohu"
+                android:text="报障"
+                android:id="@+id/baozhang"
+                android:layout_marginLeft="16dp"
+                android:textSize="16sp"
+                android:layout_marginRight="8dp"
+                android:layout_height="match_parent" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:id="@+id/chakan"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="16dp"
+                android:textColor="@color/white"
+                android:background="@drawable/jiaohu"
+                android:text="查看"
+                android:textSize="16sp"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+</RelativeLayout>

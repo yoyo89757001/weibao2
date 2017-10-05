@@ -1,5 +1,6 @@
 package com.examples.weibao.ui;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -83,7 +84,7 @@ public class BaoZhangChuLiActivity extends AppCompatActivity implements View.OnC
 
     private void findById() {
         TextView tit= (TextView) findViewById(R.id.title);
-        tit.setText("保障列表");
+        tit.setText("报障列表");
         ImageView f= (ImageView) findViewById(R.id.leftim);
         f.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,7 +96,7 @@ public class BaoZhangChuLiActivity extends AppCompatActivity implements View.OnC
         baozhangdengji.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                startActivity(new Intent(BaoZhangChuLiActivity.this,BaoZhangDengJiActivity.class));
             }
         });
         mTabContactsTv = (TextView) findViewById(R.id.id_contacts_tv);

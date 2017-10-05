@@ -22,7 +22,11 @@
 
         <activity android:name=".ui.WeiBaoYuCeShiActivity" />
         <activity android:name=".ui.SheBeiWeiBaoYuCeShiActivity" />
-        <activity android:name=".ui.BaoZhangChuLiActivity"></activity>
+        <activity android:name=".ui.BaoZhangChuLiActivity" />
+        <activity android:name=".ui.SaoMaTiaoZhuangActivity" />
+        <activity android:name=".ui.BaoZhangDengJiActivity"
+            android:windowSoftInputMode="stateHidden"
+            />
     </application>
 
 </manifest>

@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="match_parent"
+    tools:context="com.examples.weibao.ui.BaoZhangDengJiActivity">
+
+    <include
+        android:id="@+id/rrr"
+        layout="@layout/base_title"/>
+
+    <ScrollView
+        android:layout_above="@+id/opop"
+        android:layout_below="@+id/rrr"
+        android:id="@+id/scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_below="@+id/dh"
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <TextView
+                    android:text="单位"
+                    android:textSize="16sp"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/blake"
+                    android:id="@+id/t1"
+                    android:layout_marginLeft="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:hint="请输入单位名称"
+                    android:textColorHint="@color/textcolor"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:textSize="16sp"
+                    android:layout_toRightOf="@+id/t1"
+                    android:gravity="right"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:background="@null"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:textColor="@color/textcolor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </RelativeLayout>
+
+            <View
+                android:background="@color/view_bg"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="0.8dp"/>
+            <RelativeLayout
+                android:layout_below="@+id/dh"
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <TextView
+                    android:text="地址"
+                    android:textSize="16sp"
+                    android:id="@+id/oo"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/blake"
+                    android:layout_marginLeft="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:hint="请输入单位地址"
+                    android:layout_toRightOf="@+id/oo"
+                    android:layout_marginLeft="16dp"
+                    android:textColorHint="@color/textcolor"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:textSize="16sp"
+                    android:maxLines="1"
+                    android:background="@null"
+                    android:ellipsize="end"
+                    android:gravity="right"
+                    android:layout_marginRight="16dp"
+                    android:textColor="@color/textcolor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </RelativeLayout>
+
+            <View
+                android:background="@color/view_bg"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="0.8dp"/>
+            <RelativeLayout
+                android:layout_below="@+id/dh"
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <TextView
+                    android:text="设备"
+                    android:textSize="16sp"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/blake"
+                    android:layout_marginLeft="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:text="请选择设备"
+                    android:layout_centerVertical="true"
+                    android:textSize="16sp"
+                    android:layout_toLeftOf="@+id/i1"
+                    android:layout_marginRight="10dp"
+                    android:textColor="@color/textcolor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <ImageView
+                    android:src="@drawable/ic_go"
+                    android:id="@+id/i1"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="16dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+
+            </RelativeLayout>
+
+            <View
+                android:background="@color/view_bg"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="0.8dp"/>
+            <RelativeLayout
+                android:layout_below="@+id/dh"
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <TextView
+                    android:text="故障描述"
+                    android:textSize="16sp"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/blake"
+                    android:id="@+id/t3"
+                    android:layout_marginLeft="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:hint="请输入故障描述"
+                    android:textColorHint="@color/textcolor"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:textSize="16sp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_toRightOf="@+id/t3"
+                    android:maxLines="2"
+                    android:text="safsd阿斯飞洒发生大幅度释放范德萨第三方所发生的方式对方是否复苏的方式对方是否是大幅度释放看看"
+                    android:background="@null"
+                    android:ellipsize="end"
+                    android:gravity="right"
+                    android:layout_marginRight="16dp"
+                    android:textColor="@color/textcolor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </RelativeLayout>
+
+            <View
+                android:background="@color/view_bg"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="0.8dp"/>
+
+            <RelativeLayout
+                android:layout_below="@+id/dh"
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <TextView
+                    android:text="故障发现时间"
+                    android:textSize="16sp"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/blake"
+                    android:layout_marginLeft="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:text="2021-22-22"
+                    android:layout_centerVertical="true"
+                    android:textSize="16sp"
+                    android:layout_toLeftOf="@+id/i2"
+                    android:layout_marginRight="10dp"
+                    android:textColor="@color/textcolor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <ImageView
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:src="@drawable/ic_go"
+                    android:id="@+id/i2"
+                    android:layout_marginRight="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </RelativeLayout>
+
+            <View
+                android:background="@color/view_bg"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="0.8dp"/>
+            <RelativeLayout
+                android:layout_below="@+id/dh"
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <TextView
+                    android:text="报障人员"
+                    android:textSize="16sp"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/blake"
+                    android:layout_marginLeft="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:text="名字"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:textSize="16sp"
+                    android:layout_marginRight="16dp"
+                    android:textColor="@color/textcolor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </RelativeLayout>
+
+            <View
+                android:background="@color/view_bg"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="0.8dp"/>
+            <RelativeLayout
+
+                android:layout_below="@+id/dh"
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <TextView
+                    android:text="联系电话"
+                    android:textSize="16sp"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/blake"
+                    android:layout_marginLeft="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:hint="请输入联系电话"
+                    android:textColorHint="@color/textcolor"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:textSize="16sp"
+                    android:background="@null"
+                    android:gravity="right"
+                    android:inputType="number"
+                    android:maxLength="11"
+                    android:layout_marginRight="16dp"
+                    android:textColor="@color/textcolor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </RelativeLayout>
+
+            <View
+                android:background="@color/view_bg"
+                android:layout_width="match_parent"
+                android:layout_height="0.8dp"/>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/opop"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="4dp"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="42dp">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:background="@drawable/jiaohu"
+            android:text="查看历史报障记录"
+            android:layout_marginLeft="16dp"
+            android:textSize="16sp"
+            android:layout_marginRight="8dp"
+            android:layout_height="match_parent" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="16dp"
+            android:textColor="@color/white"
+            android:background="@drawable/jiaohu"
+            android:text="提交"
+            android:textSize="16sp"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+</RelativeLayout>

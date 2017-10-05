@@ -1,6 +1,7 @@
 package com.examples.weibao.ui;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -101,6 +102,7 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
         r4= (RelativeLayout) findViewById(R.id.settingLayout);
         r4.setOnClickListener(this);
         zhong_ll= (LinearLayout) findViewById(R.id.searchLayout);
+        zhong_ll.setOnClickListener(this);
         tabIm= (ImageView) findViewById(R.id.tabImg);
         tabIm2= (ImageView) findViewById(R.id.tabImg2);
         tabIm3= (ImageView) findViewById(R.id.tabImg3);
@@ -133,6 +135,7 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
 
             case R.id.searchLayout:
                 //扫描
+            startActivity(new Intent(HomePageActivity.this,SaoMaTiaoZhuangActivity.class));
 
                 break;
             default:
