@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.examples.weibao.R;
 import com.examples.weibao.ui.BaoZhangChuLiActivity;
+import com.examples.weibao.ui.GeRenActivity;
 import com.examples.weibao.ui.WeiBaoYuCeShiActivity;
 import com.examples.weibao.utils.Utils;
 
@@ -52,6 +53,7 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
     private void initView(View view) {
 
         top_ll= (LinearLayout) view.findViewById(R.id.top_ll);
+        top_ll.setOnClickListener(this);
         l1= (LinearLayout) view.findViewById(R.id.l1);
         l1.setOnClickListener(this);
         l2= (LinearLayout) view.findViewById(R.id.l2);
@@ -113,6 +115,9 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
                 break;
             case R.id.l8:
 
+                break;
+            case R.id.top_ll:
+                startActivity(new Intent(getContext(), GeRenActivity.class));
                 break;
 
         }

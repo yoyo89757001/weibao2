@@ -24,9 +24,11 @@
         <activity android:name=".ui.SheBeiWeiBaoYuCeShiActivity" />
         <activity android:name=".ui.BaoZhangChuLiActivity" />
         <activity android:name=".ui.SaoMaTiaoZhuangActivity" />
-        <activity android:name=".ui.BaoZhangDengJiActivity"
-            android:windowSoftInputMode="stateHidden"
-            />
+        <activity
+            android:name=".ui.BaoZhangDengJiActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".ui.GeRenActivity" />
+        <activity android:name=".ui.XiangMuShouKuanActivity"></activity>
     </application>
 
 </manifest>
