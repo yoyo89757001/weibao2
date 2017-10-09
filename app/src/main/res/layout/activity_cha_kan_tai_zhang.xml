@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F9"
+    android:fitsSystemWindows="true"
+    tools:context="com.examples.weibao.ui.ChaKanTaiZhangActivity">
+
+    <include
+        android:id="@+id/dff"
+        layout="@layout/base_title"/>
+
+    <com.github.jdsjlzx.recyclerview.LRecyclerView
+        android:layout_width="match_parent"
+        android:layout_below="@+id/dff"
+        android:id="@+id/lrecyclerview"
+        android:layout_height="match_parent"/>
+
+</RelativeLayout>
