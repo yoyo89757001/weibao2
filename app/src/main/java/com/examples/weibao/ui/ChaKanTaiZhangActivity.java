@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.examples.weibao.R;
@@ -53,6 +54,13 @@ public class ChaKanTaiZhangActivity extends Activity {
 
         TextView title= (TextView) findViewById(R.id.title);
         title.setText("查看项目设备台帐");
+        ImageView left= (ImageView) findViewById(R.id.leftim);
+        left.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         dataList=new ArrayList<>();
         dataList.add("ddddddd");

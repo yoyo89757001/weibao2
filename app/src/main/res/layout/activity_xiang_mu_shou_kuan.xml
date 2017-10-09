@@ -38,9 +38,10 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:text="点击头像编辑"
+            android:text="项目名"
             android:layout_marginTop="20dp"
             android:maxLines="2"
+            android:id="@+id/xiangmuming"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:textColor="@color/white"
@@ -55,6 +56,7 @@
         android:layout_below="@+id/oopp"
         android:layout_marginTop="-48dp"
         android:layout_marginLeft="@dimen/sp_16"
+        android:id="@+id/fgfg"
         android:layout_marginRight="@dimen/sp_16"
         android:background="@drawable/zidonghuoqu10"
         android:layout_width="match_parent"
@@ -76,6 +78,7 @@
             <TextView
                 android:textSize="16sp"
                 android:text="200000"
+                android:id="@+id/yujishoukuang"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
@@ -110,6 +113,7 @@
             <TextView
                 android:textSize="16sp"
                 android:text="200000"
+                android:id="@+id/yiwancheng"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
@@ -121,6 +125,97 @@
         </RelativeLayout>
 
     </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_below="@+id/fgfg"
+        android:layout_marginTop="22dp"
+        android:layout_marginLeft="@dimen/sp_16"
+        android:layout_marginRight="@dimen/sp_16"
+        android:background="@drawable/bg_pay"
+        android:layout_width="match_parent"
+        android:layout_height="120dp">
+        <RelativeLayout
+            android:layout_weight="0.7"
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
 
+            <TextView
+                android:textSize="16sp"
+                android:text="本次收款:"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/sp_16"
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:textSize="16sp"
+                android:text="200000"
+                android:id="@+id/bencishoukuan"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/sp_16"
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+
+            <TextView
+                android:textSize="16sp"
+                android:text="输入金额:"
+                android:id="@+id/rrr"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/sp_16"
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_toRightOf="@+id/rrr"
+                android:layout_marginLeft="16dp"
+                android:background="@drawable/zidonghuoqu_hui"
+                android:layout_marginRight="16dp"
+                android:gravity="center_vertical"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                android:layout_centerVertical="true"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:text="￥"
+                    android:layout_marginLeft="16dp"
+                    android:textSize="@dimen/sp_16"
+                    android:textColor="@color/black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:textSize="16sp"
+                    android:text="200000"
+                    android:background="@null"
+                    android:id="@+id/jine"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginRight="@dimen/sp_16"
+                    android:textColor="@color/black"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>

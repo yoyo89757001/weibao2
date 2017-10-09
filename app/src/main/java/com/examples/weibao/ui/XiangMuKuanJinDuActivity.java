@@ -9,8 +9,10 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.examples.weibao.R;
 import com.examples.weibao.adapters.TaiZhangAdapter;
+import com.examples.weibao.adapters.XiangMuKuanAdapter;
 import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
@@ -20,18 +22,18 @@ import com.readystatesoftware.systembartint.SystemBarTintManager;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TaiZhangActivity extends Activity {
+public class XiangMuKuanJinDuActivity extends Activity {
     private LRecyclerView lRecyclerView;
     private LRecyclerViewAdapter lRecyclerViewAdapter;
     private LinearLayoutManager linearLayoutManager;
     private List<String> dataList;
-    private TaiZhangAdapter taiZhangAdapter;
+    private XiangMuKuanAdapter taiZhangAdapter;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tai_zhang);
+        setContentView(R.layout.activity_xiang_mu_kuan_jin_du);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             //透明状态栏
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -53,7 +55,7 @@ public class TaiZhangActivity extends Activity {
 
 
         TextView title= (TextView) findViewById(R.id.title);
-        title.setText("设备台帐管理");
+        title.setText("项目款进度");
         ImageView left= (ImageView) findViewById(R.id.leftim);
         left.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,10 +69,10 @@ public class TaiZhangActivity extends Activity {
         dataList.add("dfff");
 
         lRecyclerView= (LRecyclerView) findViewById(R.id.lrecyclerview);
-        taiZhangAdapter=new TaiZhangAdapter(dataList);
+        taiZhangAdapter=new XiangMuKuanAdapter(dataList);
         lRecyclerViewAdapter = new LRecyclerViewAdapter(taiZhangAdapter);
 
-        linearLayoutManager=new LinearLayoutManager(TaiZhangActivity.this);
+        linearLayoutManager=new LinearLayoutManager(XiangMuKuanJinDuActivity.this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         lRecyclerView.setLayoutManager(linearLayoutManager);
         lRecyclerView.setAdapter(lRecyclerViewAdapter);
@@ -87,11 +89,10 @@ public class TaiZhangActivity extends Activity {
             @Override
             public void onItemClick(View view, int position) {
 
-                startActivity(new Intent(TaiZhangActivity.this,ChaKanTaiZhangActivity.class));
+                startActivity(new Intent(XiangMuKuanJinDuActivity.this,XiangMuShouKuanActivity.class));
 
             }
         });
-
 
 
     }

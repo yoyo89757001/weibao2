@@ -64,6 +64,7 @@ public class WangJiMiMaActivity extends Activity {
         });
         title= (TextView) findViewById(R.id.title);
         title.setText("忘记密码");
+
         shouji= (EditText) findViewById(R.id.shouji);
         yanzhengma= (EditText) findViewById(R.id.yanzhengma);
         huoqu= (TextView) findViewById(R.id.huoqu);

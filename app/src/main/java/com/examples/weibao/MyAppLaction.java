@@ -3,11 +3,13 @@ package com.examples.weibao;
 import android.app.Application;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
-
 import com.examples.weibao.beans.DaoMaster;
 import com.examples.weibao.beans.DaoSession;
+import com.examples.weibao.cookies.CookiesManager;
 import com.tencent.bugly.Bugly;
-import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
 
 
 /**
@@ -15,7 +17,8 @@ import java.io.IOException;
  */
 
 public class MyAppLaction extends Application {
-
+    // 超时时间
+    public static final int TIMEOUT = 1000 * 30;
     public DaoMaster mDaoMaster;
     public DaoSession mDaoSession;
     public static MyAppLaction myAppLaction;
@@ -55,9 +58,19 @@ public class MyAppLaction extends Application {
         }
 
 
-
     }
 
+    public static OkHttpClient getOkHttpClient(){
+
+        return new OkHttpClient.Builder()
+                .writeTimeout(TIMEOUT, TimeUnit.MILLISECONDS)
+                .connectTimeout(TIMEOUT, TimeUnit.MILLISECONDS)
+                .readTimeout(TIMEOUT, TimeUnit.MILLISECONDS)
+                .cookieJar(new CookiesManager())
+                .retryOnConnectionFailure(true)
+                .build();
+        //okhttpclient.dispatcher().cancelAll();取消所有的请求
+    }
 
 
     /**
@@ -81,39 +94,6 @@ public class MyAppLaction extends Application {
     public  DaoSession getDaoSession() {
         return mDaoSession;
     }
-
-
-
-
-//        Log.d("MainActivity", "OpenCVLoader.initDebug():" + OpenCVLoader.initDebug());
-        // Example of a call to a native method
-//        try {
-//            // load cascade file from application resources
-//            InputStream is = getResources().openRawResource(R.raw.lbpcascade_frontalface);
-//            File cascadeDir = getDir("cascade", Context.MODE_PRIVATE);
-//            mCascadeFile = new File(cascadeDir, "haarcascade_frontalface_alt2.xml");
-//            FileOutputStream os = new FileOutputStream(mCascadeFile);
-//
-//            byte[] buffer = new byte[4096];
-//            int bytesRead;
-//            while ((bytesRead = is.read(buffer)) != -1) {
-//                os.write(buffer, 0, bytesRead);
-//            }
-//            is.close();
-//            os.close();
-//
-//            mJavaDetector = new CascadeClassifier(mCascadeFile.getAbsolutePath());
-//            if (mJavaDetector.empty()) {
-//
-//                mJavaDetector = null;
-//            }
-//            cascadeDir.delete();
-//
-//
-//        } catch (IOException e) {
-//            Log.d("InFoActivity2", e.getMessage());
-//        }
-
 
 
 

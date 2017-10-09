@@ -31,7 +31,9 @@
         <activity android:name=".ui.XiangMuShouKuanActivity" />
         <activity android:name=".ui.ZiXunActivity" />
         <activity android:name=".ui.TaiZhangActivity" />
-        <activity android:name=".ui.ChaKanTaiZhangActivity"></activity>
+        <activity android:name=".ui.ChaKanTaiZhangActivity" />
+        <activity android:name=".ui.XiangMuKuanJinDuActivity" />
+        <activity android:name=".ui.WeiBaoJiHuaActivity"></activity>
     </application>
 
 </manifest>

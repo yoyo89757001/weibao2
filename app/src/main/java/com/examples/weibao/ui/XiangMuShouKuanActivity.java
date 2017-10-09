@@ -3,7 +3,9 @@ package com.examples.weibao.ui;
 import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 
 import com.examples.weibao.R;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
@@ -33,7 +35,13 @@ public class XiangMuShouKuanActivity extends Activity {
             //给导航栏设置资源
             // tintManager.setNavigationBarTintResource(R.color.dark_grey);
         }
-
+        ImageView left= (ImageView) findViewById(R.id.leftim);
+        left.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
     }
 }

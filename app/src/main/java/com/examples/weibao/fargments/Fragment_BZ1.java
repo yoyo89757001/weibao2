@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.examples.weibao.R;
 import com.examples.weibao.adapters.BaoZhangAdapter1;
 import com.examples.weibao.ui.SheBeiWeiBaoYuCeShiActivity;
+import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 
@@ -50,6 +51,13 @@ public class Fragment_BZ1 extends Fragment {
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         lRecyclerView.setLayoutManager(linearLayoutManager);
         lRecyclerView.setAdapter(lRecyclerViewAdapter);
+
+        DividerDecoration divider = new DividerDecoration.Builder(getContext())
+                .setHeight(R.dimen.default_divider_height)
+                .setPadding(R.dimen.default_divider_padding)
+                .setColorResource(R.color.transparent)
+                .build();
+        lRecyclerView.addItemDecoration(divider);
 
         return view;
     }

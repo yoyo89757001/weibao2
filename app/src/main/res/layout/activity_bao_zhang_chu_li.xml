@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:id="@+id/top1"
-    android:background="@color/white"
+    android:background="#F5F5F9"
     android:orientation="vertical"
     tools:context="com.examples.weibao.ui.BaoZhangChuLiActivity">
 
@@ -33,12 +33,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-
-    <View
-        android:layout_below="@+id/id_page_vp"
-        android:background="@color/view_bg"
-        android:layout_width="match_parent"
-        android:layout_height="0.8dp"/>
 
     <Button
         android:layout_marginLeft="20dp"
