@@ -376,9 +376,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="6dp"/>
 
-
             </LinearLayout>
-
 
 
         </LinearLayout>
@@ -443,8 +441,5 @@
             android:layout_height="42dp" />
 
     </LinearLayout>
-
-
-
 
 </RelativeLayout>
