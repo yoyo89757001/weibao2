@@ -33,7 +33,13 @@
         <activity android:name=".ui.TaiZhangActivity" />
         <activity android:name=".ui.ChaKanTaiZhangActivity" />
         <activity android:name=".ui.XiangMuKuanJinDuActivity" />
-        <activity android:name=".ui.WeiBaoJiHuaActivity"></activity>
+        <activity android:name=".ui.WeiBaoJiHuaActivity" />
+        <activity android:name=".ui.ChaKnaXiangMuJiHuaActivity" />
+        <activity android:name=".ui.WeiBaoBaoGaoActivity" />
+        <activity
+            android:name=".ui.DatePickActivity"
+            android:theme="@style/MyDialogStyleBottom" />
+        <activity android:name=".ui.BaoZhangChaKanActivity"></activity>
     </application>
 
 </manifest>

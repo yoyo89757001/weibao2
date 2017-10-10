@@ -14,6 +14,7 @@ import com.examples.weibao.R;
 import com.examples.weibao.ui.BaoZhangChuLiActivity;
 import com.examples.weibao.ui.GeRenActivity;
 import com.examples.weibao.ui.TaiZhangActivity;
+import com.examples.weibao.ui.WeiBaoBaoGaoActivity;
 import com.examples.weibao.ui.WeiBaoJiHuaActivity;
 import com.examples.weibao.ui.WeiBaoYuCeShiActivity;
 import com.examples.weibao.ui.XiangMuKuanJinDuActivity;
@@ -112,7 +113,7 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
                 startActivity(new Intent(getContext(), WeiBaoJiHuaActivity.class));
                 break;
             case R.id.l6:
-
+                startActivity(new Intent(getContext(), WeiBaoBaoGaoActivity.class));
                 break;
             case R.id.l7:
                 startActivity(new Intent(getContext(), TaiZhangActivity.class));

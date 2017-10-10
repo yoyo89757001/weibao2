@@ -47,6 +47,7 @@
                     android:layout_toRightOf="@+id/t1"
                     android:gravity="right"
                     android:maxLines="1"
+                    android:id="@+id/mingcheng"
                     android:ellipsize="end"
                     android:background="@null"
                     android:layout_marginRight="16dp"
@@ -87,6 +88,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
                     android:textSize="16sp"
+                    android:id="@+id/dizhi"
                     android:maxLines="1"
                     android:background="@null"
                     android:ellipsize="end"
@@ -105,6 +107,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0.8dp"/>
             <RelativeLayout
+                android:id="@+id/shebei_rl"
                 android:layout_below="@+id/dh"
                 android:layout_width="match_parent"
                 android:layout_height="50dp">
@@ -123,6 +126,7 @@
                     android:layout_centerVertical="true"
                     android:textSize="16sp"
                     android:layout_toLeftOf="@+id/i1"
+                    android:id="@+id/shebei"
                     android:layout_marginRight="10dp"
                     android:textColor="@color/textcolor"
                     android:layout_width="wrap_content"
@@ -172,7 +176,7 @@
                     android:layout_marginLeft="16dp"
                     android:layout_toRightOf="@+id/t3"
                     android:maxLines="2"
-                    android:text="safsd阿斯飞洒发生大幅度释放范德萨第三方所发生的方式对方是否复苏的方式对方是否是大幅度释放看看"
+                    android:id="@+id/guzhang_et"
                     android:background="@null"
                     android:ellipsize="end"
                     android:gravity="right"
@@ -191,6 +195,7 @@
                 android:layout_height="0.8dp"/>
 
             <RelativeLayout
+                android:id="@+id/shijian_rl"
                 android:layout_below="@+id/dh"
                 android:layout_width="match_parent"
                 android:layout_height="50dp">
@@ -205,9 +210,9 @@
                     android:layout_height="wrap_content" />
 
                 <TextView
-                    android:text="2021-22-22"
                     android:layout_centerVertical="true"
                     android:textSize="16sp"
+                    android:id="@+id/shijian"
                     android:layout_toLeftOf="@+id/i2"
                     android:layout_marginRight="10dp"
                     android:textColor="@color/textcolor"
@@ -252,6 +257,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
                     android:textSize="16sp"
+                    android:id="@+id/name"
                     android:layout_marginRight="16dp"
                     android:textColor="@color/textcolor"
                     android:layout_width="wrap_content"
@@ -288,6 +294,7 @@
                     android:layout_alignParentEnd="true"
                     android:textSize="16sp"
                     android:background="@null"
+                    android:id="@+id/dianhua"
                     android:gravity="right"
                     android:inputType="number"
                     android:maxLength="11"
@@ -331,6 +338,7 @@
             android:background="@drawable/jiaohu"
             android:text="查看历史报障记录"
             android:layout_marginLeft="16dp"
+            android:id="@+id/chakan"
             android:textSize="16sp"
             android:layout_marginRight="8dp"
             android:layout_height="match_parent" />
@@ -343,6 +351,7 @@
             android:textColor="@color/white"
             android:background="@drawable/jiaohu"
             android:text="提交"
+            android:id="@+id/tijiao"
             android:textSize="16sp"
             android:layout_height="match_parent" />
 

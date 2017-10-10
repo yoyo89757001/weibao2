@@ -1,6 +1,7 @@
 package com.examples.weibao.fargments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,7 +11,9 @@ import android.view.ViewGroup;
 
 import com.examples.weibao.R;
 import com.examples.weibao.adapters.BaoZhangAdapter1;
+import com.examples.weibao.ui.BaoZhangChaKanActivity;
 import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
+import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 
@@ -55,7 +58,12 @@ public class Fragment_BZ2 extends Fragment {
                 .setColorResource(R.color.transparent)
                 .build();
         lRecyclerView.addItemDecoration(divider);
-
+        lRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                startActivity(new Intent(getContext(), BaoZhangChaKanActivity.class));
+            }
+        });
 
         return view;
     }

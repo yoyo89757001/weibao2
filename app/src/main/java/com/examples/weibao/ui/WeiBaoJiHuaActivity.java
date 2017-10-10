@@ -77,7 +77,7 @@ public class WeiBaoJiHuaActivity extends Activity {
             @Override
             public void onItemClick(View view, int position) {
 
-                startActivity(new Intent(WeiBaoJiHuaActivity.this,ChaKanTaiZhangActivity.class));
+                startActivity(new Intent(WeiBaoJiHuaActivity.this,ChaKnaXiangMuJiHuaActivity.class));
 
             }
         });

@@ -1,5 +1,6 @@
 package com.examples.weibao.ui;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -19,21 +20,23 @@ import com.examples.weibao.R;
 import com.examples.weibao.fargments.Fragment_BZ1;
 import com.examples.weibao.fargments.Fragment_BZ2;
 import com.examples.weibao.fargments.Fragment_BZ3;
+import com.examples.weibao.fargments.WeiBaoFragment1;
+import com.examples.weibao.fargments.WeiBaoFragment2;
 import com.examples.weibao.views.ViewPagerFragmentAdapter;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BaoZhangChuLiActivity extends AppCompatActivity implements View.OnClickListener {
+public class WeiBaoBaoGaoActivity extends AppCompatActivity implements View.OnClickListener {
     private List<Fragment> mFragmentList = new ArrayList<>();
     private ViewPagerFragmentAdapter mFragmentAdapter;
-    private LinearLayout l1,l2,l3;
+    private LinearLayout l1,l2;
     private ViewPager mPageVp;
     /**
      * Tab显示内容TextView
      */
-    private TextView mTabChatTv, mTabContactsTv, mTabFriendTv;
+    private TextView mTabChatTv, mTabFriendTv;
     /**
      * Tab的那个引导线
      */
@@ -41,9 +44,8 @@ public class BaoZhangChuLiActivity extends AppCompatActivity implements View.OnC
     /**
      * Fragment
      */
-    private Fragment_BZ1 mChatFg;
-    private Fragment_BZ2 mFriendFg;
-    private Fragment_BZ3 mContactsFg;
+    private WeiBaoFragment1 mChatFg;
+    private WeiBaoFragment2 mFriendFg;
     /**
      * ViewPager的当前选中页
      */
@@ -53,38 +55,26 @@ public class BaoZhangChuLiActivity extends AppCompatActivity implements View.OnC
      */
     private int screenWidth;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bao_zhang_chu_li);
+        setContentView(R.layout.activity_wei_bao_bao_gao);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            //透明状态栏
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            //透明导航栏
-            //  getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
             SystemBarTintManager tintManager = new SystemBarTintManager(this);
-            // 激活状态栏
             tintManager.setStatusBarTintEnabled(true);
-            // enable navigation bar tint 激活导航栏
-            //  tintManager.setNavigationBarTintEnabled(true);
-            //设置系统栏设置颜色
-            //tintManager.setTintColor(R.color.red);
-            //给状态栏设置颜色
             tintManager.setStatusBarTintResource(R.color.lanse33);
-            //Apply the specified drawable or color resource to the system navigation bar.
-            //给导航栏设置资源
-            // tintManager.setNavigationBarTintResource(R.color.dark_grey);
         }
 
         findById();
         init();
         initTabLineWidth();
+
     }
 
     private void findById() {
         TextView tit= (TextView) findViewById(R.id.title);
-        tit.setText("报障列表");
+        tit.setText("维保报告");
         ImageView f= (ImageView) findViewById(R.id.leftim);
         f.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,14 +82,8 @@ public class BaoZhangChuLiActivity extends AppCompatActivity implements View.OnC
                 finish();
             }
         });
-        Button baozhangdengji= (Button) findViewById(R.id.dengji);
-        baozhangdengji.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(BaoZhangChuLiActivity.this,BaoZhangDengJiActivity.class));
-            }
-        });
-        mTabContactsTv = (TextView) findViewById(R.id.id_contacts_tv);
+
+
         mTabChatTv = (TextView) findViewById(R.id.id_chat_tv);
         mTabFriendTv = (TextView) findViewById(R.id.id_friend_tv);
         mTabLineIv = (ImageView) findViewById(R.id.id_tab_line_iv);
@@ -108,19 +92,17 @@ public class BaoZhangChuLiActivity extends AppCompatActivity implements View.OnC
         l1.setOnClickListener(this);
         l2= (LinearLayout) findViewById(R.id.id_tab_friend_ll);
         l2.setOnClickListener(this);
-        l3= (LinearLayout) findViewById(R.id.id_tab_contacts_ll);
-        l3.setOnClickListener(this);
+
 
     }
 
 
     private void init() {
-        mFriendFg = new Fragment_BZ2();
-        mContactsFg = new Fragment_BZ3();
-        mChatFg = new Fragment_BZ1();
+        mChatFg = new WeiBaoFragment1();
+        mFriendFg = new WeiBaoFragment2();
         mFragmentList.add(mChatFg);
         mFragmentList.add(mFriendFg);
-        mFragmentList.add(mContactsFg);
+
 
         mFragmentAdapter = new ViewPagerFragmentAdapter(
                 this.getSupportFragmentManager(), mFragmentList);
@@ -145,7 +127,7 @@ public class BaoZhangChuLiActivity extends AppCompatActivity implements View.OnC
             public void onPageScrolled(int position, float offset,
                                        int offsetPixels) {
                 LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mTabLineIv.getLayoutParams();
-                lp.leftMargin = screenWidth/3*position+offsetPixels/3;
+                lp.leftMargin = screenWidth/2*position+offsetPixels/2;
                 mTabLineIv.setLayoutParams(lp);
             }
 
@@ -159,9 +141,7 @@ public class BaoZhangChuLiActivity extends AppCompatActivity implements View.OnC
                     case 1:
                         mTabFriendTv.setTextColor(Color.BLUE);
                         break;
-                    case 2:
-                        mTabContactsTv.setTextColor(Color.BLUE);
-                        break;
+
                 }
                 currentIndex = position;
             }
@@ -178,7 +158,7 @@ public class BaoZhangChuLiActivity extends AppCompatActivity implements View.OnC
                 .getMetrics(dpMetrics);
         screenWidth = dpMetrics.widthPixels;
         LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mTabLineIv.getLayoutParams();
-        lp.width = screenWidth / 3;
+        lp.width = screenWidth / 2;
         mTabLineIv.setLayoutParams(lp);
     }
 
@@ -188,7 +168,6 @@ public class BaoZhangChuLiActivity extends AppCompatActivity implements View.OnC
     private void resetTextView() {
         mTabChatTv.setTextColor(0xff8c8c8c);
         mTabFriendTv.setTextColor(0xff8c8c8c);
-        mTabContactsTv.setTextColor(0xff8c8c8c);
     }
 
     @Override
@@ -203,11 +182,6 @@ public class BaoZhangChuLiActivity extends AppCompatActivity implements View.OnC
                 resetTextView();
                 mTabFriendTv.setTextColor(Color.BLUE);
                 mPageVp.setCurrentItem(1);
-                break;
-            case R.id.id_tab_contacts_ll:
-                resetTextView();
-                mTabContactsTv.setTextColor(Color.BLUE);
-                mPageVp.setCurrentItem(2);
                 break;
         }
 
