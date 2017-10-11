@@ -5,7 +5,7 @@
     <application
         android:name=".MyAppLaction"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -39,7 +39,7 @@
         <activity
             android:name=".ui.DatePickActivity"
             android:theme="@style/MyDialogStyleBottom" />
-        <activity android:name=".ui.BaoZhangChaKanActivity"></activity>
+        <activity android:name=".ui.BaoZhangChaKanActivity"/>
     </application>
 
 </manifest>

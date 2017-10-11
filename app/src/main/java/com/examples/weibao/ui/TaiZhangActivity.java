@@ -16,7 +16,6 @@ import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
-
 import java.util.ArrayList;
 import java.util.List;
 
