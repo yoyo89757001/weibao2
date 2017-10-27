@@ -57,6 +57,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         if (dengLuBean!=null && dengLuBean.getAccount()!=null){
             startActivity(new Intent(MainActivity.this,HomePageActivity.class));
             finish();
+            //dsaddd
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
