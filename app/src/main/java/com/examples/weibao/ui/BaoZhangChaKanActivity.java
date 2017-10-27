@@ -21,6 +21,5 @@ public class BaoZhangChaKanActivity extends Activity {
             tintManager.setStatusBarTintResource(R.color.lanse33);
         }
 
-
     }
 }
