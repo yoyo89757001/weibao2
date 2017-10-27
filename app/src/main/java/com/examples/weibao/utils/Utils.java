@@ -29,11 +29,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Random;
 
 /**
  * A collection of utility methods, all static.
  */
 public class Utils {
+
+
+    //头部参数
+   public static final String signaturePassword = "WB!2#4%6&8<.?;";
+  // private String nonce = RandomUtils.generateMixInteger(6);
+
 
     /*
      * Making sure public utility methods remain static
@@ -201,5 +208,93 @@ public class Utils {
         } else {
             return "无网络";
         }
+    }
+//            Java:
+//            //头部参数
+//            String signaturePassword = "WB!2#4%6&8<.?;";
+//            String nonce = RandomUtils.generateMixInteger(6);
+//            String timestamp = System.currentTimeMillis()+"";
+//            int userId = account.getId();
+//            //请求参数 json流，如下：
+//            {“cmd”:10,“itemId”:10001,”status”:10}
+//
+//
+//        //生成签名规则
+//            /** 头像参数顺序以该例子为准，请求体参数顺序以各接口参数表为准，登录接口头部userId为0 */
+//            String sign = cmd+itemId+status
+//                    +nonce+timestamp+userId+signaturePassword;
+//            String signature = MD5.crypt(sign.toString());
+//        httpPost.addHeader("nonce", nonce);
+//        httpPost.addHeader("timestamp", timestamp);
+//        httpPost.addHeader(“userId”,account.getId());
+//        httpPost.addHeader("sign", signature);
+
+
+
+    public static String getNonce (){
+        String strRand="" ;
+        for(int i=0;i<6;i++){
+            strRand += String.valueOf((int)(Math.random() * 10)) ;
+        }
+        return strRand;
+    }
+
+    public static String getTimestamp(){
+
+        return System.currentTimeMillis()+"";
+    }
+
+
+
+    // 进行md5的加密运算
+    public static String encode(String s) {
+        // MessageDigest专门用于加密的类
+        try {
+            MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+            byte[] result = messageDigest.digest(s.getBytes()); // 得到加密后的字符组数
+
+            StringBuilder sb = new StringBuilder();
+
+            for (byte b : result) {
+                int num = b & 0xff; // 这里的是为了将原本是byte型的数向上提升为int型，从而使得原本的负数转为了正数
+                String hex = Integer.toHexString(num); //这里将int型的数直接转换成16进制表示
+                //16进制可能是为1的长度，这种情况下，需要在前面补0，
+                if (hex.length() == 1) {
+                    sb.append(0);
+                }
+                sb.append(hex);
+            }
+
+            return sb.toString();
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static String jiami(String mingwen){
+
+        String miWen = encode(mingwen).substring(8, 24);
+        String pwd1 = miWen.substring(0, 8) ;//8个字符
+        String pwd2 = miWen.substring(8, 16) ;//8个字符
+        miWen = generateMixed(4)+pwd1+generateMixed(4)+pwd2+generateMixed(4);
+        StringBuilder sb=new StringBuilder();
+        sb.append(miWen);
+        sb.reverse();
+        miWen = sb.toString();
+
+        return miWen;
+
+    }
+    private static String generateMixed(int n){
+        char chars[] = new char[]{'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
+        String res="";
+
+        for(int i = 0; i < n ; i ++) {
+            int id = (int) Math.ceil(Math.random()*35);
+            res += chars[id];
+        }
+        return res;
     }
 }

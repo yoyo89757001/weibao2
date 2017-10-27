@@ -121,6 +121,7 @@ public class BaoZhangDengJiActivity extends Activity {
                 Intent intent = new Intent(BaoZhangDengJiActivity.this, DatePickActivity.class);
                 startActivityForResult(intent,2);
 
+
                 break;
             case R.id.chakan:
 

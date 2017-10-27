@@ -15,11 +15,52 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_below="@+id/op"
+        android:id="@+id/l12"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <TextView
+            android:textColor="@color/heise"
+            android:textSize="16sp"
+            android:text="账号"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:hint="请输入账号"
+            android:textSize="16sp"
+            android:textColorHint="@color/hint"
+            android:background="@null"
+            android:inputType="text"
+            android:maxLength="22"
+            android:id="@+id/zhanghao"
+            android:textColor="@color/tabtextcolo"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_width="match_parent"
+            android:gravity="center_vertical|right"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+    <View
+        android:background="@color/LAVENDER"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="0.8dp"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_below="@+id/op"
         android:id="@+id/l1"
         android:background="@color/white"
         android:gravity="center_vertical"
         android:layout_width="match_parent"
-        android:layout_height="66dp">
+        android:layout_height="60dp">
 
         <TextView
             android:textColor="@color/heise"
@@ -34,6 +75,8 @@
             android:textSize="16sp"
             android:textColorHint="@color/hint"
             android:background="@null"
+            android:inputType="number"
+            android:maxLength="11"
             android:id="@+id/shouji"
             android:textColor="@color/tabtextcolo"
             android:layout_marginRight="16dp"
@@ -54,7 +97,7 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="66dp">
+        android:layout_height="60dp">
 
         <TextView
             android:textColor="@color/heise"
@@ -70,7 +113,7 @@
             android:textColorHint="@color/hint"
             android:background="@null"
             android:id="@+id/yanzhengma"
-            android:inputType="textPassword"
+            android:maxLength="6"
             android:textColor="@color/tabtextcolo"
             android:layout_marginRight="16dp"
             android:layout_marginLeft="16dp"
@@ -110,7 +153,7 @@
         android:background="@color/white"
         android:gravity="center_vertical"
         android:layout_width="match_parent"
-        android:layout_height="66dp">
+        android:layout_height="60dp">
 
         <TextView
             android:textColor="@color/heise"
@@ -126,6 +169,7 @@
             android:textColorHint="@color/hint"
             android:background="@null"
             android:id="@+id/mima1"
+            android:inputType="textPassword"
             android:textColor="@color/tabtextcolo"
             android:layout_marginRight="16dp"
             android:layout_marginLeft="16dp"
@@ -148,7 +192,7 @@
         android:layout_below="@+id/op"
         android:background="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="66dp">
+        android:layout_height="60dp">
         <TextView
             android:textColor="@color/heise"
             android:textSize="16sp"

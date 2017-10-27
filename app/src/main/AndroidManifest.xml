@@ -10,7 +10,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
-        <activity android:name=".ui.HomePageActivity">
+        <activity
+            android:name=".ui.KaiPingActivity"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -18,7 +20,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.WangJiMiMaActivity" />
-        <!-- <activity android:name=".ui.HomePageActivity"/> -->
+         <activity android:name=".ui.MainActivity"/>
 
         <activity android:name=".ui.WeiBaoYuCeShiActivity" />
         <activity android:name=".ui.SheBeiWeiBaoYuCeShiActivity" />
@@ -39,7 +41,9 @@
         <activity
             android:name=".ui.DatePickActivity"
             android:theme="@style/MyDialogStyleBottom" />
-        <activity android:name=".ui.BaoZhangChaKanActivity"/>
+        <activity android:name=".ui.BaoZhangChaKanActivity" />
+        <activity android:name=".ui.HomePageActivity" />
+        <activity android:name=".ui.LiaoTianActivity"/>
     </application>
 
 </manifest>

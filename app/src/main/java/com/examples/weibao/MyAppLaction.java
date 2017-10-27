@@ -1,15 +1,36 @@
 package com.examples.weibao;
 
 import android.app.Application;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+
 import com.examples.weibao.beans.DaoMaster;
 import com.examples.weibao.beans.DaoSession;
+import com.examples.weibao.beans.DengLuBean;
 import com.examples.weibao.cookies.CookiesManager;
+import com.examples.weibao.ui.HomePageActivity;
+import com.examples.weibao.ui.MainActivity;
+import com.examples.weibao.utils.GsonUtil;
+import com.examples.weibao.utils.Utils;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.tencent.bugly.Bugly;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 
 /**
@@ -86,7 +107,14 @@ public class MyAppLaction extends Application {
         // 注意：该数据库连接属于 DaoMaster，所以多个 Session 指的是相同的数据库连接。
         mDaoMaster = new DaoMaster(db);
         mDaoSession = mDaoMaster.newSession();
+        if (mDaoSession.getDengLuBeanDao().load(123456L)==null){
+            DengLuBean baoCunBean=new DengLuBean();
+            baoCunBean.setId(123456L);
+            baoCunBean.setZhuji("http://14.23.169.42:8090/api/");
+            mDaoSession.getDengLuBeanDao().insert(baoCunBean);
+        }else {
 
+        }
 
     }
 
@@ -94,6 +122,8 @@ public class MyAppLaction extends Application {
     public  DaoSession getDaoSession() {
         return mDaoSession;
     }
+
+
 
 
 
