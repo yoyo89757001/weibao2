@@ -1,14 +1,18 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/view_bg"
     tools:context="com.examples.weibao.fargments.Fragment2">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:textColor="@color/textcolor"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <include
+        android:id="@+id/op"
+        layout="@layout/base_title"/>
 
-</FrameLayout>
+    <com.github.jdsjlzx.recyclerview.LRecyclerView
+        android:layout_width="match_parent"
+        android:layout_below="@+id/op"
+        android:id="@+id/lrecyclerview"
+        android:layout_height="match_parent"/>
+
+</RelativeLayout>

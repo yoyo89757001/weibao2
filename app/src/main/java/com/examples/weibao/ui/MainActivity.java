@@ -92,7 +92,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.login:
-                link_save();
+                if (!zhanghao.getText().toString().trim().equals("") && !mima.getText().toString().trim().equals("")){
+                    link_save();
+                }else {
+                    showMSG("请先填写完整信息!",4);
+                }
+
                 break;
             case R.id.wangji:
                 startActivity(new Intent(MainActivity.this,WangJiMiMaActivity.class));
@@ -170,8 +175,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
                         +"0"+Utils.signaturePassword))
                 .post(body)
                 .url(dengLuBean.getZhuji() + "login.app");
-
-
 
         // step 3：创建 Call 对象
          call = okHttpClient.newCall(requestBuilder.build());

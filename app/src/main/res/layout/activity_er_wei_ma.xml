@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.examples.weibao.ui.ErWeiMaActivity">
+
+    <com.journeyapps.barcodescanner.DecoratedBarcodeView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/dbv_custom"
+        app:zxing_preview_scaling_strategy="fitXY"
+        app:zxing_use_texture_view="true"
+       >
+    </com.journeyapps.barcodescanner.DecoratedBarcodeView>
+
+
+
+    <Button
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:text="开启闪光灯"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/sp_16"
+        android:layout_marginRight="@dimen/sp_16"
+        android:background="@drawable/jiaohu3"
+        android:layout_width="wrap_content"
+        android:padding="4dp"
+        android:id="@+id/shan"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

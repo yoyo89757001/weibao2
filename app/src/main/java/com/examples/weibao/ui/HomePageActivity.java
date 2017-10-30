@@ -31,11 +31,14 @@ import com.examples.weibao.fargments.Fragment1;
 import com.examples.weibao.fargments.Fragment2;
 import com.examples.weibao.fargments.Fragment3;
 import com.examples.weibao.fargments.Fragment4;
+import com.examples.weibao.utils.DateUtils;
 import com.examples.weibao.utils.GsonUtil;
 import com.examples.weibao.utils.Utils;
 import com.examples.weibao.views.ViewPagerFragmentAdapter;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.sdsmdg.tastytoast.TastyToast;
 
@@ -97,7 +100,8 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
             tintManager.setStatusBarTintResource(R.color.lanse33);
         }
 
-
+        dengLuBeanDao=MyAppLaction.myAppLaction.getDaoSession().getDengLuBeanDao();
+        dengLuBean=dengLuBeanDao.load(123456L);
 
         initFragmetList();
 
@@ -105,11 +109,11 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
 
         initView();
         initViewPager();
-
+        link_jc();
     }
 
 
-    private void link_save() {
+    private void link_jc() {
         showDialog();
         final MediaType JSON=MediaType.parse("application/json; charset=utf-8");
         OkHttpClient okHttpClient= MyAppLaction.getOkHttpClient();
@@ -118,14 +122,16 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
         String nonce=Utils.getNonce();
         String timestamp=Utils.getTimestamp();
 
-
+        Log.d("HomePageActivity", DateUtils.getTodayDateTimes());
+        Log.d("HomePageActivity", "dengLuBean.getUserId():" + dengLuBean.getUserId());
 //    /* form的分割线,自己定义 */
 //        String boundary = "xx--------------------------------------------------------------xx";
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("cmd","100");
-            jsonObject.put("account",zhanghao.getText().toString().trim());
-            jsonObject.put("password",jiami);
+            jsonObject.put("itemId","10044");
+            jsonObject.put("stime","2017-01-01");
+            jsonObject.put("etime", DateUtils.getTodayDateTimes());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -134,13 +140,14 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
         Request.Builder requestBuilder = new Request.Builder()
                 .header("nonce", nonce)
                 .header("timestamp", timestamp)
-                .header("userId", "0")
-                .header("sign", Utils.encode("100"+zhanghao.getText().toString().trim()+jiami+nonce+timestamp
-                        +"0"+Utils.signaturePassword))
+                .header("userId", dengLuBean.getUserId()+"")
+                .header("sign", Utils.encode("100"+"10044"+"2017-01-01"+DateUtils.getTodayDateTimes()+nonce+timestamp
+                        +dengLuBean.getUserId()+Utils.signaturePassword))
                 .post(body)
-                .url(dengLuBean.getZhuji() + "login.app");
+                .url(dengLuBean.getZhuji() + "checkDownload.app");
 
-
+        Log.d("HomePageActivity", "100" + "10044" + "2017-01-01" + DateUtils.getTodayDateTimes() + nonce + timestamp
+                + dengLuBean.getUserId() + Utils.signaturePassword);
 
         // step 3：创建 Call 对象
         call = okHttpClient.newCall(requestBuilder.build());
@@ -276,6 +283,22 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
         tabText4= (TextView) findViewById(R.id.tabText4);
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if(result != null) {
+            if(result.getContents() == null) {
+                Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -298,13 +321,25 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
 
             case R.id.searchLayout:
                 //扫描
-            startActivity(new Intent(HomePageActivity.this,SaoMaTiaoZhuangActivity.class));
+                IntentIntegrator integrator = new IntentIntegrator(this);
+               // integrator.setDesiredBarcodeFormats(IntentIntegrator.ONE_D_CODE_TYPES);
+               // integrator.setPrompt("对准二维码自动扫描");
+               // integrator.setCameraId(0);  // Use a specific camera of the device
+                integrator.setBeepEnabled(true);
+                integrator.setCaptureActivity(ErWeiMaActivity.class);
+              //  integrator.setBarcodeImageEnabled(true);
+                integrator.initiateScan();
+               // new IntentIntegrator(this).initiateScan();
+                //  startActivity(new Intent(HomePageActivity.this,SaoMaTiaoZhuangActivity.class));
 
                 break;
             default:
                 break;
         }
     }
+
+
+
     private void  updateBottomLinearLayoutSelect(int position) {
         tabText.setTextColor(Color.parseColor("#8c050505"));
         tabText2.setTextColor(Color.parseColor("#8c050505"));

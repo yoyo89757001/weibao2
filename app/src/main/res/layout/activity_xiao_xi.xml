@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/view_bg"
+    android:fitsSystemWindows="true"
+    android:layout_height="match_parent"
+    tools:context="com.examples.weibao.ui.XiaoXiActivity">
+
+    <include
+        android:id="@+id/op"
+        layout="@layout/base_title"/>
+
+    <com.github.jdsjlzx.recyclerview.LRecyclerView
+        android:layout_width="match_parent"
+        android:layout_below="@+id/op"
+        android:id="@+id/lrecyclerview"
+        android:layout_height="match_parent"/>
+
+    <RelativeLayout
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:background="@color/view_bg"
+        android:layout_height="60dp">
+
+        <EditText
+            android:id="@+id/neirong"
+            android:background="@drawable/bai"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="82dp"
+            android:textSize="16sp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textColor="@color/blake"
+            android:layout_width="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_height="42dp" />
+
+        <Button
+            android:layout_width="70dp"
+            android:textSize="16sp"
+            android:text="发送"
+            android:id="@+id/fasong"
+            android:background="@drawable/zidonghuoqu112"
+            android:layout_marginLeft="-78dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/neirong"
+            android:textColor="@color/white"
+            android:layout_height="42dp" />
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
