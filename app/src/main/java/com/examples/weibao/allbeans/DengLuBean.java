@@ -1,4 +1,4 @@
-package com.examples.weibao.beans;
+package com.examples.weibao.allbeans;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
@@ -60,13 +60,14 @@ public class DengLuBean {
     private int role_id;
     private int sex;
     private int status;
-    @Generated(hash = 1868365557)
+    private String qqTime;
+    @Generated(hash = 1980159666)
     public DengLuBean(@NotNull Long id, Long userId, String zhuji, String account,
             int admin_id, String cardNum, String certificate, int companyId,
             long createTime, int dtoResult, String email, String memberNum,
             long modifyTime, String name, int pageNum, int pageSize, String phone,
             int platType, String pwd, String remark, int role_id, int sex,
-            int status) {
+            int status, String qqTime) {
         this.id = id;
         this.userId = userId;
         this.zhuji = zhuji;
@@ -90,6 +91,7 @@ public class DengLuBean {
         this.role_id = role_id;
         this.sex = sex;
         this.status = status;
+        this.qqTime = qqTime;
     }
     @Generated(hash = 715002548)
     public DengLuBean() {
@@ -231,6 +233,12 @@ public class DengLuBean {
     }
     public void setStatus(int status) {
         this.status = status;
+    }
+    public String getQqTime() {
+        return this.qqTime;
+    }
+    public void setQqTime(String qqTime) {
+        this.qqTime = qqTime;
     }
 
 

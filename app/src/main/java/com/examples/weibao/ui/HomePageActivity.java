@@ -1,7 +1,9 @@
 package com.examples.weibao.ui;
 
-import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,8 +26,10 @@ import android.widget.Toast;
 
 import com.examples.weibao.MyAppLaction;
 import com.examples.weibao.R;
-import com.examples.weibao.beans.DengLuBean;
-import com.examples.weibao.beans.DengLuBeanDao;
+import com.examples.weibao.allbeans.DengLuBean;
+import com.examples.weibao.allbeans.DengLuBeanDao;
+import com.examples.weibao.beans.FanHuiBean;
+import com.examples.weibao.beans.JianChaBean;
 import com.examples.weibao.dialogs.TiJIaoDialog;
 import com.examples.weibao.fargments.Fragment1;
 import com.examples.weibao.fargments.Fragment2;
@@ -64,7 +68,6 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
     private ViewPager mViewPager;
     private ViewPagerFragmentAdapter mViewPagerFragmentAdapter;
     private FragmentManager mFragmentManager;
-    private String[] titleName = new String[] {"首页","维保","消息","资讯"};
     private List<Fragment> mFragmentList = new ArrayList<>();
     private ImageView tabIm,tabIm2,tabIm3,tabIm4;
     private TextView tabText,tabText2,tabText3,tabText4;
@@ -75,6 +78,14 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
     private Call call=null;
     private DengLuBean dengLuBean=null;
     private DengLuBeanDao dengLuBeanDao=null;
+    public static boolean isTrue=true;
+    public static boolean isTrue2=true;
+    public static int count=0;
+    private int maxCount=0;
+    //定义一个过滤器；
+    private IntentFilter intentFilter;
+    //定义一个广播监听器；
+    private NetChangReceiver netChangReceiver;
 
 
 
@@ -102,6 +113,14 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
 
         dengLuBeanDao=MyAppLaction.myAppLaction.getDaoSession().getDengLuBeanDao();
         dengLuBean=dengLuBeanDao.load(123456L);
+        //实例化过滤器；
+        intentFilter = new IntentFilter();
+        //添加过滤的Action值；
+        intentFilter.addAction("guanbiyemian");
+        //实例化广播监听器；
+        netChangReceiver = new NetChangReceiver();
+        //将广播监听器和过滤器注册在一起；
+        registerReceiver(netChangReceiver, intentFilter);
 
         initFragmetList();
 
@@ -110,6 +129,19 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
         initView();
         initViewPager();
         link_jc();
+
+    }
+
+
+    private  class NetChangReceiver extends BroadcastReceiver {
+
+        //重写onReceive方法，该方法的实体为，接收到广播后的执行代码；
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals("guanbiyemian")){
+                finish();
+            }
+        }
     }
 
 
@@ -121,17 +153,16 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
 
         String nonce=Utils.getNonce();
         String timestamp=Utils.getTimestamp();
+        String time=DateUtils.getTodayDateTimes();
 
-        Log.d("HomePageActivity", DateUtils.getTodayDateTimes());
-        Log.d("HomePageActivity", "dengLuBean.getUserId():" + dengLuBean.getUserId());
 //    /* form的分割线,自己定义 */
 //        String boundary = "xx--------------------------------------------------------------xx";
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("cmd","100");
-            jsonObject.put("itemId","10044");
-            jsonObject.put("stime","2017-01-01");
-            jsonObject.put("etime", DateUtils.getTodayDateTimes());
+            jsonObject.put("itemId","0");
+            jsonObject.put("stime",dengLuBean.getQqTime());
+            jsonObject.put("etime", time);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -141,13 +172,12 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
                 .header("nonce", nonce)
                 .header("timestamp", timestamp)
                 .header("userId", dengLuBean.getUserId()+"")
-                .header("sign", Utils.encode("100"+"10044"+"2017-01-01"+DateUtils.getTodayDateTimes()+nonce+timestamp
+                .header("sign", Utils.encode("100"+"0"+dengLuBean.getQqTime()+time+nonce+timestamp
                         +dengLuBean.getUserId()+Utils.signaturePassword))
                 .post(body)
                 .url(dengLuBean.getZhuji() + "checkDownload.app");
 
-        Log.d("HomePageActivity", "100" + "10044" + "2017-01-01" + DateUtils.getTodayDateTimes() + nonce + timestamp
-                + dengLuBean.getUserId() + Utils.signaturePassword);
+
 
         // step 3：创建 Call 对象
         call = okHttpClient.newCall(requestBuilder.build());
@@ -162,7 +192,108 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+               // dismissDialog();
+                Log.d("AllConnects", "请求识别成功"+call.request().toString());
+                String ss=null;
+
+                //获得返回体
+                try {
+
+                    ResponseBody body = response.body();
+                     ss=body.string().trim();
+                    Log.d("InFoActivity", "ss" + ss);
+
+                    JsonObject jsonObject= GsonUtil.parse(ss).getAsJsonObject();
+                    Gson gson=new Gson();
+                    JianChaBean zhaoPianBean=gson.fromJson(jsonObject,JianChaBean.class);
+                    if (zhaoPianBean.getTotal()!=0){
+                        maxCount=zhaoPianBean.getItems().size();
+                        //有更新
+                        while (isTrue){
+                            if (isTrue2){
+                                isTrue2=false;
+                                link_xz(zhaoPianBean.getItems().get(count));
+
+                            }
+
+                        }
+
+
+                    }else {
+                        dismissDialog();
+                    }
+
+
+                }catch (Exception e){
+                    dismissDialog();
+                    try {
+                        JsonObject jsonObject= GsonUtil.parse(ss).getAsJsonObject();
+                        Gson gson=new Gson();
+                        FanHuiBean zhaoPianBean=gson.fromJson(jsonObject,FanHuiBean.class);
+                        if (zhaoPianBean.getDtoResult()==-33){
+                            showMSG("账号登陆过期,或在其它机器登录，请重新登录",3);
+                        }
+                    }catch (Exception e1){
+                        e1.printStackTrace();
+                        showMSG("获取数据失败",3);
+                    }
+
+                    Log.d("WebsocketPushMsg", e.getMessage());
+                }
+            }
+        });
+
+    }
+
+
+    private void link_xz(Integer integer) {
+       // showDialog();
+        final MediaType JSON=MediaType.parse("application/json; charset=utf-8");
+        OkHttpClient okHttpClient= MyAppLaction.getOkHttpClient();
+
+
+        String nonce=Utils.getNonce();
+        String timestamp=Utils.getTimestamp();
+        String time=DateUtils.getTodayDateTimes();
+
+//    /* form的分割线,自己定义 */
+//        String boundary = "xx--------------------------------------------------------------xx";
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("cmd","100");
+            jsonObject.put("itemId",integer.toString());
+            jsonObject.put("stime",dengLuBean.getQqTime());
+            jsonObject.put("etime", time);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        RequestBody body = RequestBody.create(JSON, jsonObject.toString());
+
+        Request.Builder requestBuilder = new Request.Builder()
+                .header("nonce", nonce)
+                .header("timestamp", timestamp)
+                .header("userId", dengLuBean.getUserId()+"")
+                .header("sign", Utils.encode("100"+integer.toString()+dengLuBean.getQqTime()+time+nonce+timestamp
+                        +dengLuBean.getUserId()+Utils.signaturePassword))
+                .post(body)
+                .url(dengLuBean.getZhuji() + "downloadData.app");
+
+
+
+        // step 3：创建 Call 对象
+        call = okHttpClient.newCall(requestBuilder.build());
+
+        //step 4: 开始异步请求
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d("AllConnects", "请求识别失败"+e.getMessage());
                 dismissDialog();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+              //  dismissDialog();
                 Log.d("AllConnects", "请求识别成功"+call.request().toString());
                 //获得返回体
                 try {
@@ -176,12 +307,6 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
                     DengLuBean zhaoPianBean=gson.fromJson(jsonElement,DengLuBean.class);
                     if (jsonObject.get("dtoResult").getAsString().equals("0")){
                         showMSG(jsonObject.get("dtoDesc").getAsString(),4);
-                        zhaoPianBean.setUserId(zhaoPianBean.getId());
-                        zhaoPianBean.setId(123456L);
-                        zhaoPianBean.setZhuji("http://14.23.169.42:8090/api/");
-                        dengLuBeanDao.update(zhaoPianBean);
-                        finish();
-
 
                     }
 
@@ -203,6 +328,8 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
             public void run() {
                 if (tiJIaoDialog==null){
                     tiJIaoDialog=new TiJIaoDialog(HomePageActivity.this);
+                    tiJIaoDialog.setCanceledOnTouchOutside(false);
+                    tiJIaoDialog.setTextView("更新数据中,请稍后...");
                     if (!HomePageActivity.this.isFinishing())
                         tiJIaoDialog.show();
                 }
@@ -240,6 +367,7 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
         if (call!=null)
             call.cancel();
         super.onDestroy();
+        unregisterReceiver(netChangReceiver);
     }
 
     private void initViewPager() {
@@ -297,7 +425,6 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
-
 
 
     @Override

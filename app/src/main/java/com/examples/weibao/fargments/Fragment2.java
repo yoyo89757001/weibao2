@@ -17,16 +17,20 @@ import android.widget.Toast;
 import com.examples.weibao.MyAppLaction;
 import com.examples.weibao.R;
 import com.examples.weibao.adapters.XiaoXiAdapter;
-import com.examples.weibao.beans.DengLuBean;
-import com.examples.weibao.beans.DengLuBeanDao;
+import com.examples.weibao.allbeans.DengLuBean;
+import com.examples.weibao.allbeans.DengLuBeanDao;
+import com.examples.weibao.beans.ItemIdBean;
 import com.examples.weibao.dialogs.TiJIaoDialog;
 import com.examples.weibao.ui.XiaoXiActivity;
 import com.examples.weibao.utils.GsonUtil;
 import com.examples.weibao.utils.Utils;
 import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
+import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
+import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
+import com.github.jdsjlzx.recyclerview.ProgressStyle;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.sdsmdg.tastytoast.TastyToast;
@@ -54,13 +58,16 @@ public class Fragment2 extends Fragment {
     private LRecyclerView lRecyclerView;
     private LRecyclerViewAdapter lRecyclerViewAdapter;
     private LinearLayoutManager linearLayoutManager;
-    private List<String> dataList;
+ //   private List<String> dataList;
     private XiaoXiAdapter taiZhangAdapter;
-
     private TiJIaoDialog tiJIaoDialog=null;
     private Call call=null;
     private DengLuBean dengLuBean=null;
     private DengLuBeanDao dengLuBeanDao=null;
+    private int dangQianYe = 1;
+    private int qingQiuYe = 1;
+    private List<ItemIdBean.ObjectsBean> objectsBeanList=new ArrayList<>();
+
 
     public Fragment2() {
         // Required empty public constructor
@@ -80,18 +87,23 @@ public class Fragment2 extends Fragment {
         left.setVisibility(View.GONE);
 
 
-        dataList=new ArrayList<>();
-        dataList.add("ddddddd");
-        dataList.add("dfff");
 
         lRecyclerView= (LRecyclerView)view.findViewById(R.id.lrecyclerview);
-        taiZhangAdapter=new XiaoXiAdapter(dataList,getActivity());
+        taiZhangAdapter=new XiaoXiAdapter(objectsBeanList,getActivity());
         lRecyclerViewAdapter = new LRecyclerViewAdapter(taiZhangAdapter);
 
         linearLayoutManager=new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         lRecyclerView.setLayoutManager(linearLayoutManager);
         lRecyclerView.setAdapter(lRecyclerViewAdapter);
+
+        //设置头部加载颜色
+        lRecyclerView.setHeaderViewColor(R.color.colorAccent, R.color.blake, android.R.color.white);
+        lRecyclerView.setRefreshProgressStyle(ProgressStyle.LineSpinFadeLoader);
+        lRecyclerView.setFooterViewColor(R.color.textcolor, R.color.blake, android.R.color.white);
+        //设置底部加载文字提示
+        lRecyclerView.setFooterViewHint("拼命加载中", "--------没有更多了--------", "网络不给力...");
+        lRecyclerView.setLoadingMoreProgressStyle(ProgressStyle.BallSpinFadeLoader);
 
         DividerDecoration divider = new DividerDecoration.Builder(getActivity())
                 .setHeight(R.dimen.default_divider_height)
@@ -105,16 +117,42 @@ public class Fragment2 extends Fragment {
             @Override
             public void onItemClick(View view, int position) {
 
-                startActivity(new Intent(getContext(),XiaoXiActivity.class));
+                startActivity(new Intent(getContext(),XiaoXiActivity.class).putExtra("idid",objectsBeanList.get(position).getId()));
 
             }
         });
 
+
+        lRecyclerView.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //下拉刷新
+                Log.d("Fragment2", "下拉刷新");
+                dangQianYe = 1;
+                qingQiuYe = 1;
+                link(qingQiuYe);
+
+            }
+        });
+
+        lRecyclerView.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                qingQiuYe++;
+                //加载更多
+                link(qingQiuYe);
+
+
+            }
+        });
+
+
+        link(1);
         return view;
     }
 
     private void link(int pageNum) {
-        showDialog();
+      //  showDialog();
         final MediaType JSON=MediaType.parse("application/json; charset=utf-8");
         OkHttpClient okHttpClient= MyAppLaction.getOkHttpClient();
 
@@ -129,7 +167,7 @@ public class Fragment2 extends Fragment {
         try {
             jsonObject.put("cmd",100);
 
-              jsonObject.put("itemId",10044);
+            //  jsonObject.put("pageSize",10044);
               jsonObject.put("pageSize",15);
               jsonObject.put("pageNum",pageNum);
         } catch (JSONException e) {
@@ -140,11 +178,11 @@ public class Fragment2 extends Fragment {
         Request.Builder requestBuilder = new Request.Builder()
                 .header("nonce", nonce)
                 .header("timestamp", timestamp)
-                .header("userId", "0")
-                .header("sign", Utils.encode("100"+nonce+timestamp
-                        +"0"+Utils.signaturePassword))
+                .header("userId", dengLuBean.getUserId()+"")
+                .header("sign", Utils.encode("100"+"15"+pageNum+nonce+timestamp
+                        +dengLuBean.getUserId()+Utils.signaturePassword))
                 .post(body)
-                .url(dengLuBean.getZhuji() + "itemMessages.app");
+                .url(dengLuBean.getZhuji() + "items.app");
 
 
 
@@ -156,12 +194,26 @@ public class Fragment2 extends Fragment {
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.d("AllConnects", "请求识别失败"+e.getMessage());
-                dismissDialog();
+              //  dismissDialog();
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (objectsBeanList.size() != 0) {
+                                objectsBeanList.clear();
+                            }
+                            // lRecyclerView.refreshComplete(0);// REQUEST_COUNT为每页加载数量
+                            taiZhangAdapter.notifyDataSetChanged();
+
+                           showMSG("请求数据失败",3);
+                        }
+                    });
+                }
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                dismissDialog();
+              //  dismissDialog();
                 Log.d("AllConnects", "请求识别成功"+call.request().toString());
                 //获得返回体
                 try {
@@ -171,21 +223,70 @@ public class Fragment2 extends Fragment {
                     Log.d("InFoActivity", "ss" + ss);
                     JsonObject jsonObject= GsonUtil.parse(ss).getAsJsonObject();
                     Gson gson=new Gson();
-                    JsonObject jsonElement= jsonObject.get("account").getAsJsonObject();
-                    DengLuBean zhaoPianBean=gson.fromJson(jsonElement,DengLuBean.class);
-                    if (jsonObject.get("dtoResult").getAsString().equals("0")){
-                        showMSG(jsonObject.get("dtoDesc").getAsString(),4);
-                        zhaoPianBean.setUserId(zhaoPianBean.getId());
-                        zhaoPianBean.setId(123456L);
-                        zhaoPianBean.setZhuji("http://14.23.169.42:8090/api/");
-                        dengLuBeanDao.update(zhaoPianBean);
+                    final ItemIdBean zhaoPianBean=gson.fromJson(jsonObject,ItemIdBean.class);
+                    if (qingQiuYe == dangQianYe) {
+
+                        if (getActivity() != null) {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (objectsBeanList.size() != 0) {
+                                        objectsBeanList.clear();
+                                    }
+                                    objectsBeanList.addAll(zhaoPianBean.getObjects() != null ? zhaoPianBean.getObjects() : new ArrayList<ItemIdBean.ObjectsBean>());
+                                    lRecyclerView.refreshComplete(objectsBeanList.size());// REQUEST_COUNT为每页加载数量
+                                    taiZhangAdapter.notifyDataSetChanged();
+                                    //   Log.d("Fragment3", "d进来得到");
+
+                                }
+                            });
+                        }
 
 
+                    } else {
+
+
+                        if (getActivity() != null) {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    int size = zhaoPianBean.getObjects().size();
+                                    for (int i = 0; i < size; i++) {
+                                        objectsBeanList.add(zhaoPianBean.getObjects().get(i));
+                                    }
+                                    lRecyclerView.refreshComplete(15);// REQUEST_COUNT为每页加载数量
+                                    taiZhangAdapter.notifyDataSetChanged();
+
+                                }
+                            });
+                        }
+
+                    }
+                    if (zhaoPianBean.getObjects().size() == 0 && objectsBeanList.size() >= 15) {
+
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                lRecyclerView.setNoMore(true);
+                            }
+                        });
 
                     }
 
                 }catch (Exception e){
+                    if (getActivity() != null) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
 
+                                if (objectsBeanList.size() != 0) {
+                                    objectsBeanList.clear();
+                                }
+                                // lRecyclerView.refreshComplete(0);// REQUEST_COUNT为每页加载数量
+                                taiZhangAdapter.notifyDataSetChanged();
+                            }
+                        });
+                    }
                     dismissDialog();
                     showMSG("获取数据失败",3);
                     Log.d("WebsocketPushMsg", e.getMessage());

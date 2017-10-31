@@ -1,36 +1,18 @@
 package com.examples.weibao;
 
 import android.app.Application;
-import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.examples.weibao.beans.DaoMaster;
-import com.examples.weibao.beans.DaoSession;
-import com.examples.weibao.beans.DengLuBean;
+import com.examples.weibao.allbeans.DaoMaster;
+import com.examples.weibao.allbeans.DaoSession;
+import com.examples.weibao.allbeans.DengLuBean;
 import com.examples.weibao.cookies.CookiesManager;
-import com.examples.weibao.ui.HomePageActivity;
-import com.examples.weibao.ui.MainActivity;
-import com.examples.weibao.utils.GsonUtil;
-import com.examples.weibao.utils.Utils;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.tencent.bugly.Bugly;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 
 /**
@@ -125,6 +107,7 @@ public class MyAppLaction extends Application {
 
 
 
+ //   Item是项目，plan是维保计划，device是设备台账，menu是维保项，detection是维保项的维保内容措施
 
 
 }

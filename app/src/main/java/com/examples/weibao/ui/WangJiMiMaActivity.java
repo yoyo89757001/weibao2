@@ -1,6 +1,7 @@
 package com.examples.weibao.ui;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -16,8 +17,8 @@ import android.widget.Toast;
 
 import com.examples.weibao.MyAppLaction;
 import com.examples.weibao.R;
-import com.examples.weibao.beans.DengLuBean;
-import com.examples.weibao.beans.DengLuBeanDao;
+import com.examples.weibao.allbeans.DengLuBean;
+import com.examples.weibao.allbeans.DengLuBeanDao;
 import com.examples.weibao.dialogs.TiJIaoDialog;
 import com.examples.weibao.utils.GsonUtil;
 import com.examples.weibao.utils.Utils;
@@ -180,23 +181,24 @@ public class WangJiMiMaActivity extends Activity {
         final MediaType JSON=MediaType.parse("application/json; charset=utf-8");
         OkHttpClient okHttpClient= MyAppLaction.getOkHttpClient();
 
-
+        String jiami=Utils.jiami(mima1.getText().toString().trim()).toUpperCase();
         String nonce=Utils.getNonce();
         String timestamp=Utils.getTimestamp();
         String zh=zhanghao.getText().toString().trim();
         String mb=shouji.getText().toString().trim();
         String cd=yanzhengma.getText().toString().trim();
-        String pw=mima1.getText().toString().trim();
+       // String pw=mima1.getText().toString().trim();
 
 //    /* form的分割线,自己定义 */
 //        String boundary = "xx--------------------------------------------------------------xx";
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("cmd","100");
+            jsonObject.put("cmd","101");
             jsonObject.put("account",zh);
             jsonObject.put("mobile",mb);
             jsonObject.put("code",cd);
-            jsonObject.put("password",Utils.encode(pw));
+            jsonObject.put("password",jiami);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -206,7 +208,7 @@ public class WangJiMiMaActivity extends Activity {
                 .header("nonce", nonce)
                 .header("timestamp", timestamp)
                 .header("userId", "0")
-                .header("sign", Utils.encode("100"+zh+mb+cd+Utils.encode(pw)+timestamp
+                .header("sign", Utils.encode("101"+zh+mb+cd+jiami+nonce+timestamp
                         +"0"+Utils.signaturePassword))
                 .post(body)
                 .url(dengLuBean.getZhuji() + "forgetPwd.app");
@@ -226,7 +228,7 @@ public class WangJiMiMaActivity extends Activity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                dismissDialog();
+               // dismissDialog();
                 Log.d("AllConnects", "请求识别成功"+call.request().toString());
                 //获得返回体
                 try {
@@ -238,11 +240,14 @@ public class WangJiMiMaActivity extends Activity {
                   //  Gson gson=new Gson();
                    // JsonObject jsonElement= jsonObject.get("account").getAsJsonObject();
                    // DengLuBean zhaoPianBean=gson.fromJson(jsonElement,DengLuBean.class);
-                    if (jsonObject.get("dtoResult").getAsString().equals("0")){
-                        showMSG(jsonObject.get("dtoDesc").getAsString(),4);
-                        finish();
+                    if (jsonObject.get("dtoResult").getAsInt()==0){
+                      //  showMSG("修改成功",4);
+                        Thread.sleep(500);
+                       link_denglu();
+
                     }else {
-                        showMSG(jsonObject.get("dtoDesc").getAsString(),4);
+                        showMSG("修改失败",3);
+                        dismissDialog();
                     }
 
                 }catch (Exception e){
@@ -323,6 +328,84 @@ public class WangJiMiMaActivity extends Activity {
 
                    // dismissDialog();
                     showMSG("获取验证码失败",3);
+                    Log.d("WebsocketPushMsg", e.getMessage());
+                }
+            }
+        });
+
+    }
+
+    private void link_denglu() {
+     //   showDialog();
+        final MediaType JSON=MediaType.parse("application/json; charset=utf-8");
+        OkHttpClient okHttpClient= MyAppLaction.getOkHttpClient();
+
+        String jiami=Utils.jiami(mima1.getText().toString().trim()).toUpperCase();
+        String nonce=Utils.getNonce();
+        String timestamp=Utils.getTimestamp();
+
+//    /* form的分割线,自己定义 */
+//        String boundary = "xx--------------------------------------------------------------xx";
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("cmd","100");
+            jsonObject.put("account",zhanghao.getText().toString().trim());
+            jsonObject.put("password",jiami);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        RequestBody body = RequestBody.create(JSON, jsonObject.toString());
+
+        Request.Builder requestBuilder = new Request.Builder()
+                .header("nonce", nonce)
+                .header("timestamp", timestamp)
+                .header("userId", "0")
+                .header("sign", Utils.encode("100"+zhanghao.getText().toString().trim()+jiami+nonce+timestamp
+                        +"0"+Utils.signaturePassword))
+                .post(body)
+                .url(dengLuBean.getZhuji() + "login.app");
+
+        // step 3：创建 Call 对象
+        call = okHttpClient.newCall(requestBuilder.build());
+
+        //step 4: 开始异步请求
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d("AllConnects", "请求识别失败"+e.getMessage());
+                dismissDialog();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                dismissDialog();
+                Log.d("AllConnects", "请求识别成功"+call.request().toString());
+                //获得返回体
+                try {
+
+                    ResponseBody body = response.body();
+                    String ss=body.string().trim();
+                    Log.d("InFoActivity", "ss" + ss);
+                    JsonObject jsonObject= GsonUtil.parse(ss).getAsJsonObject();
+                    Gson gson=new Gson();
+                    JsonObject jsonElement= jsonObject.get("account").getAsJsonObject();
+                    DengLuBean zhaoPianBean=gson.fromJson(jsonElement,DengLuBean.class);
+                    if (jsonObject.get("dtoResult").getAsString().equals("0")){
+                        showMSG(jsonObject.get("dtoDesc").getAsString(),4);
+                        zhaoPianBean.setUserId(zhaoPianBean.getId());
+                        zhaoPianBean.setId(123456L);
+                        zhaoPianBean.setQqTime("2017-01-01 11:11:11");
+                        zhaoPianBean.setZhuji("http://14.23.169.42:8090/api/");
+                        dengLuBeanDao.update(zhaoPianBean);
+                        finish();
+                        startActivity(new Intent(WangJiMiMaActivity.this,HomePageActivity.class));
+
+                    }
+
+                }catch (Exception e){
+
+                    dismissDialog();
+                    showMSG("获取数据失败",3);
                     Log.d("WebsocketPushMsg", e.getMessage());
                 }
             }

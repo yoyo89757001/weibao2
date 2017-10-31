@@ -33,10 +33,12 @@ public class ErWeiMaActivity extends Activity implements DecoratedBarcodeView.To
                 if (kai){
                     mDBV.setTorchOff();
                     kai=false;
+                    button.setText("开启闪光灯");
 
                 }else {
                     mDBV.setTorchOn();
                     kai=true;
+                    button.setText("关闭闪光灯");
                 }
 
             }

@@ -15,8 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.examples.weibao.MyAppLaction;
 import com.examples.weibao.R;
-import com.examples.weibao.beans.DengLuBean;
-import com.examples.weibao.beans.DengLuBeanDao;
+import com.examples.weibao.allbeans.DengLuBean;
+import com.examples.weibao.allbeans.DengLuBeanDao;
 import com.examples.weibao.dialogs.TiJIaoDialog;
 import com.examples.weibao.utils.GsonUtil;
 import com.examples.weibao.utils.Utils;
@@ -54,7 +54,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_main);
         dengLuBeanDao=MyAppLaction.myAppLaction.getDaoSession().getDengLuBeanDao();
         dengLuBean=dengLuBeanDao.load(123456L);
-        if (dengLuBean!=null && dengLuBean.getAccount()!=null){
+        Log.d("MainActivity", dengLuBean.getAccount()+"");
+        if (dengLuBean!=null && dengLuBean.getAccount()!=null && !dengLuBean.getAccount().equals("")){
             startActivity(new Intent(MainActivity.this,HomePageActivity.class));
             finish();
             //dsaddd
@@ -205,6 +206,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                         showMSG(jsonObject.get("dtoDesc").getAsString(),4);
                         zhaoPianBean.setUserId(zhaoPianBean.getId());
                         zhaoPianBean.setId(123456L);
+                        zhaoPianBean.setQqTime("2017-01-01 11:11:11");
                         zhaoPianBean.setZhuji("http://14.23.169.42:8090/api/");
                         dengLuBeanDao.update(zhaoPianBean);
                         finish();

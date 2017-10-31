@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.examples.weibao.R;
+import com.examples.weibao.beans.ItemIdBean;
 import com.examples.weibao.intface.ClickIntface;
 import com.examples.weibao.views.GlideCircleTransform;
 
@@ -21,7 +22,7 @@ import java.util.List;
  */
 
 public class XiaoXiAdapter extends RecyclerView.Adapter<XiaoXiAdapter.ViewHolder> {
-    private List<String> datas;
+    private List<ItemIdBean.ObjectsBean> datas;
     private ClickIntface clickIntface;
     private Context context;
 
@@ -29,7 +30,7 @@ public class XiaoXiAdapter extends RecyclerView.Adapter<XiaoXiAdapter.ViewHolder
         this.clickIntface=clickIntface;
     }
 
-    public XiaoXiAdapter(List<String> datas, Context context) {
+    public XiaoXiAdapter(List<ItemIdBean.ObjectsBean> datas, Context context) {
         this.datas = datas;
         this.context=context;
     }
@@ -42,7 +43,7 @@ public class XiaoXiAdapter extends RecyclerView.Adapter<XiaoXiAdapter.ViewHolder
     //将数据与界面进行绑定的操作
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
-        viewHolder.content.setText(datas.get(position));
+        viewHolder.content.setText(datas.get(position).getName());
         Glide.with(context)
                 .load(R.drawable.tuijianyisheng)
                 .transform(new GlideCircleTransform(context,2, Color.parseColor("#ffffffff")))

@@ -40,7 +40,7 @@ public class DateUtils {
     }
 
     public static String getTodayDateTimes() {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd",
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",
                 Locale.getDefault());
         return format.format(new Date());
     }
