@@ -30,10 +30,9 @@
 
             <TextView
                 android:textColor="@color/white"
-                android:textSize="22sp"
+                android:textSize="20sp"
                 android:id="@+id/name"
                android:layout_centerHorizontal="true"
-                android:text="12121321"
                 android:layout_marginTop="6dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -49,7 +48,6 @@
                     android:id="@+id/zhiwu1"
                     android:textColor="@color/white"
                     android:textSize="14sp"
-                    android:text="sadsadsa"
                     android:layout_marginRight="6dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -58,7 +56,6 @@
                     android:layout_below="@+id/name"
                     android:textColor="@color/white"
                     android:textSize="14sp"
-                    android:text="dsdsdst2222"
                     android:layout_marginLeft="6dp"
                     android:id="@+id/zhiwu2"
                     android:layout_width="wrap_content"

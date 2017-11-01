@@ -10,7 +10,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.examples.weibao.MyAppLaction;
 import com.examples.weibao.R;
+import com.examples.weibao.allbeans.DengLuBean;
+import com.examples.weibao.allbeans.DengLuBeanDao;
 import com.examples.weibao.ui.BaoZhangChuLiActivity;
 import com.examples.weibao.ui.GeRenActivity;
 import com.examples.weibao.ui.TaiZhangActivity;
@@ -30,7 +34,8 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
     private LinearLayout top_ll;
     private ImageView touxiang;
     private TextView name,zhiwu1,zhiwu2;
-
+    private DengLuBean dengLuBean=null;
+    private DengLuBeanDao dengLuBeanDao=null;
 
 
     public Fragment1() {
@@ -42,7 +47,8 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        dengLuBeanDao= MyAppLaction.myAppLaction.getDaoSession().getDengLuBeanDao();
+        dengLuBean=dengLuBeanDao.load(123456L);
         dw = Utils.getDisplaySize(getActivity()).x;
         dh = Utils.getDisplaySize(getActivity()).y;
 
@@ -50,7 +56,7 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
 
         initView(view);
 
-
+        name.setText(dengLuBean.getName());
 
         return view;
     }
@@ -122,7 +128,7 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
 
                 break;
             case R.id.top_ll:
-                startActivity(new Intent(getContext(), GeRenActivity.class));
+               // startActivity(new Intent(getContext(), GeRenActivity.class));
                 break;
 
         }

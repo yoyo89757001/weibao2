@@ -42,6 +42,7 @@ import okhttp3.ResponseBody;
 public class Fragment4 extends Fragment {
     private DengLuBeanDao baoCunBeanDao=null;
     private DengLuBean baoCunBean=null;
+    private TextView danwei,name,xingbie,shouji,guhua;
 
     public Fragment4() {
         // Required empty public constructor
@@ -52,12 +53,12 @@ public class Fragment4 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
        View view=inflater.inflate(R.layout.fragment_fragment4, container, false);
-        TextView textView= (TextView) view.findViewById(R.id.zhanghao);
+       // TextView textView= (TextView) view.findViewById(R.id.zhanghao);
         baoCunBeanDao= MyAppLaction.myAppLaction.getDaoSession().getDengLuBeanDao();
         if (baoCunBeanDao!=null){
             baoCunBean=baoCunBeanDao.load(123456L);
-            if (baoCunBean!=null)
-                textView.setText(baoCunBean.getAccount());
+//            if (baoCunBean!=null)
+//                textView.setText(baoCunBean.getAccount());
         }
         RelativeLayout r3= (RelativeLayout) view.findViewById(R.id.r3);
         r3.setOnClickListener(new View.OnClickListener() {
@@ -87,7 +88,14 @@ public class Fragment4 extends Fragment {
                 dialog2.show();
             }
         });
+         danwei= (TextView) view.findViewById(R.id.danwei);
+        name= (TextView) view.findViewById(R.id.name);
+        xingbie= (TextView) view.findViewById(R.id.xingbie);
+        shouji= (TextView) view.findViewById(R.id.shoujihao);
+        guhua= (TextView) view.findViewById(R.id.guhua);
 
+        name.setText(baoCunBean.getName());
+        shouji.setText(baoCunBean.getPhone());
 
         return view;
     }
