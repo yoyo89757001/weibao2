@@ -8,9 +8,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
 import com.examples.weibao.R;
 import com.examples.weibao.allbeans.LiXianBeans;
+import com.examples.weibao.allbeans.MenusBean;
 
 import java.util.List;
 
@@ -19,14 +19,14 @@ import java.util.List;
  */
 
 
-public class PopupWindowAdapter extends BaseAdapter {
+public class PopupWindowAdapter4 extends BaseAdapter {
 
     private LayoutInflater mInflater;//得到一个LayoutInfalter对象用来导入布局
-    private List<LiXianBeans> fuWuQiBeanList;
+    private List<MenusBean> fuWuQiBeanList;
 
 
     /*构造函数*/
-    public PopupWindowAdapter(Context context, List<LiXianBeans> fuWuQiBeanList) {
+    public PopupWindowAdapter4(Context context, List<MenusBean> fuWuQiBeanList) {
         this.mInflater = LayoutInflater.from(context);
         this.fuWuQiBeanList=fuWuQiBeanList;
     }

@@ -220,7 +220,7 @@ public class Fragment2 extends Fragment {
 
                     ResponseBody body = response.body();
                     String ss=body.string().trim();
-                    Log.d("InFoActivity", "ss" + ss);
+                  //  Log.d("InFoActivity", "ss" + ss);
                     JsonObject jsonObject= GsonUtil.parse(ss).getAsJsonObject();
                     Gson gson=new Gson();
                     final ItemIdBean zhaoPianBean=gson.fromJson(jsonObject,ItemIdBean.class);

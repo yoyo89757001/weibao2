@@ -108,6 +108,6 @@ public class MyAppLaction extends Application {
 
 
  //   Item是项目，plan是维保计划，device是设备台账，menu是维保项，detection是维保项的维保内容措施
-
+  //  parent_id>0的是维保项
 
 }
