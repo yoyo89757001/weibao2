@@ -59,8 +59,9 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
     //2个零时的 List<MenusBean> menusBeanList=null;
     private List<MenusBean> menusBeanList3=new ArrayList<>();
     private List<MenusBean> menusBeanList4=new ArrayList<>();
-    private int p1=0;
-
+    private int p1=-1;
+    private int p4=-1;
+    private int p3=-1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,6 +135,8 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         p1=position;
+                        p3=-1;
+                        p4=-1;
                      //   Log.d("WeiBaoYuCeShiActivity", "position:" + position);
                         t2.setText(liXianBeansList.get(position).getAddress());
                         t1.setText(liXianBeansList.get(position).getName());
@@ -157,21 +160,24 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
                 break;
             case R.id.r3:
               //  Log.d("WeiBaoYuCeShiActivity", "liXianBeansList.get(p1).getMenusBeans():" + liXianBeansList.get(p1).getMenusBeans());
-                if (menusBeanList.size()!=0){
-                    menusBeanList.clear();
-                }
+
                 if (menusBeanList3.size()!=0){
                     menusBeanList3.clear();
                 }
-                menusBeanList.addAll(liXianBeansList.get(p1).getMenusBeans());
-                int sss=menusBeanList.size();
-                for (int i=0;i<sss;i++){
-                    if (menusBeanList.get(i).getParentId()==0){
-                        menusBeanList4.add(menusBeanList.get(i));
-                    }else {
-                        menusBeanList3.add(menusBeanList.get(i));
+
+                if (p1==-1){
+                    break;
+                }
+
+                List<MenusBean> mb =liXianBeansList.get(p1).getMenusBeans();
+                int s=mb.size();
+                for (int i=0;i<s;i++){
+                    if (mb.get(i).getParentId()==-1){
+                        //-1是系统；
+                        menusBeanList3.add(mb.get(i));
                     }
                 }
+
                 View contentView3 = LayoutInflater.from(WeiBaoYuCeShiActivity.this).inflate(R.layout.xiangmu_po_item, null);
                 popupWindow=new PopupWindow(contentView3,600, 660);
                 ListView listView3= (ListView) contentView3.findViewById(R.id.dddddd);
@@ -179,8 +185,10 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
                 listView3.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                       // Log.d("WeiBaoYuCeShiActivity", "position:" + position);
+                        p3=position;
+                        p4=-1;
                         t3.setText(menusBeanList3.get(position).getName());
+                        t4.setText("请选择");
                         popupWindow.dismiss();
                     }
                 });
@@ -197,19 +205,18 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
                 break;
             case R.id.r4:
 
-                if (menusBeanList.size()!=0){
-                    menusBeanList.clear();
-                }
+                if (p3==-1)
+                    break;
+
                 if (menusBeanList4.size()!=0){
                     menusBeanList4.clear();
                 }
-                menusBeanList.addAll(liXianBeansList.get(p1).getMenusBeans());
-                int sss4=menusBeanList.size();
-                for (int i=0;i<sss4;i++){
-                    if (menusBeanList.get(i).getParentId()==0){
-                        menusBeanList4.add(menusBeanList.get(i));
-                    }else {
-                        menusBeanList3.add(menusBeanList.get(i));
+                List<MenusBean> mb4 =liXianBeansList.get(p1).getMenusBeans();
+                int s4=mb4.size();
+                for (int i=0;i<s4;i++){
+                    if (mb4.get(i).getParentId()==menusBeanList3.get(p3).getId()){
+                        //-1是系统；
+                        menusBeanList4.add(mb4.get(i));
                     }
                 }
 
@@ -220,7 +227,7 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
                 listView4.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                        p4=position;
                         t4.setText(menusBeanList4.get(position).getName());
                         popupWindow.dismiss();
                     }

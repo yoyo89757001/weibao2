@@ -342,68 +342,88 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
 
 
                     LiXianBeans zhaoPianBean=gson.fromJson(items,LiXianBeans.class);
-                    if (liXianBeansDao.load(zhaoPianBean.getId())==null){
+                    int i1=zhaoPianBean.getDtoResult();
+                    if (liXianBeansDao.load(zhaoPianBean.getId())==null && (i1==1 || i1==2)){
                         Log.d("HomePageActivity", "插入items");
                         liXianBeansDao.insert(zhaoPianBean);
-                    }else {
+                    }else if (i1==1 || i1==2){
                         liXianBeansDao.update(zhaoPianBean);
-
-                       // Log.d("HomePageActivity", "更新items");
+                        Log.d("HomePageActivity", "更新items");
+                    }else {
+                        liXianBeansDao.delete(zhaoPianBean);
+                        Log.d("HomePageActivity", "删除items");
                     }
+
                     int detectionsSize=detections.size();
                     for (int i=0;i<detectionsSize;i++){
                         DetectionsBean detectionsBean=gson.fromJson(detections.get(i),DetectionsBean.class);
-                        if (detectionsBeanDao.load(detectionsBean.getId())==null){
+                        int i2=detectionsBean.getDtoResult();
+                        if (detectionsBeanDao.load(detectionsBean.getId())==null && (i2==1 || i2==2)){
                             detectionsBean.setDetid(zhaoPianBean.getId());
                             detectionsBeanDao.insert(detectionsBean);
                             Log.d("HomePageActivity", "插入detectionsBean");
-                        }else {
+                        }else if (i2==1 || i2==2){
                             detectionsBean.setDetid(zhaoPianBean.getId());
                             detectionsBeanDao.update(detectionsBean);
                             Log.d("HomePageActivity", "更新detectionsBean");
+                        }else {
+                            detectionsBeanDao.delete(detectionsBean);
+                            Log.d("HomePageActivity", "删除detectionsBean");
                         }
                     }
 
                     int menusSize=menus.size();
                     for (int i=0;i<menusSize;i++){
                         MenusBean menusBean=gson.fromJson(menus.get(i),MenusBean.class);
-                        if (menusBeanDao.load(menusBean.getId())==null){
+                        int i3=menusBean.getDtoResult();
+                        if (menusBeanDao.load(menusBean.getId())==null && (i3==1 || i3==2)){
                             menusBean.setMid(zhaoPianBean.getId());
                             menusBeanDao.insert(menusBean);
                             Log.d("HomePageActivity", "插入menus");
-                        }else {
+                        }else if (i3==1 || i3==2){
                             menusBean.setMid(zhaoPianBean.getId());
                             menusBeanDao.update(menusBean);
                             Log.d("HomePageActivity", "更新menus");
+                        }else {
+                            menusBeanDao.delete(menusBean);
+                            Log.d("HomePageActivity", "删除menus");
                         }
                     }
 
 
-                    int devicesSize=detections.size();
+                    int devicesSize=devices.size();
                     for (int i=0;i<devicesSize;i++){
                         DevicesBean devicesBean=gson.fromJson(devices.get(i),DevicesBean.class);
-                        if (devicesBeanDao.load(devicesBean.getId())==null){
+                        int i4=devicesBean.getDtoResult();
+                        if (devicesBeanDao.load(devicesBean.getId())==null && (i4==1 || i4==2)){
                             devicesBean.setDevid(zhaoPianBean.getId());
                             devicesBeanDao.insert(devicesBean);
                             Log.d("HomePageActivity", "插入devicesBean");
-                        }else {
+                        }else if (i4==1 || i4==2){
                             devicesBean.setDevid(zhaoPianBean.getId());
                             devicesBeanDao.update(devicesBean);
                             Log.d("HomePageActivity", "更新devicesBean");
+                        }else {
+                            devicesBeanDao.delete(devicesBean);
+                            Log.d("HomePageActivity", "删除devicesBean");
                         }
                     }
 
                     int plansSize=plans.size();
                     for (int i=0;i<plansSize;i++){
                         PlansBean plansBean=gson.fromJson(devices.get(i),PlansBean.class);
-                        if (plansBeanDao.load(plansBean.getId())==null){
+                        int i5=plansBean.getDtoResult();
+                        if (plansBeanDao.load(plansBean.getId())==null && (i5==1 || i5==2)){
                             plansBean.setPid(zhaoPianBean.getId());
                             plansBeanDao.insert(plansBean);
                             Log.d("HomePageActivity", "插入plansBeanBean");
-                        }else {
+                        }else if (i5==1 || i5==2){
                             plansBean.setPid(zhaoPianBean.getId());
                             plansBeanDao.update(plansBean);
                             Log.d("HomePageActivity", "更新plansBeanBean");
+                        }else {
+                            plansBeanDao.delete(plansBean);
+                            Log.d("HomePageActivity", "删除plansBeanBean");
                         }
                     }
 

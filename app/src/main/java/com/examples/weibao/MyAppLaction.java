@@ -109,5 +109,6 @@ public class MyAppLaction extends Application {
 
  //   Item是项目，plan是维保计划，device是设备台账，menu是维保项，detection是维保项的维保内容措施
   //  parent_id>0的是维保项
-
+//“项目item”，"计划plans"，"维保项menus"，"设备(台账)devices"以及“维保问题及处理措施detections”
+    //有dto_result字段。这个字段如果是1表示新增，2表示修改，3表示删除
 }

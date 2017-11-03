@@ -6,10 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.examples.weibao.intface.ClickIntface;
 import com.examples.weibao.R;
-
 import java.util.List;
 
 /**
