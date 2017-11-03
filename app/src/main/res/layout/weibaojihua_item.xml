@@ -8,7 +8,7 @@
     <TextView
         android:textColor="@color/black"
         android:textSize="18sp"
-        android:text="豆腐干梵蒂冈地方"
+        android:id="@+id/jihua"
         android:layout_marginTop="14dp"
         android:layout_marginLeft="@dimen/sp_16"
         android:layout_marginRight="@dimen/sp_16"
@@ -28,7 +28,6 @@
             android:textSize="14sp"
             android:paddingTop="16dp"
             android:id="@+id/time"
-            android:text="2011-22-22 09:09:09"
             android:layout_toLeftOf="@+id/content"
             android:paddingBottom="16dp"
             android:layout_marginRight="10dp"

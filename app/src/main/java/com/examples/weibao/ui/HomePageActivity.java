@@ -331,7 +331,9 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
 
                     ResponseBody body = response.body();
                     String ss=body.string().trim();
-                    Log.d("InFoActivity", "ss" + ss);
+                    Log.d("InFoActivity", "ss" + ss.substring(0,2000));
+                    Log.d("InFoActivity", "ss" + ss.substring(2000,ss.length()));
+
                     JsonObject jsonObject= GsonUtil.parse(ss).getAsJsonObject();
                     Gson gson=new Gson();
                     JsonObject items= jsonObject.get("item").getAsJsonObject();
@@ -411,7 +413,7 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
 
                     int plansSize=plans.size();
                     for (int i=0;i<plansSize;i++){
-                        PlansBean plansBean=gson.fromJson(devices.get(i),PlansBean.class);
+                        PlansBean plansBean=gson.fromJson(plans.get(i),PlansBean.class);
                         int i5=plansBean.getDtoResult();
                         if (plansBeanDao.load(plansBean.getId())==null && (i5==1 || i5==2)){
                             plansBean.setPid(zhaoPianBean.getId());

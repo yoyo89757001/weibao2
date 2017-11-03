@@ -5,15 +5,18 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.examples.weibao.MyAppLaction;
 import com.examples.weibao.R;
-import com.examples.weibao.adapters.TaiZhangAdapter;
 import com.examples.weibao.adapters.WeiBaoJiHuaAdapter;
-import com.examples.weibao.adapters.XiangMuKuanAdapter;
+import com.examples.weibao.allbeans.LiXianBeans;
+import com.examples.weibao.allbeans.LiXianBeansDao;
+import com.examples.weibao.allbeans.PlansBean;
 import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
@@ -30,11 +33,19 @@ public class WeiBaoJiHuaActivity extends Activity {
     private List<String> dataList;
     private WeiBaoJiHuaAdapter taiZhangAdapter;
 
-
+    private List<LiXianBeans> liXianBeansList=new ArrayList<>();
+  //  private LiXianBeans liXianBeans=null;
+    private LiXianBeansDao liXianBeansDao=null;
+    private List<PlansBean> plansBeanList=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        liXianBeansDao= MyAppLaction.myAppLaction.getDaoSession().getLiXianBeansDao();
+        liXianBeansList.addAll(liXianBeansDao.loadAll());
+
+
         setContentView(R.layout.activity_wei_bao_ji_hua);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -42,6 +53,8 @@ public class WeiBaoJiHuaActivity extends Activity {
             tintManager.setStatusBarTintEnabled(true);
             tintManager.setStatusBarTintResource(R.color.lanse33);
         }
+
+
         TextView t= (TextView) findViewById(R.id.title);
         t.setText("维保计划");
         ImageView imageView= (ImageView) findViewById(R.id.leftim);
@@ -52,18 +65,17 @@ public class WeiBaoJiHuaActivity extends Activity {
             }
         });
 
-        dataList=new ArrayList<>();
-        dataList.add("ddddddd");
-        dataList.add("dfff");
 
         lRecyclerView= (LRecyclerView) findViewById(R.id.lrecyclerview);
-        taiZhangAdapter=new WeiBaoJiHuaAdapter(dataList);
+        taiZhangAdapter=new WeiBaoJiHuaAdapter(plansBeanList);
         lRecyclerViewAdapter = new LRecyclerViewAdapter(taiZhangAdapter);
 
         linearLayoutManager=new LinearLayoutManager(WeiBaoJiHuaActivity.this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         lRecyclerView.setLayoutManager(linearLayoutManager);
         lRecyclerView.setAdapter(lRecyclerViewAdapter);
+        lRecyclerView.setPullRefreshEnabled(false);
+        lRecyclerView.setLoadMoreEnabled(false);
 
         DividerDecoration divider = new DividerDecoration.Builder(this)
                 .setHeight(R.dimen.default_divider_height)
@@ -82,6 +94,24 @@ public class WeiBaoJiHuaActivity extends Activity {
             }
         });
 
+        Log.d("WeiBaoJiHuaActivity", liXianBeansList.get(0).getPlansBeans().get(0).getArea());
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int size=liXianBeansList.size();
+                for (int i=0;i<size;i++){
+                   plansBeanList.addAll(liXianBeansList.get(i).getPlansBeans());
+
+                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        taiZhangAdapter.notifyDataSetChanged();
+                    }
+                });
+
+            }
+        }).start();
 
 
     }

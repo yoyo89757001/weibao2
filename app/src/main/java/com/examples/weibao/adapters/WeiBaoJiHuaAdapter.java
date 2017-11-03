@@ -7,7 +7,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.examples.weibao.R;
+import com.examples.weibao.allbeans.PlansBean;
 import com.examples.weibao.intface.ClickIntface;
+import com.examples.weibao.utils.DateUtils;
 
 import java.util.List;
 
@@ -16,14 +18,14 @@ import java.util.List;
  */
 
 public class WeiBaoJiHuaAdapter extends RecyclerView.Adapter<WeiBaoJiHuaAdapter.ViewHolder> {
-    private List<String> datas;
+    private List<PlansBean> datas;
     private ClickIntface clickIntface;
 
     public void setClickIntface(ClickIntface clickIntface){
         this.clickIntface=clickIntface;
     }
 
-    public WeiBaoJiHuaAdapter(List<String> datas) {
+    public WeiBaoJiHuaAdapter(List<PlansBean> datas) {
         this.datas = datas;
     }
     //创建新View，被LayoutManager所调用
@@ -35,8 +37,8 @@ public class WeiBaoJiHuaAdapter extends RecyclerView.Adapter<WeiBaoJiHuaAdapter.
     //将数据与界面进行绑定的操作
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
-        viewHolder.time.setText(datas.get(position));
-
+        viewHolder.time.setText(DateUtils.time(datas.get(position).getModifyTime()+""));
+        viewHolder.jihua.setText(datas.get(position).getArea());
 
     }
     //获取数据的数量
@@ -46,13 +48,13 @@ public class WeiBaoJiHuaAdapter extends RecyclerView.Adapter<WeiBaoJiHuaAdapter.
     }
     //自定义的ViewHolder，持有每个Item的的所有界面元素
       class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView time ;
+        private TextView time,jihua ;
 
 
         private ViewHolder(View view){
             super(view);
-             time= (TextView) view.findViewById(R.id.time);
-
+            time= (TextView) view.findViewById(R.id.time);
+            jihua= (TextView) view.findViewById(R.id.jihua);
 
         }
     }
