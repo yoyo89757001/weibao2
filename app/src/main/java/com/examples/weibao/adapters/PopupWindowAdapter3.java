@@ -1,6 +1,7 @@
 package com.examples.weibao.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ public class PopupWindowAdapter3 extends BaseAdapter {
     public PopupWindowAdapter3(Context context, List<MenusBean> fuWuQiBeanList) {
         this.mInflater = LayoutInflater.from(context);
         this.fuWuQiBeanList=fuWuQiBeanList;
+
     }
 
     @Override

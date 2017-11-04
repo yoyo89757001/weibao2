@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -15,6 +17,8 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.examples.weibao.MyAppLaction;
 import com.examples.weibao.R;
 import com.examples.weibao.adapters.PopupWindowAdapter;
@@ -33,6 +37,8 @@ import com.examples.weibao.allbeans.MenusBeanDao;
 import com.examples.weibao.allbeans.PlansBean;
 import com.examples.weibao.allbeans.PlansBeanDao;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
+import com.sdsmdg.tastytoast.TastyToast;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -172,13 +178,24 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
                 }
 
                 //项目ID
-                long mb =itemsBeanList.get(p1).getItemId();
+                long mb =itemsBeanList.get(p1).getId();
+                Log.d("WeiBaoYuCeShiActivity", "mb:" + mb);
+
                 //通过项目ID 在项目关系表中找出所有一级项目菜单
                menurefsBeanList = menurefsBeanDao.queryBuilder().where(MenurefsBeanDao.Properties.ItemId.eq(mb)).list();
-                int s=menurefsBeanList.size();
+               int s=0;
+               if (menurefsBeanList!=null){
+                   s=menurefsBeanList.size();
+               }
+
+                Log.d("WeiBaoYuCeShiActivity", "s:" + s);
                 //通过菜单menurefsBeanList中的id查出所有菜单
                 for (int i=0;i<s;i++){
-                    menusBeanList3.add(menusBeanDao.queryBuilder().where(MenusBeanDao.Properties.Id.eq(menurefsBeanList.get(i).getId())).unique());
+                   MenusBean menusBean= menusBeanDao.queryBuilder().where(MenusBeanDao.Properties.Id.eq(menurefsBeanList.get(i).getId())).unique();
+                    if (menusBean!=null){
+                        menusBeanList3.add(menusBean);
+                    }
+
                 }
 
                 View contentView3 = LayoutInflater.from(WeiBaoYuCeShiActivity.this).inflate(R.layout.xiangmu_po_item, null);
@@ -216,7 +233,8 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
                 }
                 Long  mb4 =menusBeanList3.get(p3).getId();
                 //通过菜单ID找出下一级
-                menusBeanList4.addAll(menusBeanDao.queryBuilder().where(MenusBeanDao.Properties.ParentId.eq(mb4)).list());
+                List<MenusBean> beanList=menusBeanDao.queryBuilder().where(MenusBeanDao.Properties.ParentId.eq(mb4)).list();
+                menusBeanList4.addAll(beanList==null?new ArrayList<MenusBean>():beanList);
 
 
                 View contentView4 = LayoutInflater.from(WeiBaoYuCeShiActivity.this).inflate(R.layout.xiangmu_po_item, null);
@@ -243,12 +261,30 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
 
                 break;
             case R.id.xiayibu:
+                if (p4!=-1){
+                    startActivity(new Intent(WeiBaoYuCeShiActivity.this,SheBeiWeiBaoYuCeShiActivity.class));
+                }else {
+                    showMSG("信息没有选择完整!",4);
+                }
 
-            startActivity(new Intent(WeiBaoYuCeShiActivity.this,SheBeiWeiBaoYuCeShiActivity.class));
 
                 break;
 
         }
 
+    }
+
+    private void showMSG(final String s,final int i){
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                Toast tastyToast= TastyToast.makeText(WeiBaoYuCeShiActivity.this,s,TastyToast.LENGTH_LONG,i);
+                tastyToast.setGravity(Gravity.CENTER,0,0);
+                tastyToast.show();
+
+            }
+        });
     }
 }
