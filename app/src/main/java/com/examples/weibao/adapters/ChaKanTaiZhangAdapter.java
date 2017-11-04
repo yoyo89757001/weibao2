@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.examples.weibao.R;
+import com.examples.weibao.allbeans.DevicesBean;
 import com.examples.weibao.intface.ClickIntface;
 
 import java.util.List;
@@ -16,15 +17,17 @@ import java.util.List;
  */
 
 public class ChaKanTaiZhangAdapter extends RecyclerView.Adapter<ChaKanTaiZhangAdapter.ViewHolder> {
-    private List<String> datas;
+    private List<DevicesBean> datas;
     private ClickIntface clickIntface;
+    private String s;
 
     public void setClickIntface(ClickIntface clickIntface){
         this.clickIntface=clickIntface;
     }
 
-    public ChaKanTaiZhangAdapter(List<String> datas) {
+    public ChaKanTaiZhangAdapter(List<DevicesBean> datas,String s) {
         this.datas = datas;
+        this.s=s;
     }
     //创建新View，被LayoutManager所调用
     @Override
@@ -35,8 +38,9 @@ public class ChaKanTaiZhangAdapter extends RecyclerView.Adapter<ChaKanTaiZhangAd
     //将数据与界面进行绑定的操作
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
-        viewHolder.bianhao.setText(datas.get(position));
-
+        viewHolder.content.setText(datas.get(position).getName());
+        viewHolder.bianhao.setText("编号:"+datas.get(position).getDeviceNum());
+        viewHolder.weizhi.setText("位置:"+s);
 
     }
     //获取数据的数量
@@ -46,11 +50,12 @@ public class ChaKanTaiZhangAdapter extends RecyclerView.Adapter<ChaKanTaiZhangAd
     }
     //自定义的ViewHolder，持有每个Item的的所有界面元素
       class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView bianhao,weizhi ;
+        private TextView bianhao,weizhi,content ;
 
 
         private ViewHolder(View view){
             super(view);
+            content = (TextView) view.findViewById(R.id.content);
             bianhao = (TextView) view.findViewById(R.id.bianhao);
             weizhi = (TextView) view.findViewById(R.id.weizhi);
 

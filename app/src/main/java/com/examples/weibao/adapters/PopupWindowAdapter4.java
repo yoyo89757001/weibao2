@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.examples.weibao.R;
-import com.examples.weibao.allbeans.LiXianBeans;
 import com.examples.weibao.allbeans.MenusBean;
 
 import java.util.List;

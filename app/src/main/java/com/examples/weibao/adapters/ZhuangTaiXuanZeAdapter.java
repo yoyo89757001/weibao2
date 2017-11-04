@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.examples.weibao.R;
-import com.examples.weibao.allbeans.LiXianBeans;
+import com.examples.weibao.allbeans.ItemsBean;
 
 import java.util.List;
 
@@ -21,11 +21,11 @@ import java.util.List;
 public class ZhuangTaiXuanZeAdapter extends BaseAdapter {
 
     private LayoutInflater mInflater;//得到一个LayoutInfalter对象用来导入布局
-    private List<LiXianBeans> fuWuQiBeanList;
+    private List<ItemsBean> fuWuQiBeanList;
 
 
     /*构造函数*/
-    public ZhuangTaiXuanZeAdapter(Context context, List<LiXianBeans> fuWuQiBeanList) {
+    public ZhuangTaiXuanZeAdapter(Context context, List<ItemsBean> fuWuQiBeanList) {
         this.mInflater = LayoutInflater.from(context);
         this.fuWuQiBeanList=fuWuQiBeanList;
     }

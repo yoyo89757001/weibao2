@@ -1,7 +1,5 @@
 package com.examples.weibao.beans;
 
-import java.util.List;
-
 /**
  * Created by Administrator on 2017/10/30.
  */
@@ -10,20 +8,22 @@ public class JianChaBean {
 
 
     /**
-     * detection : 0
-     * device : 0
-     * items : [10001,10002]
-     * menu : 0
-     * plan : 0
-     * total : 1
+     * detection : 6
+     * device : 2
+     * items : 1
+     * menu : 65
+     * menuref : 14
+     * plan : 1
+     * total : 75
      */
 
     private int detection;
     private int device;
+    private int items;
     private int menu;
+    private int menuref;
     private int plan;
     private int total;
-    private List<Integer> items;
 
     public int getDetection() {
         return detection;
@@ -41,12 +41,28 @@ public class JianChaBean {
         this.device = device;
     }
 
+    public int getItems() {
+        return items;
+    }
+
+    public void setItems(int items) {
+        this.items = items;
+    }
+
     public int getMenu() {
         return menu;
     }
 
     public void setMenu(int menu) {
         this.menu = menu;
+    }
+
+    public int getMenuref() {
+        return menuref;
+    }
+
+    public void setMenuref(int menuref) {
+        this.menuref = menuref;
     }
 
     public int getPlan() {
@@ -63,13 +79,5 @@ public class JianChaBean {
 
     public void setTotal(int total) {
         this.total = total;
-    }
-
-    public List<Integer> getItems() {
-        return items;
-    }
-
-    public void setItems(List<Integer> items) {
-        this.items = items;
     }
 }

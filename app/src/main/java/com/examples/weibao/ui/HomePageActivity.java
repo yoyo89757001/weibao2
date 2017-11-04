@@ -31,8 +31,10 @@ import com.examples.weibao.allbeans.DetectionsBean;
 import com.examples.weibao.allbeans.DetectionsBeanDao;
 import com.examples.weibao.allbeans.DevicesBean;
 import com.examples.weibao.allbeans.DevicesBeanDao;
-import com.examples.weibao.allbeans.LiXianBeans;
-import com.examples.weibao.allbeans.LiXianBeansDao;
+import com.examples.weibao.allbeans.ItemsBean;
+import com.examples.weibao.allbeans.ItemsBeanDao;
+import com.examples.weibao.allbeans.MenurefsBean;
+import com.examples.weibao.allbeans.MenurefsBeanDao;
 import com.examples.weibao.allbeans.MenusBean;
 import com.examples.weibao.allbeans.MenusBeanDao;
 import com.examples.weibao.allbeans.PlansBean;
@@ -94,16 +96,17 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
     //定义一个广播监听器；
     private NetChangReceiver netChangReceiver;
 
-    private LiXianBeans liXianBeans=null;
-    private LiXianBeansDao liXianBeansDao=null;
-    private List<DevicesBean> devicesBeanList=null;
+   // private LiXianBeans liXianBeans=null;
+    private ItemsBeanDao itemsBeanDao=null;
+   // private List<DevicesBean> devicesBeanList=null;
     private DevicesBeanDao devicesBeanDao=null;
-    private List<DetectionsBean> detectionsBeanList=null;
+   // private List<DetectionsBean> detectionsBeanList=null;
     private DetectionsBeanDao detectionsBeanDao=null;
-    private List<MenusBean> menusBeanList=null;
+   // private List<MenusBean> menusBeanList=null;
     private MenusBeanDao menusBeanDao=null;
-    private List<PlansBean> plansBeanList=null;
+   // private List<PlansBean> plansBeanList=null;
     private PlansBeanDao plansBeanDao=null;
+    private MenurefsBeanDao menurefsBeanDao=null;
 
 
 
@@ -154,12 +157,12 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
     private void initDao() {
         dengLuBeanDao=MyAppLaction.myAppLaction.getDaoSession().getDengLuBeanDao();
         dengLuBean=dengLuBeanDao.load(123456L);
-        liXianBeansDao=MyAppLaction.myAppLaction.getDaoSession().getLiXianBeansDao();
+        itemsBeanDao=MyAppLaction.myAppLaction.getDaoSession().getItemsBeanDao();
         devicesBeanDao=MyAppLaction.myAppLaction.getDaoSession().getDevicesBeanDao();
         detectionsBeanDao=MyAppLaction.myAppLaction.getDaoSession().getDetectionsBeanDao();
         menusBeanDao=MyAppLaction.myAppLaction.getDaoSession().getMenusBeanDao();
         plansBeanDao=MyAppLaction.myAppLaction.getDaoSession().getPlansBeanDao();
-
+        menurefsBeanDao=MyAppLaction.myAppLaction.getDaoSession().getMenurefsBeanDao();
     }
 
 
@@ -190,9 +193,11 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("cmd","100");
-            jsonObject.put("itemId","0");
+          //  jsonObject.put("itemId","0");
             jsonObject.put("stime",dengLuBean.getQqTime());
             jsonObject.put("etime", time);
+            Log.d("HomePageActivity", dengLuBean.getQqTime());
+            Log.d("HomePageActivity", time);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -202,12 +207,10 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
                 .header("nonce", nonce)
                 .header("timestamp", timestamp)
                 .header("userId", dengLuBean.getUserId()+"")
-                .header("sign", Utils.encode("100"+"0"+dengLuBean.getQqTime()+time+nonce+timestamp
+                .header("sign", Utils.encode("100"+dengLuBean.getQqTime()+time+nonce+timestamp
                         +dengLuBean.getUserId()+Utils.signaturePassword))
                 .post(body)
                 .url(dengLuBean.getZhuji() + "checkDownload.app");
-
-
 
         // step 3：创建 Call 对象
         call = okHttpClient.newCall(requestBuilder.build());
@@ -236,20 +239,12 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
                     JsonObject jsonObject= GsonUtil.parse(ss).getAsJsonObject();
                     Gson gson=new Gson();
                     JianChaBean zhaoPianBean=gson.fromJson(jsonObject,JianChaBean.class);
-                    if (zhaoPianBean.getTotal()!=0){
-                        maxCount=zhaoPianBean.getItems().size();
+                    if (zhaoPianBean.getTotal()>0){
                         //有更新
-                        while (isTrue){
-                            if (isTrue2){
-                                isTrue2=false;
-                                link_xz(zhaoPianBean.getItems().get(count));
-
-                            }
-
-                        }
-
+                       link_xz();
 
                     }else {
+                        showMSG("暂无数据更新",4);
                         dismissDialog();
                     }
 
@@ -276,7 +271,7 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
     }
 
 
-    private void link_xz(Integer integer) {
+    private void link_xz() {
        // showDialog();
         final MediaType JSON=MediaType.parse("application/json; charset=utf-8");
         OkHttpClient okHttpClient= MyAppLaction.getOkHttpClient();
@@ -284,16 +279,17 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
 
         String nonce=Utils.getNonce();
         String timestamp=Utils.getTimestamp();
-        String time=DateUtils.getTodayDateTimes();
+        final String time=DateUtils.getTodayDateTimes();
 
 //    /* form的分割线,自己定义 */
 //        String boundary = "xx--------------------------------------------------------------xx";
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("cmd","100");
-            jsonObject.put("itemId",integer.toString());
+           // jsonObject.put("itemId",integer.toString());
             jsonObject.put("stime",dengLuBean.getQqTime());
             jsonObject.put("etime", time);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -303,7 +299,7 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
                 .header("nonce", nonce)
                 .header("timestamp", timestamp)
                 .header("userId", dengLuBean.getUserId()+"")
-                .header("sign", Utils.encode("100"+integer.toString()+dengLuBean.getQqTime()+time+nonce+timestamp
+                .header("sign", Utils.encode("100"+dengLuBean.getQqTime()+time+nonce+timestamp
                         +dengLuBean.getUserId()+Utils.signaturePassword))
                 .post(body)
                 .url(dengLuBean.getZhuji() + "downloadData.app");
@@ -325,47 +321,54 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
             public void onResponse(Call call, Response response) throws IOException {
                 dismissDialog();
                 Log.d("AllConnects", "请求识别成功"+call.request().toString());
+                ItemsBean zhaoPianBean=null;
                 //获得返回体
                 try {
 
 
                     ResponseBody body = response.body();
                     String ss=body.string().trim();
-                    Log.d("InFoActivity", "ss" + ss.substring(0,2000));
-                    Log.d("InFoActivity", "ss" + ss.substring(2000,ss.length()));
+                    Log.d("InFoActivity", "ss" + ss.substring(0,4000));
+                    Log.d("InFoActivity", "ss" + ss.substring(4000,8000));
+                    Log.d("InFoActivity", "ss" + ss.substring(8000,12000));
+                    Log.d("InFoActivity", "ss" + ss.substring(12000,16000));
+                    Log.d("InFoActivity", "ss" + ss.substring(16000,20000));
+                    Log.d("InFoActivity", "ss" + ss.substring(20000,ss.length()));
 
                     JsonObject jsonObject= GsonUtil.parse(ss).getAsJsonObject();
                     Gson gson=new Gson();
-                    JsonObject items= jsonObject.get("item").getAsJsonObject();
+                    JsonArray items= jsonObject.get("items").getAsJsonArray();
                     JsonArray detections= jsonObject.get("detections").getAsJsonArray();
                     JsonArray menus= jsonObject.get("menus").getAsJsonArray();
                     JsonArray devices= jsonObject.get("devices").getAsJsonArray();
                     JsonArray plans= jsonObject.get("plans").getAsJsonArray();
+                    JsonArray menurefs= jsonObject.get("menurefs").getAsJsonArray();
 
-
-                    LiXianBeans zhaoPianBean=gson.fromJson(items,LiXianBeans.class);
-                    int i1=zhaoPianBean.getDtoResult();
-                    if (liXianBeansDao.load(zhaoPianBean.getId())==null && (i1==1 || i1==2)){
-                        Log.d("HomePageActivity", "插入items");
-                        liXianBeansDao.insert(zhaoPianBean);
-                    }else if (i1==1 || i1==2){
-                        liXianBeansDao.update(zhaoPianBean);
-                        Log.d("HomePageActivity", "更新items");
-                    }else {
-                        liXianBeansDao.delete(zhaoPianBean);
-                        Log.d("HomePageActivity", "删除items");
+                    int itemSize=items.size();
+                    for (int i=0;i<itemSize;i++){
+                         zhaoPianBean=gson.fromJson(items.get(i),ItemsBean.class);
+                        int i1=zhaoPianBean.getDtoResult();
+                        if (itemsBeanDao.load(zhaoPianBean.getId())==null && (i1==1 || i1==2)){
+                            Log.d("HomePageActivity", "插入items");
+                            itemsBeanDao.insert(zhaoPianBean);
+                        }else if (i1==1 || i1==2){
+                            itemsBeanDao.update(zhaoPianBean);
+                            Log.d("HomePageActivity", "更新items");
+                        }else {
+                            itemsBeanDao.delete(zhaoPianBean);
+                            Log.d("HomePageActivity", "删除items");
+                        }
                     }
+
 
                     int detectionsSize=detections.size();
                     for (int i=0;i<detectionsSize;i++){
                         DetectionsBean detectionsBean=gson.fromJson(detections.get(i),DetectionsBean.class);
                         int i2=detectionsBean.getDtoResult();
                         if (detectionsBeanDao.load(detectionsBean.getId())==null && (i2==1 || i2==2)){
-                            detectionsBean.setDetid(zhaoPianBean.getId());
                             detectionsBeanDao.insert(detectionsBean);
                             Log.d("HomePageActivity", "插入detectionsBean");
                         }else if (i2==1 || i2==2){
-                            detectionsBean.setDetid(zhaoPianBean.getId());
                             detectionsBeanDao.update(detectionsBean);
                             Log.d("HomePageActivity", "更新detectionsBean");
                         }else {
@@ -374,16 +377,16 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
                         }
                     }
 
+
+
                     int menusSize=menus.size();
                     for (int i=0;i<menusSize;i++){
                         MenusBean menusBean=gson.fromJson(menus.get(i),MenusBean.class);
                         int i3=menusBean.getDtoResult();
                         if (menusBeanDao.load(menusBean.getId())==null && (i3==1 || i3==2)){
-                            menusBean.setMid(zhaoPianBean.getId());
                             menusBeanDao.insert(menusBean);
                             Log.d("HomePageActivity", "插入menus");
                         }else if (i3==1 || i3==2){
-                            menusBean.setMid(zhaoPianBean.getId());
                             menusBeanDao.update(menusBean);
                             Log.d("HomePageActivity", "更新menus");
                         }else {
@@ -398,11 +401,9 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
                         DevicesBean devicesBean=gson.fromJson(devices.get(i),DevicesBean.class);
                         int i4=devicesBean.getDtoResult();
                         if (devicesBeanDao.load(devicesBean.getId())==null && (i4==1 || i4==2)){
-                            devicesBean.setDevid(zhaoPianBean.getId());
                             devicesBeanDao.insert(devicesBean);
                             Log.d("HomePageActivity", "插入devicesBean");
                         }else if (i4==1 || i4==2){
-                            devicesBean.setDevid(zhaoPianBean.getId());
                             devicesBeanDao.update(devicesBean);
                             Log.d("HomePageActivity", "更新devicesBean");
                         }else {
@@ -416,11 +417,9 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
                         PlansBean plansBean=gson.fromJson(plans.get(i),PlansBean.class);
                         int i5=plansBean.getDtoResult();
                         if (plansBeanDao.load(plansBean.getId())==null && (i5==1 || i5==2)){
-                            plansBean.setPid(zhaoPianBean.getId());
                             plansBeanDao.insert(plansBean);
                             Log.d("HomePageActivity", "插入plansBeanBean");
                         }else if (i5==1 || i5==2){
-                            plansBean.setPid(zhaoPianBean.getId());
                             plansBeanDao.update(plansBean);
                             Log.d("HomePageActivity", "更新plansBeanBean");
                         }else {
@@ -429,8 +428,30 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
                         }
                     }
 
-                    count++;
-                    isTrue2 = count < maxCount;
+                    int menurefsSize=menurefs.size();
+                    for (int i=0;i<menurefsSize;i++){
+                        MenurefsBean menurefsBean=gson.fromJson(menurefs.get(i),MenurefsBean.class);
+                        int i6=menurefsBean.getDtoResult();
+                        if (menurefsBeanDao.load(menurefsBean.getId())==null && (i6==1 || i6==2)){
+                            menurefsBeanDao.insert(menurefsBean);
+                            Log.d("HomePageActivity", "插入menurefsBean");
+                        }else if (i6==1 || i6==2){
+                            menurefsBeanDao.update(menurefsBean);
+                            Log.d("HomePageActivity", "更新menurefsBean");
+                        }else {
+                            menurefsBeanDao.delete(menurefsBean);
+                            Log.d("HomePageActivity", "删除menurefsBean");
+                        }
+                    }
+
+
+                        //保存时间
+                        Log.d("HomePageActivity", "保存时间"+time);
+                     //   dengLuBean.setQqTime(time);
+                     //   dengLuBeanDao.update(dengLuBean);
+                      //  Log.d("HomePageActivity", dengLuBeanDao.load(123456L).getQqTime());
+
+
                 }catch (Exception e){
 
                     dismissDialog();
@@ -660,6 +681,7 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
             // 利用handler延迟发送更改状态信息
             mHandler.sendEmptyMessageDelayed(0, 2000);
         } else {
+
             finish();
             System.exit(0);
         }

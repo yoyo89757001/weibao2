@@ -1,7 +1,6 @@
 package com.examples.weibao.ui;
 
-import android.app.Activity;
-import android.content.Intent;
+
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,20 +10,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.examples.weibao.R;
-import com.examples.weibao.fargments.Fragment_BZ1;
-import com.examples.weibao.fargments.Fragment_BZ2;
-import com.examples.weibao.fargments.Fragment_BZ3;
 import com.examples.weibao.fargments.WeiBaoFragment1;
 import com.examples.weibao.fargments.WeiBaoFragment2;
 import com.examples.weibao.views.ViewPagerFragmentAdapter;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
-
 import java.util.ArrayList;
 import java.util.List;
 

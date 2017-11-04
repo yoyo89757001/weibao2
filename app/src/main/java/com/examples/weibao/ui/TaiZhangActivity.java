@@ -9,8 +9,12 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.examples.weibao.MyAppLaction;
 import com.examples.weibao.R;
 import com.examples.weibao.adapters.TaiZhangAdapter;
+import com.examples.weibao.allbeans.ItemsBean;
+import com.examples.weibao.allbeans.ItemsBeanDao;
 import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
@@ -23,13 +27,23 @@ public class TaiZhangActivity extends Activity {
     private LRecyclerView lRecyclerView;
     private LRecyclerViewAdapter lRecyclerViewAdapter;
     private LinearLayoutManager linearLayoutManager;
-    private List<String> dataList;
     private TaiZhangAdapter taiZhangAdapter;
+
+    private List<ItemsBean> itemsBeanList=new ArrayList<>();
+    //  private LiXianBeans liXianBeans=null;
+    private ItemsBeanDao itemsBeanDao=null;
+ //   private List<DevicesBean> devicesBeans=new ArrayList<>();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        itemsBeanDao= MyAppLaction.myAppLaction.getDaoSession().getItemsBeanDao();
+        itemsBeanList.addAll(itemsBeanDao.loadAll());
+
+
+
         setContentView(R.layout.activity_tai_zhang);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             //透明状态栏
@@ -61,18 +75,19 @@ public class TaiZhangActivity extends Activity {
             }
         });
 
-        dataList=new ArrayList<>();
-        dataList.add("ddddddd");
-        dataList.add("dfff");
+
 
         lRecyclerView= (LRecyclerView) findViewById(R.id.lrecyclerview);
-        taiZhangAdapter=new TaiZhangAdapter(dataList);
+        taiZhangAdapter=new TaiZhangAdapter(itemsBeanList);
         lRecyclerViewAdapter = new LRecyclerViewAdapter(taiZhangAdapter);
 
         linearLayoutManager=new LinearLayoutManager(TaiZhangActivity.this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         lRecyclerView.setLayoutManager(linearLayoutManager);
         lRecyclerView.setAdapter(lRecyclerViewAdapter);
+
+        lRecyclerView.setPullRefreshEnabled(false);
+        lRecyclerView.setLoadMoreEnabled(false);
 
         DividerDecoration divider = new DividerDecoration.Builder(this)
                 .setHeight(R.dimen.default_divider_height)
@@ -86,7 +101,7 @@ public class TaiZhangActivity extends Activity {
             @Override
             public void onItemClick(View view, int position) {
 
-                startActivity(new Intent(TaiZhangActivity.this,ChaKanTaiZhangActivity.class));
+                startActivity(new Intent(TaiZhangActivity.this,ChaKanTaiZhangActivity.class).putExtra("position",position));
 
             }
         });

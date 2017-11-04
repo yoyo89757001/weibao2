@@ -10,12 +10,11 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.examples.weibao.MyAppLaction;
 import com.examples.weibao.R;
 import com.examples.weibao.adapters.WeiBaoJiHuaAdapter;
-import com.examples.weibao.allbeans.LiXianBeans;
-import com.examples.weibao.allbeans.LiXianBeansDao;
+import com.examples.weibao.allbeans.ItemsBean;
+import com.examples.weibao.allbeans.ItemsBeanDao;
 import com.examples.weibao.allbeans.PlansBean;
 import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
@@ -33,17 +32,17 @@ public class WeiBaoJiHuaActivity extends Activity {
     private List<String> dataList;
     private WeiBaoJiHuaAdapter taiZhangAdapter;
 
-    private List<LiXianBeans> liXianBeansList=new ArrayList<>();
+    private List<ItemsBean> itemsBeanList=new ArrayList<>();
   //  private LiXianBeans liXianBeans=null;
-    private LiXianBeansDao liXianBeansDao=null;
+    private ItemsBeanDao itemsBeanDao=null;
     private List<PlansBean> plansBeanList=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        liXianBeansDao= MyAppLaction.myAppLaction.getDaoSession().getLiXianBeansDao();
-        liXianBeansList.addAll(liXianBeansDao.loadAll());
+        itemsBeanDao= MyAppLaction.myAppLaction.getDaoSession().getItemsBeanDao();
+        itemsBeanList.addAll(itemsBeanDao.loadAll());
 
 
         setContentView(R.layout.activity_wei_bao_ji_hua);
@@ -94,13 +93,13 @@ public class WeiBaoJiHuaActivity extends Activity {
             }
         });
 
-        Log.d("WeiBaoJiHuaActivity", liXianBeansList.get(0).getPlansBeans().get(0).getArea());
+
         new Thread(new Runnable() {
             @Override
             public void run() {
-                int size=liXianBeansList.size();
+                int size=itemsBeanList.size();
                 for (int i=0;i<size;i++){
-                   plansBeanList.addAll(liXianBeansList.get(i).getPlansBeans());
+                 //  plansBeanList.addAll(itemsBeanList.get(i).getPlansBeans());
 
                 }
                 runOnUiThread(new Runnable() {

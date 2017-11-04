@@ -394,7 +394,7 @@ public class WangJiMiMaActivity extends Activity {
                         showMSG(jsonObject.get("dtoDesc").getAsString(),4);
                         zhaoPianBean.setUserId(zhaoPianBean.getId());
                         zhaoPianBean.setId(123456L);
-                        zhaoPianBean.setQqTime("2017-01-01 11:11:11");
+                        zhaoPianBean.setQqTime(dengLuBean.getQqTime()==null?"2017-01-01 11:11:11":dengLuBean.getQqTime());
                         zhaoPianBean.setMima(mima1.getText().toString().trim());
                         zhaoPianBean.setZhuji("http://14.23.169.42:8090/api/");
                         dengLuBeanDao.update(zhaoPianBean);

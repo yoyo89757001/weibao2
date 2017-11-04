@@ -57,7 +57,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
         if (dengLuBean!=null && dengLuBean.getAccount()!=null && !dengLuBean.getAccount().equals("")){
             setContentView(R.layout.activity_kai_ping);
             link_save(dengLuBean.getAccount(),dengLuBean.getMima());
-
         }else {
             setContentView(R.layout.activity_main);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -66,7 +65,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 tintManager.setStatusBarTintEnabled(true);
                 tintManager.setStatusBarTintResource(R.color.lanse33);
             }
-
 
             fanhui= (ImageView) findViewById(R.id.leftim);
             fanhui.setOnClickListener(new View.OnClickListener() {
@@ -148,7 +146,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
 
-    private void link_save(String zhanghao, final String mima) {
+    private void link_save(final String zhanghao, final String mima) {
         showDialog();
         final MediaType JSON=MediaType.parse("application/json; charset=utf-8");
         OkHttpClient okHttpClient= MyAppLaction.getOkHttpClient();
@@ -187,6 +185,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
             public void onFailure(Call call, IOException e) {
                 Log.d("AllConnects", "请求识别失败"+e.getMessage());
                 dismissDialog();
+                finish();
+                startActivity(new Intent(MainActivity.this,HomePageActivity.class));
             }
 
             @Override
@@ -208,7 +208,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                         zhaoPianBean.setUserId(zhaoPianBean.getId());
                         zhaoPianBean.setId(123456L);
                         zhaoPianBean.setMima(mima);
-                        zhaoPianBean.setQqTime("2017-01-01 11:11:11");
+                        zhaoPianBean.setQqTime(dengLuBean.getQqTime()==null?"2017-01-01 11:11:11":dengLuBean.getQqTime());
                         zhaoPianBean.setZhuji("http://14.23.169.42:8090/api/");
                         dengLuBeanDao.update(zhaoPianBean);
                         finish();
@@ -217,12 +217,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     }else {
                         if (dengLuBean!=null && dengLuBean.getAccount()!=null && !dengLuBean.getAccount().equals("")){
                             finish();
-                            startActivity(new Intent(MainActivity.this,MainActivity.class));
+                            startActivity(new Intent(MainActivity.this,HomePageActivity.class));
                         }
                     }
 
                 }catch (Exception e){
-
+                    finish();
+                    startActivity(new Intent(MainActivity.this,HomePageActivity.class));
                  dismissDialog();
                  showMSG("获取数据失败",3);
                     Log.d("WebsocketPushMsg", e.getMessage());

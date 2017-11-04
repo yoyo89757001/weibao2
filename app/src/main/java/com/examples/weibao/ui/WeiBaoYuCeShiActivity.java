@@ -24,8 +24,10 @@ import com.examples.weibao.allbeans.DetectionsBean;
 import com.examples.weibao.allbeans.DetectionsBeanDao;
 import com.examples.weibao.allbeans.DevicesBean;
 import com.examples.weibao.allbeans.DevicesBeanDao;
-import com.examples.weibao.allbeans.LiXianBeans;
-import com.examples.weibao.allbeans.LiXianBeansDao;
+import com.examples.weibao.allbeans.ItemsBean;
+import com.examples.weibao.allbeans.ItemsBeanDao;
+import com.examples.weibao.allbeans.MenurefsBean;
+import com.examples.weibao.allbeans.MenurefsBeanDao;
 import com.examples.weibao.allbeans.MenusBean;
 import com.examples.weibao.allbeans.MenusBeanDao;
 import com.examples.weibao.allbeans.PlansBean;
@@ -41,21 +43,23 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
     private PopupWindow popupWindow=null;
     private ImageView go,go3,go4;
 
-    private List<LiXianBeans> liXianBeansList=new ArrayList<>();
-    private LiXianBeans liXianBeans=null;
-    private LiXianBeansDao liXianBeansDao=null;
+    private List<ItemsBean> itemsBeanList=new ArrayList<>();
+    private ItemsBean itemsBean=null;
+    private ItemsBeanDao itemsBeanDao=null;
     private List<DevicesBean> devicesBeanList=null;
     private DevicesBean devicesBean=null;
     private DevicesBeanDao devicesBeanDao=null;
     private List<DetectionsBean> detectionsBeanList=null;
     private DetectionsBean detectionsBean=null;
     private DetectionsBeanDao detectionsBeanDao=null;
-    private List<MenusBean> menusBeanList=new ArrayList<>();
+    private List<MenusBean> menusBeanList=null;
     private MenusBean menusBean=null;
     private MenusBeanDao menusBeanDao=null;
     private List<PlansBean> plansBeanList=null;
     private PlansBean plansBean=null;
     private PlansBeanDao plansBeanDao=null;
+    private List<MenurefsBean> menurefsBeanList=null;
+    private MenurefsBeanDao menurefsBeanDao=null;
     //2个零时的 List<MenusBean> menusBeanList=null;
     private List<MenusBean> menusBeanList3=new ArrayList<>();
     private List<MenusBean> menusBeanList4=new ArrayList<>();
@@ -83,13 +87,13 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
     private void initDao() {
        // dengLuBeanDao= MyAppLaction.myAppLaction.getDaoSession().getDengLuBeanDao();
       //  dengLuBean=dengLuBeanDao.load(123456L);
-        liXianBeansDao=MyAppLaction.myAppLaction.getDaoSession().getLiXianBeansDao();
-        liXianBeansList.addAll(liXianBeansDao.loadAll());
-//        devicesBeanDao=MyAppLaction.myAppLaction.getDaoSession().getDevicesBeanDao();
-//        detectionsBeanDao=MyAppLaction.myAppLaction.getDaoSession().getDetectionsBeanDao();
-//        menusBeanDao=MyAppLaction.myAppLaction.getDaoSession().getMenusBeanDao();
-//        plansBeanDao=MyAppLaction.myAppLaction.getDaoSession().getPlansBeanDao();
-
+        itemsBeanDao=MyAppLaction.myAppLaction.getDaoSession().getItemsBeanDao();
+        itemsBeanList.addAll(itemsBeanDao.loadAll());
+        devicesBeanDao=MyAppLaction.myAppLaction.getDaoSession().getDevicesBeanDao();
+        detectionsBeanDao=MyAppLaction.myAppLaction.getDaoSession().getDetectionsBeanDao();
+        menusBeanDao=MyAppLaction.myAppLaction.getDaoSession().getMenusBeanDao();
+        plansBeanDao=MyAppLaction.myAppLaction.getDaoSession().getPlansBeanDao();
+        menurefsBeanDao=MyAppLaction.myAppLaction.getDaoSession().getMenurefsBeanDao();
     }
 
     private void initView() {
@@ -130,7 +134,7 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
                 View contentView = LayoutInflater.from(WeiBaoYuCeShiActivity.this).inflate(R.layout.xiangmu_po_item, null);
                 popupWindow=new PopupWindow(contentView,600, 660);
                 ListView listView= (ListView) contentView.findViewById(R.id.dddddd);
-                PopupWindowAdapter adapter=new PopupWindowAdapter(WeiBaoYuCeShiActivity.this,liXianBeansList);
+                PopupWindowAdapter adapter=new PopupWindowAdapter(WeiBaoYuCeShiActivity.this,itemsBeanList);
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -138,8 +142,8 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
                         p3=-1;
                         p4=-1;
                      //   Log.d("WeiBaoYuCeShiActivity", "position:" + position);
-                        t2.setText(liXianBeansList.get(position).getAddress());
-                        t1.setText(liXianBeansList.get(position).getName());
+                        t2.setText(itemsBeanList.get(position).getAddress());
+                        t1.setText(itemsBeanList.get(position).getName());
 
                         t3.setText("请选择");
                         t4.setText("请选择");
@@ -160,22 +164,21 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
                 break;
             case R.id.r3:
               //  Log.d("WeiBaoYuCeShiActivity", "liXianBeansList.get(p1).getMenusBeans():" + liXianBeansList.get(p1).getMenusBeans());
-
+                if (p1==-1){
+                    break;
+                }
                 if (menusBeanList3.size()!=0){
                     menusBeanList3.clear();
                 }
 
-                if (p1==-1){
-                    break;
-                }
-
-                List<MenusBean> mb =liXianBeansList.get(p1).getMenusBeans();
-                int s=mb.size();
+                //项目ID
+                long mb =itemsBeanList.get(p1).getItemId();
+                //通过项目ID 在项目关系表中找出所有一级项目菜单
+               menurefsBeanList = menurefsBeanDao.queryBuilder().where(MenurefsBeanDao.Properties.ItemId.eq(mb)).list();
+                int s=menurefsBeanList.size();
+                //通过菜单menurefsBeanList中的id查出所有菜单
                 for (int i=0;i<s;i++){
-                    if (mb.get(i).getParentId()==-1){
-                        //-1是系统；
-                        menusBeanList3.add(mb.get(i));
-                    }
+                    menusBeanList3.add(menusBeanDao.queryBuilder().where(MenusBeanDao.Properties.Id.eq(menurefsBeanList.get(i).getId())).unique());
                 }
 
                 View contentView3 = LayoutInflater.from(WeiBaoYuCeShiActivity.this).inflate(R.layout.xiangmu_po_item, null);
@@ -211,14 +214,10 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
                 if (menusBeanList4.size()!=0){
                     menusBeanList4.clear();
                 }
-                List<MenusBean> mb4 =liXianBeansList.get(p1).getMenusBeans();
-                int s4=mb4.size();
-                for (int i=0;i<s4;i++){
-                    if (mb4.get(i).getParentId()==menusBeanList3.get(p3).getId()){
-                        //-1是系统；
-                        menusBeanList4.add(mb4.get(i));
-                    }
-                }
+                Long  mb4 =menusBeanList3.get(p3).getId();
+                //通过菜单ID找出下一级
+                menusBeanList4.addAll(menusBeanDao.queryBuilder().where(MenusBeanDao.Properties.ParentId.eq(mb4)).list());
+
 
                 View contentView4 = LayoutInflater.from(WeiBaoYuCeShiActivity.this).inflate(R.layout.xiangmu_po_item, null);
                 popupWindow=new PopupWindow(contentView4,600, 600);

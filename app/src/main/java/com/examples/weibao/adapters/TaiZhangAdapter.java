@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.examples.weibao.R;
+import com.examples.weibao.allbeans.ItemsBean;
 import com.examples.weibao.intface.ClickIntface;
 
 import java.util.List;
@@ -16,14 +17,14 @@ import java.util.List;
  */
 
 public class TaiZhangAdapter extends RecyclerView.Adapter<TaiZhangAdapter.ViewHolder> {
-    private List<String> datas;
+    private List<ItemsBean> datas;
     private ClickIntface clickIntface;
 
     public void setClickIntface(ClickIntface clickIntface){
         this.clickIntface=clickIntface;
     }
 
-    public TaiZhangAdapter(List<String> datas) {
+    public TaiZhangAdapter(List<ItemsBean> datas) {
         this.datas = datas;
     }
     //创建新View，被LayoutManager所调用
@@ -35,7 +36,7 @@ public class TaiZhangAdapter extends RecyclerView.Adapter<TaiZhangAdapter.ViewHo
     //将数据与界面进行绑定的操作
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
-        viewHolder.content.setText(datas.get(position));
+        viewHolder.content.setText(datas.get(position).getName());
 
 
     }

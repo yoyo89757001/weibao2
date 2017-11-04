@@ -9,15 +9,15 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.examples.weibao.MyAppLaction;
 import com.examples.weibao.R;
 import com.examples.weibao.adapters.ChaKanTaiZhangAdapter;
-import com.examples.weibao.adapters.TaiZhangAdapter;
+import com.examples.weibao.allbeans.DevicesBean;
 import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,13 +25,27 @@ public class ChaKanTaiZhangActivity extends Activity {
     private LRecyclerView lRecyclerView;
     private LRecyclerViewAdapter lRecyclerViewAdapter;
     private LinearLayoutManager linearLayoutManager;
-    private List<String> dataList;
     private ChaKanTaiZhangAdapter taiZhangAdapter;
+
+  //  private List<LiXianBeans> liXianBeansList=new ArrayList<>();
+    //  private LiXianBeans liXianBeans=null;
+  //  private LiXianBeansDao liXianBeansDao=null;
+    private List<DevicesBean> devicesBeanList=new ArrayList<>();
+    private int position=-1;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        position=getIntent().getIntExtra("position",-1);
+
+     //   liXianBeansDao= MyAppLaction.myAppLaction.getDaoSession().getLiXianBeansDao();
+      //  liXianBeansList.addAll(liXianBeansDao.loadAll());
+//       if (position!=-1){
+//          devicesBeanList.addAll(liXianBeansList.get(position).getDevicesBeans());
+//       }
+
         setContentView(R.layout.activity_cha_kan_tai_zhang);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             //透明状态栏
@@ -62,18 +76,19 @@ public class ChaKanTaiZhangActivity extends Activity {
             }
         });
 
-        dataList=new ArrayList<>();
-        dataList.add("ddddddd");
-        dataList.add("dfff");
+
 
         lRecyclerView= (LRecyclerView) findViewById(R.id.lrecyclerview);
-        taiZhangAdapter=new ChaKanTaiZhangAdapter(dataList);
+        taiZhangAdapter=new ChaKanTaiZhangAdapter(devicesBeanList,"");
         lRecyclerViewAdapter = new LRecyclerViewAdapter(taiZhangAdapter);
 
         linearLayoutManager=new LinearLayoutManager(ChaKanTaiZhangActivity.this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         lRecyclerView.setLayoutManager(linearLayoutManager);
         lRecyclerView.setAdapter(lRecyclerViewAdapter);
+
+        lRecyclerView.setPullRefreshEnabled(false);
+        lRecyclerView.setLoadMoreEnabled(false);
 
         DividerDecoration divider = new DividerDecoration.Builder(this)
                 .setHeight(R.dimen.default_divider_height)
