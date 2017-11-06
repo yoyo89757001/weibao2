@@ -1,25 +1,65 @@
 package com.examples.weibao.ui;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.ContentUris;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
+import com.examples.weibao.MyAppLaction;
 import com.examples.weibao.R;
+
+import com.examples.weibao.adapters.XuanZeSheBeiAdapter;
+import com.examples.weibao.allbeans.BaoZhangDengJiBean;
+import com.examples.weibao.allbeans.BaoZhangDengJiBeanDao;
+import com.examples.weibao.allbeans.DevicesBean;
+import com.examples.weibao.allbeans.DevicesBeanDao;
+import com.examples.weibao.allbeans.PhotosBean;
+import com.examples.weibao.allbeans.PhotosBeanDao;
 import com.examples.weibao.intface.ClickIntface;
 import com.examples.weibao.utils.DateUtils;
+import com.examples.weibao.utils.FileUtil;
+
+import com.examples.weibao.utils.Utils;
+import com.examples.weibao.views.MyDecoration;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
+import com.sdsmdg.tastytoast.TastyToast;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.Permission;
+import com.yanzhenjie.permission.PermissionListener;
+
+import java.io.File;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +68,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class BaoZhangDengJiActivity extends Activity {
+public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
     @BindView(R.id.mingcheng)
     EditText mingcheng;
     @BindView(R.id.dizhi)
@@ -55,10 +95,33 @@ public class BaoZhangDengJiActivity extends Activity {
     private ZhaoPianAdapter zhaoPianAdapter = null;
     private List<String> stringList;
 
+    private PopupWindow popupWindow=null;
+    private DevicesBeanDao devicesBeanDao=null;
+    private List<DevicesBean> devicesBeanList=null;
+    private PhotosBeanDao photosBeanDao=null;
+    private BaoZhangDengJiBeanDao baoZhangDengJiBeanDao=null;
+    private long shebeiID=-1;
+    private File mSavePhotoFile=null;
+    private boolean ff=false;
+    private int jilu=0;
+    private BaoZhangDengJiBean baoZhangDengJiBean=null;
+    private long idid=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        idid=getIntent().getLongExtra("idid",0);
+        devicesBeanDao= MyAppLaction.myAppLaction.getDaoSession().getDevicesBeanDao();
+        devicesBeanList=devicesBeanDao.loadAll();
+        baoZhangDengJiBeanDao= MyAppLaction.myAppLaction.getDaoSession().getBaoZhangDengJiBeanDao();
+        if (idid!=0)
+       baoZhangDengJiBean= baoZhangDengJiBeanDao.load(idid);
+
+        photosBeanDao= MyAppLaction.myAppLaction.getDaoSession().getPhotosBeanDao();
+
+
+        ff = !Utils.getNetTypeName(BaoZhangDengJiActivity.this).equals("无网络");
+
         setContentView(R.layout.activity_bao_zhang_deng_ji);
         ButterKnife.bind(this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -79,6 +142,8 @@ public class BaoZhangDengJiActivity extends Activity {
             //给导航栏设置资源
             // tintManager.setNavigationBarTintResource(R.color.dark_grey);
         }
+        jilu=getIntent().getIntExtra("jilu",0);
+
         TextView title = (TextView) findViewById(R.id.title);
         title.setText("报障登记");
         ImageView left = (ImageView) findViewById(R.id.leftim);
@@ -91,9 +156,7 @@ public class BaoZhangDengJiActivity extends Activity {
 
 
         stringList = new ArrayList<>();
-        stringList.add("jij");
-        stringList.add("jij");
-        stringList.add("jij");
+        stringList.add("pathOne");
 
         initView();
     }
@@ -103,11 +166,37 @@ public class BaoZhangDengJiActivity extends Activity {
         LinearLayoutManager manager = new LinearLayoutManager(this);
         manager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(manager);
-        zhaoPianAdapter = new ZhaoPianAdapter(stringList);
-        recyclerView.setAdapter(zhaoPianAdapter);
+        recyclerView.addItemDecoration(new MyDecoration(BaoZhangDengJiActivity.this, LinearLayoutManager.VERTICAL,10,R.color.transparent));
+
 
         shijian.setText(DateUtils.timet2(System.currentTimeMillis()+""));
 
+        if (ff){
+            tijiao.setText("提交");
+        }else {
+            tijiao.setText("保存到本地");
+        }
+        if (jilu==1){
+            tijiao.setVisibility(View.GONE);
+            chakan.setVisibility(View.GONE);
+            mingcheng.setText(baoZhangDengJiBean.getDanwei());
+            dizhi.setText(baoZhangDengJiBean.getDizhi());
+            shebei.setText(baoZhangDengJiBean.getShebei());
+            guzhangEt.setText(baoZhangDengJiBean.getGuzhangmiaoshu());
+            shijian.setText(baoZhangDengJiBean.getGuzhangshijian());
+            name.setText(baoZhangDengJiBean.getBaozhangren());
+            dianhua.setText(baoZhangDengJiBean.getDianhua());
+          List<PhotosBean> photosBeans=  baoZhangDengJiBean.getPhotosBeanList();
+            int s=photosBeans.size();
+            for (int i=0;i<s;i++){
+                stringList.add(0,photosBeans.get(i).getPath());
+            }
+
+        }
+
+        zhaoPianAdapter = new ZhaoPianAdapter(stringList);
+        zhaoPianAdapter.setClickIntface(this);
+        recyclerView.setAdapter(zhaoPianAdapter);
     }
 
     @OnClick({R.id.shebei_rl, R.id.shijian_rl, R.id.chakan, R.id.tijiao})
@@ -115,18 +204,82 @@ public class BaoZhangDengJiActivity extends Activity {
         switch (view.getId()) {
             case R.id.shebei_rl:
 
+                if (devicesBeanList!=null && devicesBeanList.size()!=0) {
+                    View contentView = LayoutInflater.from(BaoZhangDengJiActivity.this).inflate(R.layout.xiangmu_po_item, null);
+                    popupWindow = new PopupWindow(contentView, WindowManager.LayoutParams.MATCH_PARENT, 680);
+                    ListView listView = (ListView) contentView.findViewById(R.id.dddddd);
+                    XuanZeSheBeiAdapter adapter = new XuanZeSheBeiAdapter(BaoZhangDengJiActivity.this, devicesBeanList);
+                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            shebei.setText(devicesBeanList.get(position).getDeviceNum());
+                            shebeiID=devicesBeanList.get(position).getId();
+                            popupWindow.dismiss();
+                        }
+                    });
+                    listView.setAdapter(adapter);
+
+                    popupWindow.setFocusable(true);//获取焦点
+                    popupWindow.setOutsideTouchable(true);//获取外部触摸事件
+                    popupWindow.setTouchable(true);//能够响应触摸事件
+                    popupWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));//设置背景
+                    popupWindow.showAsDropDown(shebeiRl, 0, 0);
+                }
                 break;
             case R.id.shijian_rl:
 
                 Intent intent = new Intent(BaoZhangDengJiActivity.this, DatePickActivity.class);
                 startActivityForResult(intent,2);
 
-
                 break;
             case R.id.chakan:
-
+                startActivity(new Intent(BaoZhangDengJiActivity.this,ChaKanBaoZhangJiLuActivity.class));
                 break;
             case R.id.tijiao:
+                long ccc=System.currentTimeMillis();
+
+                String s1=mingcheng.getText().toString().trim();
+                String s2=dizhi.getText().toString().trim();
+                String s3=shebei.getText().toString().trim();
+                String s4=guzhangEt.getText().toString().trim();
+                String s5=shijian.getText().toString().trim();
+                String s6=name.getText().toString().trim();
+                String s7=dianhua.getText().toString().trim();
+
+                if (!s1.equals("") && !s2.equals("") && !s3.equals("") && !s4.equals("") && !s1.equals("") && !s5.equals("") && !s6.equals("") && !s7.equals("")){
+                    //信息全了
+                    BaoZhangDengJiBean dengJiBean=new BaoZhangDengJiBean();
+                    dengJiBean.setId(ccc);
+                    dengJiBean.setDanwei(s1);
+                    dengJiBean.setDizhi(s2);
+                    dengJiBean.setShebei(s3);
+                    dengJiBean.setGuzhangmiaoshu(s4);
+                    dengJiBean.setGuzhangshijian(s5);
+                    dengJiBean.setBaozhangren(s6);
+                    dengJiBean.setDianhua(s7);
+                    if (ff){
+                        dengJiBean.setIsTiJiao(true);
+                    }else {
+                        dengJiBean.setIsTiJiao(false);
+                    }
+                    baoZhangDengJiBeanDao.insert(dengJiBean);
+
+                    if (stringList.size()>1){
+                        int ss=stringList.size()-1;
+                        for (int i=0;i<ss;i++){
+                            PhotosBean bean=new PhotosBean();
+                            bean.setId(System.currentTimeMillis());
+                            bean.setPath(stringList.get(i));
+                            bean.setPid(ccc);
+                            photosBeanDao.insert(bean);
+                        }
+                    }
+
+
+                }else {
+                    showMSG("信没有填写完整",3);
+                }
+
 
                 break;
         }
@@ -142,11 +295,131 @@ public class BaoZhangDengJiActivity extends Activity {
             String date = data.getStringExtra("date");
             shijian.setText(date);
         }
+        if (resultCode == Activity.RESULT_OK && requestCode == 222) {
+
+            try {
+            handleImageOnKitkat(data);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        }
+        if (resultCode == Activity.RESULT_OK && requestCode == 333) {
+            try {
+
+                stringList.add(0,mSavePhotoFile.getAbsolutePath());
+                zhaoPianAdapter.notifyDataSetChanged();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+
+
+
+    }
+
+    /**
+     * 获取压缩图片的options
+     *
+     * @return
+     */
+    public static BitmapFactory.Options getOptions(String path) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(path, options);
+        options.inPreferredConfig = Bitmap.Config.RGB_565;
+        options.inSampleSize = 4;      //此项参数可以根据需求进行计算
+        options.inJustDecodeBounds = false;
+
+        return options;
+    }
+
+
+    @Override
+    public int BackId(int id) {
+
+
+        AndPermission.with(BaoZhangDengJiActivity.this)
+                .requestCode(300)
+                .permission(Permission.STORAGE,Permission.CAMERA)
+                .callback(listener)
+                .start();
+
+
+
+        return 0;
+    }
+
+    private PermissionListener listener = new PermissionListener() {
+        @Override
+        public void onSucceed(int requestCode, List<String> grantedPermissions) {
+            // 权限申请成功回调。
+
+            // 这里的requestCode就是申请时设置的requestCode。
+            // 和onActivityResult()的requestCode一样，用来区分多个不同的请求。
+            if(requestCode == 300) {
+                new AlertDialog.Builder(BaoZhangDengJiActivity.this).setItems(
+                        new String[] { "拍摄照片", "从相册选择" },
+                        new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                switch (which) {
+                                    case 0:
+                                        String fn = System.currentTimeMillis()+"a.jpg";
+                                        FileUtil.isExists(FileUtil.PATH, fn);
+                                        mSavePhotoFile=new File( FileUtil.SDPATH + File.separator + FileUtil.PATH + File.separator + fn);
+
+                                        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                        // Ensure that there's a camera activity to handle the intent
+                                        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                                            // Continue only if the File was successfully created
+                                            if (mSavePhotoFile != null) {
+                                                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                                                        Uri.fromFile(mSavePhotoFile));//设置文件保存的URI
+                                                startActivityForResult(takePictureIntent, 333);
+                                            }
+                                        }
+
+                                        break;
+                                    case 1:
+                                        photoFromAlbum();
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                        }).show();
+
+
+            }
+        }
+
+        @Override
+        public void onFailed(int requestCode, List<String> deniedPermissions) {
+            // 权限申请失败回调。
+            if(requestCode == 200) {
+                showMSG("拍照授权失败",3);
+
+            }
+        }
+    };
+
+    private void photoFromAlbum() {
+
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_PICK);
+        intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, 222);
+
+
     }
 
 
 
-    private class ZhaoPianAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private class ZhaoPianAdapter extends RecyclerView.Adapter<ZhaoPianAdapter.ViewHolder> {
         private List<String> datas;
         private ClickIntface clickIntface;
 
@@ -154,7 +427,7 @@ public class BaoZhangDengJiActivity extends Activity {
             this.clickIntface = clickIntface;
         }
 
-        public ZhaoPianAdapter(List<String> datas) {
+        private ZhaoPianAdapter(List<String> datas) {
             this.datas = datas;
         }
 
@@ -168,9 +441,37 @@ public class BaoZhangDengJiActivity extends Activity {
 
         //将数据与界面进行绑定的操作
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
-            //  viewHolder.bianhao.setText(datas.get(position));
+        public void onBindViewHolder(ViewHolder viewHolder, final int position) {
+            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    clickIntface.BackId(position);
+                }
+            });
+            if (datas.get(position).equals("pathOne")){
+                viewHolder.tupian.setImageResource(R.drawable.icon_add);
+                viewHolder.tupian.setPadding(60,60,60,60);
+                viewHolder.shanchu.setVisibility(View.GONE);
+            }else {
+                Glide.with(BaoZhangDengJiActivity.this)
+                        .load(datas.get(position))
+                        //  .skipMemoryCache(true)
+                        //  .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        //  .transform(new GlideCircleTransform(DengJiActivity.this,2, Color.parseColor("#ffffffff")))
+                        .into(viewHolder.tupian);
+                viewHolder.tupian.setPadding(20,20,20,20);
+                viewHolder.shanchu.setVisibility(View.VISIBLE);
+            }
+            viewHolder.shanchu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
+                    stringList.remove(position);
+                    zhaoPianAdapter.notifyDataSetChanged();
+
+                }
+            });
+           // Log.d("ZhaoPianAdapter", "stringList.size():" + stringList.size());
         }
 
         //获取数据的数量
@@ -181,16 +482,83 @@ public class BaoZhangDengJiActivity extends Activity {
 
         //自定义的ViewHolder，持有每个Item的的所有界面元素
         class ViewHolder extends RecyclerView.ViewHolder {
-            private TextView bianhao, ceshi;
+            private ImageView tupian,shanchu;
 
 
             private ViewHolder(View view) {
                 super(view);
-                //  bianhao = (TextView) view.findViewById(R.id.bianhao);
-                //  ceshi = (TextView) view.findViewById(R.id.ceshi);
-
+                  tupian = (ImageView) view.findViewById(R.id.tupian);
+                  shanchu = (ImageView) view.findViewById(R.id.shanchu);
 
             }
+        }
+    }
+
+    private void showMSG(final String s,final int i){
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                Toast tastyToast= TastyToast.makeText(BaoZhangDengJiActivity.this,s,TastyToast.LENGTH_LONG,i);
+                tastyToast.setGravity(Gravity.CENTER,0,0);
+                tastyToast.show();
+
+            }
+        });
+    }
+
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    private void handleImageOnKitkat(Intent data) {
+        String imagePath = null;
+        Uri uri = data.getData();
+        if (DocumentsContract.isDocumentUri(this, uri)) {
+            // 如果是document类型的Uri，则通过document id处理
+            String docId = DocumentsContract.getDocumentId(uri);
+            if ("com.android.providers.media.documents".equals(uri
+                    .getAuthority())) {
+                String id = docId.split(":")[1]; // 解析出数字格式的id
+                String selection = MediaStore.Images.Media._ID + "=" + id;
+                imagePath = getImagePath(
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, selection);
+            } else if ("com.android.providers.downloads.documents".equals(uri
+                    .getAuthority())) {
+                Uri contentUri = ContentUris.withAppendedId(
+                        Uri.parse("content://downloads/public_downloads"),
+                        Long.valueOf(docId));
+                imagePath = getImagePath(contentUri, null);
+            }
+        } else if ("content".equalsIgnoreCase(uri.getScheme())) {
+            // 如果不是document类型的Uri，则使用普通方式处理
+            imagePath = getImagePath(uri, null);
+        }
+        displayImage(imagePath); // 根据图片路径显示图片
+        System.err.println(imagePath);
+    }
+
+    private String getImagePath(Uri uri, String selection) {
+        String path = null;
+        // 通过uri和selection来获取真实的图片路径
+        Cursor cursor = getContentResolver().query(uri, null, selection, null,
+                null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                path = cursor.getString(cursor
+                        .getColumnIndex(MediaStore.Images.Media.DATA));
+            }
+            cursor.close();
+        }
+        return path;
+    }
+
+    private void displayImage(String imagePath) {
+        if (imagePath != null) {
+          //  Log.d("BaoZhangDengJiActivity", "进来了2");
+           // Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+           stringList.add(0,imagePath);
+           zhaoPianAdapter.notifyDataSetChanged();
+        } else {
+            showMSG("没有得到图片",4);
         }
     }
 }

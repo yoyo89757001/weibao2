@@ -101,7 +101,7 @@ public class TaiZhangActivity extends Activity {
             @Override
             public void onItemClick(View view, int position) {
 
-                startActivity(new Intent(TaiZhangActivity.this,ChaKanTaiZhangActivity.class).putExtra("position",position));
+                startActivity(new Intent(TaiZhangActivity.this,ChaKanTaiZhangActivity.class).putExtra("position",itemsBeanList.get(position).getId()));
 
             }
         });

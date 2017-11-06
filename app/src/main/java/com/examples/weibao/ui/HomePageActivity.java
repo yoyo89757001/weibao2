@@ -196,8 +196,8 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
           //  jsonObject.put("itemId","0");
             jsonObject.put("stime",dengLuBean.getQqTime());
             jsonObject.put("etime", time);
-            Log.d("HomePageActivity", dengLuBean.getQqTime());
-            Log.d("HomePageActivity", time);
+//            Log.d("HomePageActivity", dengLuBean.getQqTime());
+         //   Log.d("HomePageActivity", time);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -558,10 +558,9 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if(result != null) {
-            if(result.getContents() == null) {
-                Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
-            } else {
+            if(result.getContents() != null) {
                 Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
+                startActivity(new Intent(HomePageActivity.this,SaoYiSaoTanChuActivity.class));
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -13,6 +14,8 @@ import com.examples.weibao.MyAppLaction;
 import com.examples.weibao.R;
 import com.examples.weibao.adapters.ChaKanTaiZhangAdapter;
 import com.examples.weibao.allbeans.DevicesBean;
+import com.examples.weibao.allbeans.DevicesBeanDao;
+import com.examples.weibao.allbeans.MenusBeanDao;
 import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
@@ -30,21 +33,26 @@ public class ChaKanTaiZhangActivity extends Activity {
   //  private List<LiXianBeans> liXianBeansList=new ArrayList<>();
     //  private LiXianBeans liXianBeans=null;
   //  private LiXianBeansDao liXianBeansDao=null;
+    private DevicesBeanDao devicesBeanDao=null;
     private List<DevicesBean> devicesBeanList=new ArrayList<>();
-    private int position=-1;
+    private long position=-1;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        position=getIntent().getIntExtra("position",-1);
+        position=getIntent().getLongExtra("position",-1);
 
-     //   liXianBeansDao= MyAppLaction.myAppLaction.getDaoSession().getLiXianBeansDao();
-      //  liXianBeansList.addAll(liXianBeansDao.loadAll());
-//       if (position!=-1){
-//          devicesBeanList.addAll(liXianBeansList.get(position).getDevicesBeans());
-//       }
+        devicesBeanDao= MyAppLaction.myAppLaction.getDaoSession().getDevicesBeanDao();
+
+       if (position!=-1){
+        List<DevicesBean> ddd=devicesBeanDao.queryBuilder().where(DevicesBeanDao.Properties.ItemId.eq(position)).list();
+           if (ddd!=null){
+               devicesBeanList.addAll(ddd);
+           }
+
+       }
 
         setContentView(R.layout.activity_cha_kan_tai_zhang);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {

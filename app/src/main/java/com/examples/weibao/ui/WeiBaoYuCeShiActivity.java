@@ -191,8 +191,8 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
                 Log.d("WeiBaoYuCeShiActivity", "s:" + s);
                 //通过菜单menurefsBeanList中的id查出所有菜单
                 for (int i=0;i<s;i++){
-                   MenusBean menusBean= menusBeanDao.queryBuilder().where(MenusBeanDao.Properties.Id.eq(menurefsBeanList.get(i).getId())).unique();
-                    if (menusBean!=null){
+                   MenusBean menusBean= menusBeanDao.queryBuilder().where(MenusBeanDao.Properties.Id.eq(menurefsBeanList.get(i).getWeibaoMenuId())).unique();
+                    if (menusBean!=null && menusBean.getParentId()==-1){
                         menusBeanList3.add(menusBean);
                     }
 
@@ -262,7 +262,11 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
                 break;
             case R.id.xiayibu:
                 if (p4!=-1){
-                    startActivity(new Intent(WeiBaoYuCeShiActivity.this,SheBeiWeiBaoYuCeShiActivity.class));
+                    startActivity(new Intent(WeiBaoYuCeShiActivity.this,SheBeiWeiBaoYuCeShiActivity.class).
+                            putExtra("parentId",menusBeanList4.get(p4).getId()).
+                            putExtra("dizhi",itemsBeanList.get(p1).getAddress()).
+                            putExtra("xitong",menusBeanList3.get(p3).getName()).
+                            putExtra("weibaoxiang",menusBeanList4.get(p4).getName()));
                 }else {
                     showMSG("信息没有选择完整!",4);
                 }

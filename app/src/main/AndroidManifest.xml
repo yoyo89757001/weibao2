@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.examples.weibao">
 
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
 
@@ -19,8 +19,6 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
-
-
     <application
         android:name=".MyAppLaction"
         android:allowBackup="true"
@@ -28,7 +26,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.NoActionBar">
+        android:theme="@style/AppTheme">
         <activity
             android:name=".ui.KaiPingActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
@@ -63,15 +61,15 @@
         <activity android:name=".ui.HomePageActivity" />
         <activity android:name=".ui.LiaoTianActivity" />
         <activity android:name=".ui.XiaoXiActivity" />
-        <activity android:name=".ui.ErWeiMaActivity"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-            />
-
+        <activity
+            android:name=".ui.ErWeiMaActivity"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:screenOrientation="portrait"
             tools:replace="screenOrientation" />
-
+        <activity android:name=".ui.SaoYiSaoTanChuActivity" />
+        <activity android:name=".ui.ChaKanBaoZhangJiLuActivity"></activity>
     </application>
 
 </manifest>

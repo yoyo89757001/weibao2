@@ -4,16 +4,19 @@ import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.examples.weibao.MyAppLaction;
 import com.examples.weibao.R;
 import com.examples.weibao.adapters.SheBeiAdapter;
-import com.examples.weibao.dialogs.ZhuangTaiXuanZe2Dialog;
-import com.examples.weibao.dialogs.ZhuangTaiXuanZeDialog;
+import com.examples.weibao.allbeans.MenurefsBeanDao;
+import com.examples.weibao.allbeans.MenusBean;
+import com.examples.weibao.allbeans.MenusBeanDao;
 import com.examples.weibao.intface.ClickIntface;
 import com.examples.weibao.utils.Utils;
 import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
@@ -28,45 +31,51 @@ public class SheBeiWeiBaoYuCeShiActivity extends Activity implements ClickIntfac
     private int dw,dh;
     private LRecyclerView lRecyclerView;
     private TextView t1,t2,t3;
-    private List<String> dataList;
     private SheBeiAdapter sheBeiAdapter;
     private LRecyclerViewAdapter lRecyclerViewAdapter;
     private LinearLayoutManager linearLayoutManager;
     private int isTrue;
     private String miaoshu;
+    private long parentId=-2L;
+
+    private List<MenusBean> menusBeanList=null;
+    private MenusBean menusBean=null;
+    private MenusBeanDao menusBeanDao=null;
+    private String dizhi,xitong,weibaoxiang;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        xitong=getIntent().getStringExtra("xitong");
+        dizhi=getIntent().getStringExtra("dizhi");
+        weibaoxiang=getIntent().getStringExtra("weibaoxiang");
+        parentId=getIntent().getLongExtra("parentId",-2L);
+        menusBeanDao= MyAppLaction.myAppLaction.getDaoSession().getMenusBeanDao();
+        menusBeanList=menusBeanDao.queryBuilder().where(MenusBeanDao.Properties.ParentId.eq(parentId)).list();
+        if (menusBeanList!=null){
+            for (int i=0;i<menusBeanList.size();i++){
+                Log.d("SheBeiWeiBaoYuCeShiActi", menusBeanList.get(i).getName()+menusBeanList.get(i).getType());
+            }
+
+        }
+
+
         setContentView(R.layout.activity_she_bei_wei_bao_yu_ce_shi);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            //透明状态栏
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            //透明导航栏
-            //  getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
             SystemBarTintManager tintManager = new SystemBarTintManager(this);
-            // 激活状态栏
             tintManager.setStatusBarTintEnabled(true);
-            // enable navigation bar tint 激活导航栏
-            //  tintManager.setNavigationBarTintEnabled(true);
-            //设置系统栏设置颜色
-            //tintManager.setTintColor(R.color.red);
-            //给状态栏设置颜色
             tintManager.setStatusBarTintResource(R.color.lanse33);
-            //Apply the specified drawable or color resource to the system navigation bar.
-            //给导航栏设置资源
-            // tintManager.setNavigationBarTintResource(R.color.dark_grey);
+
         }
 
 
         dw = Utils.getDisplaySize(this).x;
         dh = Utils.getDisplaySize(this).y;
 
-        dataList=new ArrayList<>();
-        dataList.add("ddddddd");
-        dataList.add("dfff");
+
 
         TextView t= (TextView) findViewById(R.id.title);
         t.setText("设备维保与测试");
@@ -78,8 +87,8 @@ public class SheBeiWeiBaoYuCeShiActivity extends Activity implements ClickIntfac
             }
         });
         t1= (TextView) findViewById(R.id.t1);
-        t1= (TextView) findViewById(R.id.t1);
-        t1= (TextView) findViewById(R.id.t1);
+        t2= (TextView) findViewById(R.id.t2);
+        t3= (TextView) findViewById(R.id.t3);
 
 
         LinearLayout l= (LinearLayout) findViewById(R.id.tl);
@@ -89,7 +98,7 @@ public class SheBeiWeiBaoYuCeShiActivity extends Activity implements ClickIntfac
         l.invalidate();
 
         lRecyclerView= (LRecyclerView) findViewById(R.id.lrecyclerview);
-        sheBeiAdapter=new SheBeiAdapter(dataList);
+        sheBeiAdapter=new SheBeiAdapter(menusBeanList,menusBeanDao,SheBeiWeiBaoYuCeShiActivity.this);
         sheBeiAdapter.setClickIntface(this);
         lRecyclerViewAdapter = new LRecyclerViewAdapter(sheBeiAdapter);
 
@@ -107,6 +116,10 @@ public class SheBeiWeiBaoYuCeShiActivity extends Activity implements ClickIntfac
                 .setColorResource(R.color.view_bg)
                 .build();
         lRecyclerView.addItemDecoration(divider);
+
+        t1.setText(dizhi+"");
+        t2.setText(xitong+"");
+        t3.setText(weibaoxiang+"");
     }
 
     @Override

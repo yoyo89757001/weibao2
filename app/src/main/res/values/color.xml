@@ -193,7 +193,7 @@
     <color name="hint">#b79e9b9b</color>
     <color name="write">#ffffffff</color>
     <color name="blake">#ff111111</color>
-    <color name="blake2">#4e4e4e</color>
+    <color name="blake2">#fb4e4e4e</color>
     <color name="control_background">#cc4285f4</color>
     <color name="testdi">#4f050505</color>
     <color name="textcolor">#8c050505</color>
