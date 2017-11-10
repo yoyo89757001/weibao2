@@ -1,7 +1,6 @@
 package com.examples.weibao.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,10 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.examples.weibao.MyAppLaction;
 import com.examples.weibao.R;
-import com.examples.weibao.allbeans.BenDiMenusBeanDao;
-import com.examples.weibao.allbeans.ItemsBean;
 import com.examples.weibao.allbeans.MenusBean;
 import com.examples.weibao.intface.ClickIntface;
 
@@ -23,24 +19,22 @@ import java.util.List;
  */
 
 
-public class ZhuangTaiXuanZeAdapter extends BaseAdapter {
+public class YiChangAdapter extends BaseAdapter {
 
     private LayoutInflater mInflater;//得到一个LayoutInfalter对象用来导入布局
     private List<MenusBean> fuWuQiBeanList;
-    private BenDiMenusBeanDao benDiMenusBeanDao=null;
+
     private ClickIntface clickIntface;
-    private long sheibeiId=0;
+
 
     public void setClickIntface(ClickIntface clickIntface){
         this.clickIntface=clickIntface;
     }
 
     /*构造函数*/
-    public ZhuangTaiXuanZeAdapter(Context context, List<MenusBean> fuWuQiBeanList,long sheibeiId) {
+    public YiChangAdapter(Context context, List<MenusBean> fuWuQiBeanList) {
         this.mInflater = LayoutInflater.from(context);
         this.fuWuQiBeanList=fuWuQiBeanList;
-        this.sheibeiId=sheibeiId;
-        benDiMenusBeanDao= MyAppLaction.myAppLaction.getDaoSession().getBenDiMenusBeanDao();
     }
 
 
@@ -67,7 +61,7 @@ public class ZhuangTaiXuanZeAdapter extends BaseAdapter {
         //观察convertView随ListView滚动情况
 
         if (convertView == null) {
-            convertView = mInflater.inflate(R.layout.zhuangtai_iem,null);
+            convertView = mInflater.inflate(R.layout.yczhuangtai_iem,null);
             holder = new ViewHolder();
                     /*得到各个控件的对象*/
             holder.title = (TextView) convertView.findViewById(R.id.dizhi);
@@ -79,8 +73,6 @@ public class ZhuangTaiXuanZeAdapter extends BaseAdapter {
         }
             /*设置TextView显示的内容，即我们存放在动态数组中的数据*/
         holder.title.setText(fuWuQiBeanList.get(position).getName());
-
-
         if (fuWuQiBeanList.get(position).getPageNum()!=null && fuWuQiBeanList.get(position).getPageNum().equals("ww")){
             holder.imageview.setImageResource(R.drawable.ic_selected);
         }else {

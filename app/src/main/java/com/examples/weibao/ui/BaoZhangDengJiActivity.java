@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -277,7 +278,7 @@ public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
 
 
                 }else {
-                    showMSG("信没有填写完整",3);
+                    showMSG("信息没有填写完整",3);
                 }
 
 
@@ -314,9 +315,6 @@ public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
                 e.printStackTrace();
             }
         }
-
-
-
 
     }
 
@@ -372,16 +370,13 @@ public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
                                         FileUtil.isExists(FileUtil.PATH, fn);
                                         mSavePhotoFile=new File( FileUtil.SDPATH + File.separator + FileUtil.PATH + File.separator + fn);
 
-                                        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                        // Ensure that there's a camera activity to handle the intent
-                                        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                                            // Continue only if the File was successfully created
-                                            if (mSavePhotoFile != null) {
-                                                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-                                                        Uri.fromFile(mSavePhotoFile));//设置文件保存的URI
-                                                startActivityForResult(takePictureIntent, 333);
-                                            }
-                                        }
+                                        Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                        Uri photoUri = FileProvider.getUriForFile(
+                                                BaoZhangDengJiActivity.this,
+                                                getPackageName() + ".fileprovider",
+                                                mSavePhotoFile);
+                                        takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                                        startActivityForResult(takePhotoIntent, 333);
 
                                         break;
                                     case 1:

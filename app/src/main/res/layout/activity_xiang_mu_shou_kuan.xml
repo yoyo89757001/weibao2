@@ -150,7 +150,7 @@
 
             <TextView
                 android:textSize="16sp"
-                android:text="200000"
+                android:text="￥ 0.0"
                 android:id="@+id/bencishoukuan"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
@@ -202,10 +202,12 @@
 
                 <EditText
                     android:textSize="16sp"
-                    android:text="200000"
                     android:background="@null"
                     android:id="@+id/jine"
-                    android:layout_marginLeft="6dp"
+                    android:inputType="numberDecimal"
+                    android:paddingLeft="6dp"
+                    android:hint="请输入金额"
+                    android:textColorHint="@color/blake2"
                     android:layout_marginRight="@dimen/sp_16"
                     android:textColor="@color/black"
                     android:layout_width="match_parent"
@@ -218,4 +220,16 @@
 
     </LinearLayout>
 
+    <Button
+        android:layout_marginLeft="26dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="26dp"
+        android:textSize="16sp"
+        android:id="@+id/baocun"
+        android:textColor="@color/white"
+        android:text="保 存"
+        android:background="@drawable/jiaohu"
+        android:layout_marginBottom="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="48dp" />
 </RelativeLayout>

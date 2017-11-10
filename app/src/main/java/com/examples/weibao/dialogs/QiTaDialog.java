@@ -17,13 +17,13 @@ import com.examples.weibao.views.RadioButton;
  * @Time: 下午12:37:43
  * @author Tom.Cai
  */
-public class ZhuangTaiXuanZe2Dialog extends Dialog {
-    private RadioButton rb3,rb4;
+public class QiTaDialog extends Dialog {
     private TextView que,qu;
+    private EditText shuru;
     private int isTrue;
 
 
-    public ZhuangTaiXuanZe2Dialog(Context context, int isTrue) {
+    public QiTaDialog(Context context) {
         super(context, R.style.dialog_style2);
         this.isTrue=isTrue;
         setCustomDialog();
@@ -31,44 +31,9 @@ public class ZhuangTaiXuanZe2Dialog extends Dialog {
 
     private void setCustomDialog() {
         View mView = LayoutInflater.from(getContext()).inflate(R.layout.queren_ll6, null);
-
-        rb3= (RadioButton) mView.findViewById(R.id.rb3);
-        rb3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isTrue=3;
-                rb4.ChongZhi();
-                rb3.XuanZhong();
-            }
-        });
-        rb4= (RadioButton) mView.findViewById(R.id.rb4);
-        rb4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isTrue=4;
-                rb3.ChongZhi();
-                rb4.XuanZhong();
-
-            }
-        });
-
-        rb3.setText("设备松动,已紧固处理");
-        rb4.setText("设备有污垢,已清洁");
         que= (TextView) mView.findViewById(R.id.queding);
         qu= (TextView) mView.findViewById(R.id.quxiao);
-
-
-        switch (isTrue){
-
-            case 1:
-                rb3.XuanZhong();
-                break;
-            case 2:
-
-                rb4.XuanZhong();
-                break;
-
-        }
+        shuru= (EditText) mView.findViewById(R.id.shuru);
         super.setContentView(mView);
 
 

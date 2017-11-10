@@ -8,37 +8,50 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.examples.weibao.allbeans.DevicesBean;
 import com.examples.weibao.allbeans.MenusBean;
 import com.examples.weibao.allbeans.MenusBeanDao;
 import com.examples.weibao.intface.ClickIntface;
 import com.examples.weibao.R;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Administrator on 2017/10/3.
  */
-
+//  设备的 Adapter
 public class SheBeiAdapter extends RecyclerView.Adapter<SheBeiAdapter.ViewHolder> {
-    private List<MenusBean> datas;
+    private List<DevicesBean> datas;
     private ClickIntface clickIntface;
-    private List<MenusBean> menusBeanList1=null;
-    private List<MenusBean> menusBeanList2=null;
+    private List<MenusBean> menusBeanList1=new ArrayList<>();
+    private List<MenusBean> menusBeanList2=new ArrayList<>();
     private MenusBean menusBean=null;
     private MenusBeanDao menusBeanDao=null;
     private Context context;
+    private List<MenusBean> allMenusBeanList=null;
 
 
     public void setClickIntface(ClickIntface clickIntface){
         this.clickIntface=clickIntface;
     }
 
-    public SheBeiAdapter(List<MenusBean> datas, MenusBeanDao menusBeanDao, Context context) {
+    public SheBeiAdapter(List<DevicesBean> datas, MenusBeanDao menusBeanDao, Context context, List<MenusBean> menusBeanList22) {
         this.datas = datas;
         this.menusBeanDao=menusBeanDao;
         this.context=context;
+        allMenusBeanList=menusBeanList22;
+        int s=menusBeanList22.size();
+        for (int i=0;i<s;i++){
+            if (allMenusBeanList.get(i).getType()==1){
+                menusBeanList1.add(allMenusBeanList.get(i));
+            }else {
+                menusBeanList2.add(allMenusBeanList.get(i));
+            }
+        }
+
     }
     //创建新View，被LayoutManager所调用
     @Override
@@ -49,26 +62,26 @@ public class SheBeiAdapter extends RecyclerView.Adapter<SheBeiAdapter.ViewHolder
     //将数据与界面进行绑定的操作
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
-        viewHolder.bianhao.setText(datas.get(position).getSerialNumber()+"");
-        if (datas.get(position).getType()==1){
-            menusBeanList1=menusBeanDao.queryBuilder().where(MenusBeanDao.Properties.ParentId.eq(datas.get(position).getId())).list();
-            Log.d("SheBeiAdapter", "menusBeanList1.size():" + menusBeanList1.size());
+        viewHolder.bianhao.setText(datas.get(position).getDeviceNum()+"");
+      //  if (allMenusBeanList.get(position).getType()==1){
+           // menusBeanList1=menusBeanDao.queryBuilder().where(MenusBeanDao.Properties.ParentId.eq(datas.get(position).getId())).list();
+          //  Log.d("SheBeiAdapter", "menusBeanList1.size():" + menusBeanList1.size());
             if (menusBeanList1!=null){
-            SheBei2Adapter sheBei2Adapter=new SheBei2Adapter(context,menusBeanList1);
+            SheBei2Adapter sheBei2Adapter=new SheBei2Adapter(context,menusBeanList1,menusBeanDao,datas.get(position).getId());
             viewHolder.listView1.setAdapter(sheBei2Adapter);
             fixListViewHeight(viewHolder.listView1);
 
             }
-        }else {
+      //  }else {
 
-            menusBeanList2=menusBeanDao.queryBuilder().where(MenusBeanDao.Properties.ParentId.eq(datas.get(position).getId())).list();
+         //   menusBeanList2=menusBeanDao.queryBuilder().where(MenusBeanDao.Properties.ParentId.eq(datas.get(position).getId())).list();
             if (menusBeanList2!=null){
-                SheBei2Adapter sheBei2Adapter=new SheBei2Adapter(context,menusBeanList2);
+                SheBei2Adapter sheBei2Adapter=new SheBei2Adapter(context,menusBeanList2,menusBeanDao,datas.get(position).getId());
                 viewHolder.listView2.setAdapter(sheBei2Adapter);
                 fixListViewHeight(viewHolder.listView2);
             }
 
-        }
+     //   }
 
         if (menusBeanList1==null || menusBeanList1.size()==0){
             viewHolder.weibaoxiang.setVisibility(View.GONE);

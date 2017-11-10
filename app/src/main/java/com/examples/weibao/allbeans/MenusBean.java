@@ -31,7 +31,7 @@ import org.greenrobot.greendao.annotation.Generated;
         @Id
         @NotNull
         private Long id;
-        private Long mid;
+        private long mid;
         private int createBy;
         private long createTime;
         private int dtoResult;
@@ -39,18 +39,18 @@ import org.greenrobot.greendao.annotation.Generated;
         private int modifyBy;
         private long modifyTime;
         private String name;
-        private int pageNum;
-        private int pageSize;
+        private String pageNum;
+        private String pageSize;
         private int parentId;
         private String serialNumber;
         private int sort;
         private int status;
         private int type;
-        @Generated(hash = 1598436322)
-        public MenusBean(@NotNull Long id, Long mid, int createBy, long createTime,
+        @Generated(hash = 517547332)
+        public MenusBean(@NotNull Long id, long mid, int createBy, long createTime,
                 int dtoResult, int level, int modifyBy, long modifyTime, String name,
-                int pageNum, int pageSize, int parentId, String serialNumber, int sort,
-                int status, int type) {
+                String pageNum, String pageSize, int parentId, String serialNumber,
+                int sort, int status, int type) {
             this.id = id;
             this.mid = mid;
             this.createBy = createBy;
@@ -77,10 +77,10 @@ import org.greenrobot.greendao.annotation.Generated;
         public void setId(Long id) {
             this.id = id;
         }
-        public Long getMid() {
+        public long getMid() {
             return this.mid;
         }
-        public void setMid(Long mid) {
+        public void setMid(long mid) {
             this.mid = mid;
         }
         public int getCreateBy() {
@@ -125,16 +125,16 @@ import org.greenrobot.greendao.annotation.Generated;
         public void setName(String name) {
             this.name = name;
         }
-        public int getPageNum() {
+        public String getPageNum() {
             return this.pageNum;
         }
-        public void setPageNum(int pageNum) {
+        public void setPageNum(String pageNum) {
             this.pageNum = pageNum;
         }
-        public int getPageSize() {
+        public String getPageSize() {
             return this.pageSize;
         }
-        public void setPageSize(int pageSize) {
+        public void setPageSize(String pageSize) {
             this.pageSize = pageSize;
         }
         public int getParentId() {
@@ -167,6 +167,7 @@ import org.greenrobot.greendao.annotation.Generated;
         public void setType(int type) {
             this.type = type;
         }
+
 
 
     }

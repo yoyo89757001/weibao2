@@ -83,9 +83,7 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
             tintManager.setStatusBarTintEnabled(true);
             tintManager.setStatusBarTintResource(R.color.lanse33);
         }
-
         initDao();
-
         initView();
 
     }
@@ -147,10 +145,8 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
                         p1=position;
                         p3=-1;
                         p4=-1;
-                     //   Log.d("WeiBaoYuCeShiActivity", "position:" + position);
                         t2.setText(itemsBeanList.get(position).getAddress());
                         t1.setText(itemsBeanList.get(position).getName());
-
                         t3.setText("请选择");
                         t4.setText("请选择");
                         popupWindow.dismiss();
@@ -179,7 +175,6 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
 
                 //项目ID
                 long mb =itemsBeanList.get(p1).getId();
-                Log.d("WeiBaoYuCeShiActivity", "mb:" + mb);
 
                 //通过项目ID 在项目关系表中找出所有一级项目菜单
                menurefsBeanList = menurefsBeanDao.queryBuilder().where(MenurefsBeanDao.Properties.ItemId.eq(mb)).list();
@@ -188,7 +183,7 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
                    s=menurefsBeanList.size();
                }
 
-                Log.d("WeiBaoYuCeShiActivity", "s:" + s);
+
                 //通过菜单menurefsBeanList中的id查出所有菜单
                 for (int i=0;i<s;i++){
                    MenusBean menusBean= menusBeanDao.queryBuilder().where(MenusBeanDao.Properties.Id.eq(menurefsBeanList.get(i).getWeibaoMenuId())).unique();
@@ -263,6 +258,9 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
             case R.id.xiayibu:
                 if (p4!=-1){
                     startActivity(new Intent(WeiBaoYuCeShiActivity.this,SheBeiWeiBaoYuCeShiActivity.class).
+                            putExtra("itemId",itemsBeanList.get(p1).getId()).
+                            putExtra("serialNumber3",menusBeanList3.get(p3).getSerialNumber()).
+                            putExtra("serialNumber4",menusBeanList4.get(p4).getSerialNumber()).
                             putExtra("parentId",menusBeanList4.get(p4).getId()).
                             putExtra("dizhi",itemsBeanList.get(p1).getAddress()).
                             putExtra("xitong",menusBeanList3.get(p3).getName()).
@@ -270,7 +268,6 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
                 }else {
                     showMSG("信息没有选择完整!",4);
                 }
-
 
                 break;
 

@@ -12,41 +12,35 @@
         android:layout_height="240dp">
 
 
-       <TextView
-           android:layout_weight="1"
-           android:text="设备异常"
-           android:gravity="center"
-           android:layout_width="match_parent"
-           android:layout_height="0dp" />
-
-        <View
-            android:background="@color/view_bg"
-            android:layout_marginLeft="16dp"
-            android:id="@+id/v3"
-            android:layout_marginRight="16dp"
+        <RelativeLayout
+            android:layout_weight="4"
             android:layout_width="match_parent"
-            android:layout_height="0.8dp"/>
+            android:layout_height="0dp">
 
-        <com.examples.weibao.views.RadioButton
-            android:layout_width="match_parent"
-            android:gravity="center_vertical"
-            android:id="@+id/rb3"
-            android:layout_weight="1"
-            android:layout_height="0dp"/>
-        <View
-            android:background="@color/view_bg"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:id="@+id/v4"
-            android:layout_width="match_parent"
-            android:layout_height="0.8dp"/>
+            <TextView
+                android:textSize="18sp"
+                android:textColor="@color/blake"
+                android:text="其它"
+                android:id="@+id/ff"
+                android:layout_marginTop="10dp"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-    <com.examples.weibao.views.RadioButton
-        android:layout_width="match_parent"
-        android:gravity="center_vertical"
-        android:layout_weight="1"
-        android:id="@+id/rb4"
-        android:layout_height="0dp"/>
+            <EditText
+                android:padding="12dp"
+                android:layout_below="@+id/ff"
+                android:textColor="@color/blake2"
+                android:textSize="14sp"
+                android:background="@drawable/zhongkong"
+                android:gravity="top"
+                android:maxLength="200"
+                android:id="@+id/shuru"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </RelativeLayout>
+
 
         <View
             android:background="@color/view_bg"

@@ -1,7 +1,6 @@
 package com.examples.weibao.dialogs;
 import android.app.Dialog;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -17,7 +16,6 @@ import com.examples.weibao.allbeans.BenDiMenusBean;
 import com.examples.weibao.allbeans.BenDiMenusBeanDao;
 import com.examples.weibao.allbeans.MenusBean;
 import com.examples.weibao.allbeans.MenusBeanDao;
-import com.examples.weibao.intface.ClickIntface;
 
 import java.util.List;
 
@@ -28,7 +26,7 @@ import java.util.List;
  * @Time: 下午12:37:43
  * @author Tom.Cai
  */
-public class ZhuangTaiXuanZeDialog extends Dialog   {
+public class YiChangDialog extends Dialog   {
     private TextView que,qu;
     private ListView listView;
     private ZhuangTaiXuanZeAdapter adapter;
@@ -37,28 +35,26 @@ public class ZhuangTaiXuanZeDialog extends Dialog   {
     private Context context;
     private BenDiMenusBeanDao benDiMenusBeanDao=null;
     private int p=-1;
-    private long shibeiId=0;
+    private long shidianId=0;
 
-    public ZhuangTaiXuanZeDialog(Context context, List<MenusBean> menusBeanList, MenusBeanDao menusBeanDao,long shebeiId) {
+    public YiChangDialog(Context context, List<MenusBean> menusBeanList, MenusBeanDao menusBeanDao,long shidianId) {
         super(context, R.style.dialog_style2);
         this.menusBeanList=menusBeanList;
         this.menusBeanDao=menusBeanDao;
         this.context=context;
-        this.shibeiId=shebeiId;
+        this.shidianId=shidianId;
         benDiMenusBeanDao= MyAppLaction.myAppLaction.getDaoSession().getBenDiMenusBeanDao();
         setCustomDialog();
     }
 
 
-
-
     //4个数据的
     private void setCustomDialog() {
-        View mView = LayoutInflater.from(getContext()).inflate(R.layout.queren_ll5, null);
+        View mView = LayoutInflater.from(getContext()).inflate(R.layout.yichang, null);
         que= (TextView) mView.findViewById(R.id.queding);
         qu= (TextView) mView.findViewById(R.id.quxiao);
         listView= (ListView) mView.findViewById(R.id.listview);
-        adapter=new ZhuangTaiXuanZeAdapter(getContext(),menusBeanList,shibeiId);
+        adapter=new ZhuangTaiXuanZeAdapter(getContext(),menusBeanList,shidianId);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -72,40 +68,8 @@ public class ZhuangTaiXuanZeDialog extends Dialog   {
                 adapter.notifyDataSetChanged();
 
                 if (menusBeanList.get(position).getName().equals("设备异常")){
-                    List<MenusBean> menusBeanListss=menusBeanDao.queryBuilder().where(MenusBeanDao.Properties.ParentId.eq( menusBeanList.get(position).getId())).list();
-                    if (menusBeanListss!=null){
-                        final YiChangDialog dialog=new YiChangDialog(context,menusBeanListss,menusBeanDao,shibeiId);
-                        dialog.setOnPositiveListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
 
-                            }
-                        });
-                        dialog.setOnQuXiaoListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialog.dismiss();
-                            }
-                        });
-                        dialog.show();
-                    }
-
-
-                }else if (menusBeanList.get(position).getName().equals("其他")){
-                        QiTaDialog qiTaDialog=new QiTaDialog(context);
-                        qiTaDialog.setOnPositiveListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-
-                            }
-                        });
-                        qiTaDialog.setOnQuXiaoListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-
-                            }
-                        });
-                        qiTaDialog.show();
+                }else if (menusBeanList.get(position).getName().equals("其它")){
 
                 }
             }
@@ -116,7 +80,7 @@ public class ZhuangTaiXuanZeDialog extends Dialog   {
 
     }
 
-    public void baocun(SheBei2Adapter adapter, long shebeiId){
+    public void baocun(SheBei2Adapter adapter){
         if (p!=-1){
             if (menusBeanList.get(p).getName().equals("设备异常")){
 
@@ -125,14 +89,12 @@ public class ZhuangTaiXuanZeDialog extends Dialog   {
             }else {
 
             }
-           BenDiMenusBean gg= benDiMenusBeanDao.queryBuilder().where(BenDiMenusBeanDao.Properties.MensuId.eq(menusBeanList.get(p).getParentId()),
-                   BenDiMenusBeanDao.Properties.ParentId.eq(shebeiId)).unique();
+           BenDiMenusBean gg= benDiMenusBeanDao.queryBuilder().where(BenDiMenusBeanDao.Properties.MensuId.eq(menusBeanList.get(p).getParentId())).unique();
             if (gg==null){
                 BenDiMenusBean benDiMenusBean=new BenDiMenusBean();
                 benDiMenusBean.setId(System.currentTimeMillis());
                 benDiMenusBean.setMensuId(menusBeanList.get(p).getParentId());
                 benDiMenusBean.setIsQiTa(false);
-                benDiMenusBean.setParentId(shebeiId);
                 benDiMenusBean.setIsYiChang(false);
                 benDiMenusBean.setName(menusBeanList.get(p).getName());
                benDiMenusBeanDao.insert(benDiMenusBean);
@@ -142,7 +104,6 @@ public class ZhuangTaiXuanZeDialog extends Dialog   {
                 benDiMenusBean.setId(gg.getId());
                 benDiMenusBean.setMensuId(menusBeanList.get(p).getParentId());
                 benDiMenusBean.setIsQiTa(false);
-                benDiMenusBean.setParentId(shebeiId);
                 benDiMenusBean.setIsYiChang(false);
                 benDiMenusBean.setName(menusBeanList.get(p).getName());
                 benDiMenusBeanDao.update(benDiMenusBean);

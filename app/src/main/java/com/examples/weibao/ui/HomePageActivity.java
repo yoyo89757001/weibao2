@@ -328,12 +328,20 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
 
                     ResponseBody body = response.body();
                     String ss=body.string().trim();
-                    Log.d("InFoActivity", "ss" + ss.substring(0,4000));
-                    Log.d("InFoActivity", "ss" + ss.substring(4000,8000));
-                    Log.d("InFoActivity", "ss" + ss.substring(8000,12000));
-                    Log.d("InFoActivity", "ss" + ss.substring(12000,16000));
-                    Log.d("InFoActivity", "ss" + ss.substring(16000,20000));
-                    Log.d("InFoActivity", "ss" + ss.substring(20000,ss.length()));
+                    int i9=0;
+                    while (true){
+                        if (i9+4000>=ss.length()){
+                            Log.d("HomePageActivity", ss.substring(i9, ss.length()));
+                            break;
+                        }else {
+                            Log.d("HomePageActivity", ss.substring(i9, i9 += 4000));
+                        }
+
+
+
+                    }
+
+
 
                     JsonObject jsonObject= GsonUtil.parse(ss).getAsJsonObject();
                     Gson gson=new Gson();
