@@ -126,7 +126,7 @@ public class BaoZhangChuLiActivity extends AppCompatActivity implements View.OnC
                 this.getSupportFragmentManager(), mFragmentList);
         mPageVp.setAdapter(mFragmentAdapter);
         mPageVp.setCurrentItem(0);
-
+        mPageVp.setOffscreenPageLimit(3);
         mPageVp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             /**

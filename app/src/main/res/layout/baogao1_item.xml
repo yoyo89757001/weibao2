@@ -20,7 +20,7 @@
             <TextView
                 android:textColor="@color/blake2"
                 android:text="e"
-                android:maxLines="4"
+                android:maxLines="5"
                 android:id="@+id/t1"
                 android:layout_marginTop="10dp"
                 android:ellipsize="end"
@@ -31,7 +31,7 @@
             <TextView
                 android:textColor="@color/write"
                 android:text="确认已通过"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="6dp"
                 android:background="@drawable/luse"
                 android:textSize="12sp"
                 android:id="@+id/t2"

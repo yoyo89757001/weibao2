@@ -392,8 +392,21 @@ public class WangJiMiMaActivity extends Activity {
                     DengLuBean zhaoPianBean=gson.fromJson(jsonElement,DengLuBean.class);
                     if (jsonObject.get("dtoResult").getAsString().equals("0")){
                         showMSG(jsonObject.get("dtoDesc").getAsString(),4);
+                        int  type=-1;
+                        if (zhaoPianBean.getRole_id()==10000004){
+                            //维保工程师
+                            type=0;
+
+                        }else if (zhaoPianBean.getRole_id()==10000005){
+                            //维保主管
+                            type=1;
+                        }else {
+                            //甲方
+                            type=2;
+                        }
                         zhaoPianBean.setUserId(zhaoPianBean.getId());
                         zhaoPianBean.setId(123456L);
+                        zhaoPianBean.setStatus(type);
                         zhaoPianBean.setQqTime(dengLuBean.getQqTime()==null?"2017-01-01 11:11:11":dengLuBean.getQqTime());
                         zhaoPianBean.setMima(mima1.getText().toString().trim());
                         zhaoPianBean.setZhuji("http://14.23.169.42:8090/api/");

@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.examples.weibao">
 
-
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
@@ -70,7 +69,7 @@
             android:screenOrientation="portrait"
             tools:replace="screenOrientation" />
         <activity android:name=".ui.SaoYiSaoTanChuActivity" />
-        <activity android:name=".ui.ChaKanBaoZhangJiLuActivity"/>
+        <activity android:name=".ui.ChaKanBaoZhangJiLuActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -82,6 +81,7 @@
                 android:resource="@xml/provider_pathss" />
         </provider>
 
+        <activity android:name=".ui.ChaKanShiShiBaoGaoActivity"></activity>
     </application>
 
 </manifest>

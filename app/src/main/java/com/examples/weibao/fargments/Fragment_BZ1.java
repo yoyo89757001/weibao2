@@ -9,10 +9,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.examples.weibao.MyAppLaction;
 import com.examples.weibao.R;
 import com.examples.weibao.adapters.BaoZhangAdapter1;
+import com.examples.weibao.allbeans.DengLuBean;
+import com.examples.weibao.allbeans.DengLuBeanDao;
+import com.examples.weibao.allbeans.DevicesBean;
+import com.examples.weibao.allbeans.DevicesBeanDao;
+import com.examples.weibao.allbeans.FaultsBean;
+import com.examples.weibao.allbeans.FaultsBeanDao;
 import com.examples.weibao.ui.BaoZhangChaKanActivity;
-import com.examples.weibao.ui.SheBeiWeiBaoYuCeShiActivity;
 import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
@@ -30,12 +36,17 @@ public class Fragment_BZ1 extends Fragment {
     private LinearLayoutManager linearLayoutManager;
     private BaoZhangAdapter1 adapter1=null;
     private List<String> stringList;
+    private DengLuBeanDao dengLuBeanDao=null;
+    private DengLuBean dengLuBean=null;
+    private FaultsBeanDao faultsBeanDao=null;
+    private List<FaultsBean> faultsBeanList=null;
+    private DevicesBeanDao devicesBeanDao=null;
+    private List<DevicesBean> devicesBeanList=null;
+
 
 
     public Fragment_BZ1() {
             stringList=new ArrayList<>();
-        stringList.add("dsds");
-        stringList.add("dsds");
 
     }
 
@@ -43,6 +54,9 @@ public class Fragment_BZ1 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        faultsBeanDao= MyAppLaction.myAppLaction.getDaoSession().getFaultsBeanDao();
+        dengLuBeanDao=MyAppLaction.myAppLaction.getDaoSession().getDengLuBeanDao();
+
        View view=inflater.inflate(R.layout.fragment_fragment__bz1, container, false);
 
 
@@ -70,5 +84,7 @@ public class Fragment_BZ1 extends Fragment {
 
         return view;
     }
+
+
 
 }

@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.examples.weibao.R;
+import com.examples.weibao.allbeans.DetectionsBean;
 import com.examples.weibao.allbeans.MenusBean;
 import com.examples.weibao.intface.ClickIntface;
 
@@ -22,8 +23,8 @@ import java.util.List;
 public class YiChangAdapter extends BaseAdapter {
 
     private LayoutInflater mInflater;//得到一个LayoutInfalter对象用来导入布局
-    private List<MenusBean> fuWuQiBeanList;
-
+    private List<DetectionsBean> fuWuQiBeanList;
+    private long shebeiId=0;
     private ClickIntface clickIntface;
 
 
@@ -32,9 +33,11 @@ public class YiChangAdapter extends BaseAdapter {
     }
 
     /*构造函数*/
-    public YiChangAdapter(Context context, List<MenusBean> fuWuQiBeanList) {
+    public YiChangAdapter(Context context, List<DetectionsBean> fuWuQiBeanList,long sheBeiId) {
         this.mInflater = LayoutInflater.from(context);
         this.fuWuQiBeanList=fuWuQiBeanList;
+        this.shebeiId=sheBeiId;
+
     }
 
 
@@ -72,7 +75,7 @@ public class YiChangAdapter extends BaseAdapter {
             holder = (ViewHolder)convertView.getTag();//取出ViewHolder对象
         }
             /*设置TextView显示的内容，即我们存放在动态数组中的数据*/
-        holder.title.setText(fuWuQiBeanList.get(position).getName());
+        holder.title.setText(fuWuQiBeanList.get(position).getRemark());
         if (fuWuQiBeanList.get(position).getPageNum()!=null && fuWuQiBeanList.get(position).getPageNum().equals("ww")){
             holder.imageview.setImageResource(R.drawable.ic_selected);
         }else {

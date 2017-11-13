@@ -11,9 +11,11 @@ import android.widget.TextView;
 import com.examples.weibao.MyAppLaction;
 import com.examples.weibao.R;
 import com.examples.weibao.adapters.SheBei2Adapter;
+import com.examples.weibao.adapters.YiChangAdapter;
 import com.examples.weibao.adapters.ZhuangTaiXuanZeAdapter;
 import com.examples.weibao.allbeans.BenDiMenusBean;
 import com.examples.weibao.allbeans.BenDiMenusBeanDao;
+import com.examples.weibao.allbeans.DetectionsBean;
 import com.examples.weibao.allbeans.MenusBean;
 import com.examples.weibao.allbeans.MenusBeanDao;
 
@@ -29,20 +31,20 @@ import java.util.List;
 public class YiChangDialog extends Dialog   {
     private TextView que,qu;
     private ListView listView;
-    private ZhuangTaiXuanZeAdapter adapter;
-    private List<MenusBean> menusBeanList=null;
+    private YiChangAdapter adapter;
+    private List<DetectionsBean> menusBeanList=null;
     private MenusBeanDao menusBeanDao=null;
     private Context context;
     private BenDiMenusBeanDao benDiMenusBeanDao=null;
     private int p=-1;
-    private long shidianId=0;
+    private long sheBeiId=0;
 
-    public YiChangDialog(Context context, List<MenusBean> menusBeanList, MenusBeanDao menusBeanDao,long shidianId) {
+    public YiChangDialog(Context context, List<DetectionsBean> menusBeanList, MenusBeanDao menusBeanDao,long shedianId) {
         super(context, R.style.dialog_style2);
         this.menusBeanList=menusBeanList;
         this.menusBeanDao=menusBeanDao;
         this.context=context;
-        this.shidianId=shidianId;
+        this.sheBeiId=shedianId;
         benDiMenusBeanDao= MyAppLaction.myAppLaction.getDaoSession().getBenDiMenusBeanDao();
         setCustomDialog();
     }
@@ -54,7 +56,7 @@ public class YiChangDialog extends Dialog   {
         que= (TextView) mView.findViewById(R.id.queding);
         qu= (TextView) mView.findViewById(R.id.quxiao);
         listView= (ListView) mView.findViewById(R.id.listview);
-        adapter=new ZhuangTaiXuanZeAdapter(getContext(),menusBeanList,shidianId);
+        adapter=new YiChangAdapter(getContext(),menusBeanList,sheBeiId);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -67,11 +69,7 @@ public class YiChangDialog extends Dialog   {
                 menusBeanList.get(position).setPageNum("ww");
                 adapter.notifyDataSetChanged();
 
-                if (menusBeanList.get(position).getName().equals("设备异常")){
 
-                }else if (menusBeanList.get(position).getName().equals("其它")){
-
-                }
             }
 
         });
@@ -82,34 +80,28 @@ public class YiChangDialog extends Dialog   {
 
     public void baocun(SheBei2Adapter adapter){
         if (p!=-1){
-            if (menusBeanList.get(p).getName().equals("设备异常")){
 
-            }else if (menusBeanList.get(p).getName().equals("其它")){
+//           BenDiMenusBean gg= benDiMenusBeanDao.queryBuilder().where(BenDiMenusBeanDao.Properties.MensuId.eq(menusBeanList.get(p).getParentId())).unique();
+//            if (gg==null){
+//                BenDiMenusBean benDiMenusBean=new BenDiMenusBean();
+//                benDiMenusBean.setId(System.currentTimeMillis());
+//                benDiMenusBean.setMensuId(menusBeanList.get(p).getParentId());
+//                benDiMenusBean.setIsQiTa(false);
+//                benDiMenusBean.setIsYiChang(false);
+//                benDiMenusBean.setName(menusBeanList.get(p).getName());
+//               benDiMenusBeanDao.insert(benDiMenusBean);
+//
+//            }else {
+//                BenDiMenusBean benDiMenusBean=new BenDiMenusBean();
+//                benDiMenusBean.setId(gg.getId());
+//                benDiMenusBean.setMensuId(menusBeanList.get(p).getParentId());
+//                benDiMenusBean.setIsQiTa(false);
+//                benDiMenusBean.setIsYiChang(false);
+//                benDiMenusBean.setName(menusBeanList.get(p).getName());
+//                benDiMenusBeanDao.update(benDiMenusBean);
 
-            }else {
-
-            }
-           BenDiMenusBean gg= benDiMenusBeanDao.queryBuilder().where(BenDiMenusBeanDao.Properties.MensuId.eq(menusBeanList.get(p).getParentId())).unique();
-            if (gg==null){
-                BenDiMenusBean benDiMenusBean=new BenDiMenusBean();
-                benDiMenusBean.setId(System.currentTimeMillis());
-                benDiMenusBean.setMensuId(menusBeanList.get(p).getParentId());
-                benDiMenusBean.setIsQiTa(false);
-                benDiMenusBean.setIsYiChang(false);
-                benDiMenusBean.setName(menusBeanList.get(p).getName());
-               benDiMenusBeanDao.insert(benDiMenusBean);
-
-            }else {
-                BenDiMenusBean benDiMenusBean=new BenDiMenusBean();
-                benDiMenusBean.setId(gg.getId());
-                benDiMenusBean.setMensuId(menusBeanList.get(p).getParentId());
-                benDiMenusBean.setIsQiTa(false);
-                benDiMenusBean.setIsYiChang(false);
-                benDiMenusBean.setName(menusBeanList.get(p).getName());
-                benDiMenusBeanDao.update(benDiMenusBean);
-
-            }
-            adapter.gengxin();
+         //   }
+           // adapter.gengxin();
         }
 
     }

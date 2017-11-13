@@ -15,6 +15,8 @@ import com.examples.weibao.adapters.SheBei2Adapter;
 import com.examples.weibao.adapters.ZhuangTaiXuanZeAdapter;
 import com.examples.weibao.allbeans.BenDiMenusBean;
 import com.examples.weibao.allbeans.BenDiMenusBeanDao;
+import com.examples.weibao.allbeans.DetectionsBean;
+import com.examples.weibao.allbeans.DetectionsBeanDao;
 import com.examples.weibao.allbeans.MenusBean;
 import com.examples.weibao.allbeans.MenusBeanDao;
 import com.examples.weibao.intface.ClickIntface;
@@ -37,15 +39,18 @@ public class ZhuangTaiXuanZeDialog extends Dialog   {
     private Context context;
     private BenDiMenusBeanDao benDiMenusBeanDao=null;
     private int p=-1;
-    private long shibeiId=0;
+    private long shebeiId=0;
+    private DetectionsBeanDao detectionsBeanDao=null;
+    private List<DetectionsBean> detectionsBeanList=null;
 
     public ZhuangTaiXuanZeDialog(Context context, List<MenusBean> menusBeanList, MenusBeanDao menusBeanDao,long shebeiId) {
         super(context, R.style.dialog_style2);
         this.menusBeanList=menusBeanList;
         this.menusBeanDao=menusBeanDao;
         this.context=context;
-        this.shibeiId=shebeiId;
+        this.shebeiId=shebeiId;
         benDiMenusBeanDao= MyAppLaction.myAppLaction.getDaoSession().getBenDiMenusBeanDao();
+        detectionsBeanDao= MyAppLaction.myAppLaction.getDaoSession().getDetectionsBeanDao();
         setCustomDialog();
     }
 
@@ -58,7 +63,7 @@ public class ZhuangTaiXuanZeDialog extends Dialog   {
         que= (TextView) mView.findViewById(R.id.queding);
         qu= (TextView) mView.findViewById(R.id.quxiao);
         listView= (ListView) mView.findViewById(R.id.listview);
-        adapter=new ZhuangTaiXuanZeAdapter(getContext(),menusBeanList,shibeiId);
+        adapter=new ZhuangTaiXuanZeAdapter(getContext(),menusBeanList,shebeiId);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -72,9 +77,16 @@ public class ZhuangTaiXuanZeDialog extends Dialog   {
                 adapter.notifyDataSetChanged();
 
                 if (menusBeanList.get(position).getName().equals("设备异常")){
-                    List<MenusBean> menusBeanListss=menusBeanDao.queryBuilder().where(MenusBeanDao.Properties.ParentId.eq( menusBeanList.get(position).getId())).list();
+                    Log.d("ZhuangTaiXuanZeDialog", "menusBeanList.get(position).getId():" + menusBeanList.get(position).getId());
+                    List<DetectionsBean> menusBeanListss=detectionsBeanDao.queryBuilder().where(DetectionsBeanDao.Properties.WeibaoMenuId.eq( menusBeanList.get(position).getId())).list();
                     if (menusBeanListss!=null){
-                        final YiChangDialog dialog=new YiChangDialog(context,menusBeanListss,menusBeanDao,shibeiId);
+                        int s2= menusBeanListss.size();
+                        Log.d("ZhuangTaiXuanZeDialog", "s2:" + s2);
+                        for (int i=0;i<s2;i++){
+                            menusBeanListss.get(i).setPageNum("qq");
+                        }
+
+                        final YiChangDialog dialog=new YiChangDialog(context,menusBeanListss,menusBeanDao,shebeiId);
                         dialog.setOnPositiveListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {

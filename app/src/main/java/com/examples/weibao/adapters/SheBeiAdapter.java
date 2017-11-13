@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -69,7 +68,7 @@ public class SheBeiAdapter extends RecyclerView.Adapter<SheBeiAdapter.ViewHolder
             if (menusBeanList1!=null){
             SheBei2Adapter sheBei2Adapter=new SheBei2Adapter(context,menusBeanList1,menusBeanDao,datas.get(position).getId());
             viewHolder.listView1.setAdapter(sheBei2Adapter);
-            fixListViewHeight(viewHolder.listView1);
+           // fixListViewHeight(viewHolder.listView1);
 
             }
       //  }else {
@@ -78,7 +77,7 @@ public class SheBeiAdapter extends RecyclerView.Adapter<SheBeiAdapter.ViewHolder
             if (menusBeanList2!=null){
                 SheBei2Adapter sheBei2Adapter=new SheBei2Adapter(context,menusBeanList2,menusBeanDao,datas.get(position).getId());
                 viewHolder.listView2.setAdapter(sheBei2Adapter);
-                fixListViewHeight(viewHolder.listView2);
+              //  fixListViewHeight(viewHolder.listView2);
             }
 
      //   }
@@ -121,25 +120,25 @@ public class SheBeiAdapter extends RecyclerView.Adapter<SheBeiAdapter.ViewHolder
         }
     }
 
-    public void fixListViewHeight(ListView listView) {
-        // 如果没有设置数据适配器，则ListView没有子项，返回。
-        ListAdapter listAdapter = listView.getAdapter();
-        int totalHeight = 0;
-        if (listAdapter == null) {
-            return;
-        }
-        for (int index = 0, len = listAdapter.getCount(); index < len; index++) {
-            View listViewItem = listAdapter.getView(index , null, listView);
-            // 计算子项View 的宽高
-            listViewItem.measure(0, 0);
-            // 计算所有子项的高度和
-            totalHeight += listViewItem.getMeasuredHeight();
-        }
-
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        // listView.getDividerHeight()获取子项间分隔符的高度
-        // params.height设置ListView完全显示需要的高度
-        params.height = totalHeight+ (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-        listView.setLayoutParams(params);
-    }
+//    public void fixListViewHeight(ListView listView) {
+//        // 如果没有设置数据适配器，则ListView没有子项，返回。
+//        ListAdapter listAdapter = listView.getAdapter();
+//        int totalHeight = 0;
+//        if (listAdapter == null) {
+//            return;
+//        }
+//        for (int index = 0, len = listAdapter.getCount(); index < len; index++) {
+//            View listViewItem = listAdapter.getView(index , null, listView);
+//            // 计算子项View 的宽高
+//            listViewItem.measure(0, 0);
+//            // 计算所有子项的高度和
+//            totalHeight += listViewItem.getMeasuredHeight();
+//        }
+//
+//        ViewGroup.LayoutParams params = listView.getLayoutParams();
+//        // listView.getDividerHeight()获取子项间分隔符的高度
+//        // params.height设置ListView完全显示需要的高度
+//        params.height = totalHeight+ (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+//        listView.setLayoutParams(params);
+//    }
 }

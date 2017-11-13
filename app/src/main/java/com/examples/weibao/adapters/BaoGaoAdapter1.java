@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.examples.weibao.BaogaoBeans.BaoGaoBean;
 import com.examples.weibao.R;
 import com.examples.weibao.intface.ClickIntface;
 
@@ -16,14 +17,14 @@ import java.util.List;
  */
 
 public class BaoGaoAdapter1 extends RecyclerView.Adapter<BaoGaoAdapter1.ViewHolder> {
-    private List<String> datas;
+    private List<BaoGaoBean.ObjectsBean> datas;
     private ClickIntface clickIntface;
 
     public void setClickIntface(ClickIntface clickIntface){
         this.clickIntface=clickIntface;
     }
 
-    public BaoGaoAdapter1(List<String> datas) {
+    public BaoGaoAdapter1(List<BaoGaoBean.ObjectsBean> datas) {
         this.datas = datas;
     }
     //创建新View，被LayoutManager所调用
@@ -35,7 +36,39 @@ public class BaoGaoAdapter1 extends RecyclerView.Adapter<BaoGaoAdapter1.ViewHold
     //将数据与界面进行绑定的操作
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
-        viewHolder.t1.setText(datas.get(position));
+        viewHolder.t1.setText(datas.get(position).getPlanArea());
+        switch (datas.get(position).getStatus()){
+            case 0:
+                //待发布
+                viewHolder.t2.setText("待发布");
+                viewHolder.t2.setBackgroundResource(R.drawable.ju);
+                break;
+            case 10:
+                //待审核
+                viewHolder.t2.setText("待审核");
+                viewHolder.t2.setBackgroundResource(R.drawable.ju);
+                break;
+            case 11:
+                //审核通过
+                viewHolder.t2.setText("审核通过");
+                viewHolder.t2.setBackgroundResource(R.drawable.luse);
+                break;
+            case 12:
+                //审核不通过
+                viewHolder.t2.setText("审核不通过");
+                viewHolder.t2.setBackgroundResource(R.drawable.ju);
+                break;
+            case 13:
+                //确认通过
+                viewHolder.t2.setText("确认通过");
+                viewHolder.t2.setBackgroundResource(R.drawable.luse);
+                break;
+            case 14:
+                //确认不通过
+                viewHolder.t2.setText("确认不通过");
+                viewHolder.t2.setBackgroundResource(R.drawable.ju);
+                break;
+        }
 
 
     }
