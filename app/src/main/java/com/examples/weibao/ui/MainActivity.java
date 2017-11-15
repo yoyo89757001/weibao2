@@ -228,15 +228,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
                         startActivity(new Intent(MainActivity.this,HomePageActivity.class));
 
                     }else {
-                        if (dengLuBean!=null && dengLuBean.getAccount()!=null && !dengLuBean.getAccount().equals("")){
-                            finish();
-                            startActivity(new Intent(MainActivity.this,HomePageActivity.class));
-                        }
+                        showMSG(jsonObject.get("dtoDesc").getAsString(),4);
                     }
 
                 }catch (Exception e){
-                    finish();
-                    startActivity(new Intent(MainActivity.this,HomePageActivity.class));
+                  //  finish();
+                  //  startActivity(new Intent(MainActivity.this,HomePageActivity.class));
                  dismissDialog();
                  showMSG("获取数据失败",3);
                     Log.d("WebsocketPushMsg", e.getMessage());

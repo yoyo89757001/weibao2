@@ -81,7 +81,9 @@
                 android:resource="@xml/provider_pathss" />
         </provider>
 
-        <activity android:name=".ui.ChaKanShiShiBaoGaoActivity"></activity>
+        <activity android:name=".ui.ChaKanShiShiBaoGaoActivity"/>
+        <service android:name=".DownloadService.DownloadService"/>
+
     </application>
 
 </manifest>

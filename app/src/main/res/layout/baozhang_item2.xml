@@ -63,7 +63,7 @@
 
             <TextView
                 android:textColor="@color/blake2"
-                android:text="dsdfddddddddddddddddddddddddddddddddddddddddddddddddfs"
+                android:text="dsdfdddddddddddddddfs"
                 android:maxLines="1"
                 android:layout_marginTop="10dp"
                 android:ellipsize="end"
@@ -74,7 +74,7 @@
 
             <TextView
                 android:textColor="@color/blake2"
-                android:text="dsdfddddddddddddddddddddddddddddddddddddddddddddddddfs"
+                android:text="dsdfddddddddddddddddddddfs"
                 android:maxLines="1"
                 android:layout_marginTop="2dp"
                 android:ellipsize="end"
@@ -85,7 +85,7 @@
 
             <TextView
                 android:textColor="@color/blake2"
-                android:text="dsdfddddddddddddddddddddddddddddddddddddddddddddddddfs"
+                android:text="dsdfddddddddddddddddfs"
                 android:maxLines="1"
                 android:textSize="14sp"
                 android:id="@+id/shijian"

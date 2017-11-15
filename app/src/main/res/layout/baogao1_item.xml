@@ -58,4 +58,12 @@
 
     </RelativeLayout>
 
+    <com.examples.weibao.views.MYListView
+        android:layout_width="match_parent"
+        android:id="@+id/mtlistview"
+        android:visibility="gone"
+        android:layout_height="wrap_content">
+
+    </com.examples.weibao.views.MYListView>
+
 </LinearLayout>

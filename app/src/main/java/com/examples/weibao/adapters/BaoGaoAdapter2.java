@@ -1,13 +1,27 @@
 package com.examples.weibao.adapters;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.os.ResultReceiver;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.examples.weibao.BaogaoBeans.BaoGaoBean;
+import com.examples.weibao.DownloadService.DownloadService;
 import com.examples.weibao.R;
+import com.examples.weibao.dialogs.TiJIaoDialog;
 import com.examples.weibao.intface.ClickIntface;
+import com.examples.weibao.ui.ChaKanShiShiBaoGaoActivity;
+import com.examples.weibao.utils.OpenFiles;
+import com.sdsmdg.tastytoast.TastyToast;
 
 import java.util.List;
 
@@ -16,14 +30,14 @@ import java.util.List;
  */
 
 public class BaoGaoAdapter2 extends RecyclerView.Adapter<BaoGaoAdapter2.ViewHolder> {
-    private List<String> datas;
+    private List<BaoGaoBean.ObjectsBean> datas;
     private ClickIntface clickIntface;
 
     public void setClickIntface(ClickIntface clickIntface){
         this.clickIntface=clickIntface;
     }
 
-    public BaoGaoAdapter2(List<String> datas) {
+    public BaoGaoAdapter2(List<BaoGaoBean.ObjectsBean> datas) {
         this.datas = datas;
     }
     //创建新View，被LayoutManager所调用
@@ -35,7 +49,7 @@ public class BaoGaoAdapter2 extends RecyclerView.Adapter<BaoGaoAdapter2.ViewHold
     //将数据与界面进行绑定的操作
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
-        viewHolder.t1.setText(datas.get(position));
+        viewHolder.t1.setText(datas.get(position).getItemName());
 
     }
     //获取数据的数量
@@ -55,4 +69,6 @@ public class BaoGaoAdapter2 extends RecyclerView.Adapter<BaoGaoAdapter2.ViewHold
 
         }
     }
+
+
 }

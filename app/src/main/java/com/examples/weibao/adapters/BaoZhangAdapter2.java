@@ -4,7 +4,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.examples.weibao.MyAppLaction;
@@ -14,7 +13,6 @@ import com.examples.weibao.allbeans.DevicesBeanDao;
 import com.examples.weibao.allbeans.FaultsBean;
 import com.examples.weibao.intface.ClickIntface;
 import com.examples.weibao.utils.DateUtils;
-import com.examples.weibao.views.MYListView;
 
 import java.util.List;
 
@@ -22,7 +20,7 @@ import java.util.List;
  * Created by Administrator on 2017/10/3.
  */
 
-public class BaoZhangAdapter1 extends RecyclerView.Adapter<BaoZhangAdapter1.ViewHolder> {
+public class BaoZhangAdapter2 extends RecyclerView.Adapter<BaoZhangAdapter2.ViewHolder> {
     private List<FaultsBean> datas;
     private ClickIntface clickIntface;
     private DevicesBeanDao devicesBeanDao=null;
@@ -33,7 +31,7 @@ public class BaoZhangAdapter1 extends RecyclerView.Adapter<BaoZhangAdapter1.View
         this.clickIntface=clickIntface;
     }
 
-    public BaoZhangAdapter1(List<FaultsBean> datas) {
+    public BaoZhangAdapter2(List<FaultsBean> datas) {
         this.datas = datas;
         devicesBeanDao= MyAppLaction.myAppLaction.getDaoSession().getDevicesBeanDao();
 
@@ -41,7 +39,7 @@ public class BaoZhangAdapter1 extends RecyclerView.Adapter<BaoZhangAdapter1.View
     //创建新View，被LayoutManager所调用
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.baozhang_item,viewGroup,false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.baozhang_item2,viewGroup,false);
         return new ViewHolder(view);
     }
     //将数据与界面进行绑定的操作

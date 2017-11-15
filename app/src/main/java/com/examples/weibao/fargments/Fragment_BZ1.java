@@ -56,18 +56,22 @@ public class Fragment_BZ1 extends Fragment {
                              Bundle savedInstanceState) {
         faultsBeanDao= MyAppLaction.myAppLaction.getDaoSession().getFaultsBeanDao();
         dengLuBeanDao=MyAppLaction.myAppLaction.getDaoSession().getDengLuBeanDao();
+        dengLuBean=dengLuBeanDao.load(123456L);
+        faultsBeanList=faultsBeanDao.loadAll();
 
        View view=inflater.inflate(R.layout.fragment_fragment__bz1, container, false);
 
 
         lRecyclerView= (LRecyclerView)view.findViewById(R.id.lrecyclerview);
 
-        adapter1=new BaoZhangAdapter1(stringList);
+        adapter1=new BaoZhangAdapter1(faultsBeanList==null ? new ArrayList<FaultsBean>():faultsBeanList);
         lRecyclerViewAdapter = new LRecyclerViewAdapter(adapter1);
         linearLayoutManager=new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         lRecyclerView.setLayoutManager(linearLayoutManager);
         lRecyclerView.setAdapter(lRecyclerViewAdapter);
+        lRecyclerView.setPullRefreshEnabled(false);
+        lRecyclerView.setLoadMoreEnabled(false);
 
         DividerDecoration divider = new DividerDecoration.Builder(getContext())
                 .setHeight(R.dimen.default_divider_height)
@@ -78,7 +82,9 @@ public class Fragment_BZ1 extends Fragment {
         lRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                startActivity(new Intent(getContext(), BaoZhangChaKanActivity.class));
+                startActivity(new Intent(getContext(), BaoZhangChaKanActivity.class)
+                        .putExtra("shebeiID",faultsBeanList.get(position).getDeviceId())
+                        .putExtra("baozhangID",faultsBeanList.get(position).getId()));
             }
         });
 

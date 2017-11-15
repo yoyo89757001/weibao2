@@ -10,6 +10,13 @@
             android:id="@+id/pp"
             layout="@layout/base_title"/>
 
+        <WebView
+            android:id="@+id/forum_context"
+            android:layout_below="@+id/pp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp" />
 
 
 

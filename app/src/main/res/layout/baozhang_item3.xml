@@ -24,14 +24,14 @@
 
         <TextView
             android:id="@+id/zhuangtai"
-            android:text="待回复"
+            android:text="已回复"
             android:layout_marginRight="16dp"
             android:paddingTop="4dp"
             android:paddingBottom="4dp"
             android:layout_marginLeft="8dp"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
-            android:background="@drawable/ju"
+            android:background="@drawable/luse"
             android:layout_marginTop="6dp"
             android:layout_marginBottom="6dp"
             android:layout_alignParentRight="true"

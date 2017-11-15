@@ -9,7 +9,6 @@ import com.examples.weibao.allbeans.DaoSession;
 import com.examples.weibao.allbeans.DengLuBean;
 import com.examples.weibao.cookies.CookiesManager;
 import com.tencent.bugly.Bugly;
-
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -38,7 +37,7 @@ public class MyAppLaction extends Application {
         try {
             Bugly.init(getApplicationContext(), "d25944f49f", false);
 
-//            //搜集本地tbs内核信息并上报服务器，服务器返回结果决定使用哪个内核。
+            //搜集本地tbs内核信息并上报服务器，服务器返回结果决定使用哪个内核。
 //            QbSdk.PreInitCallback cb = new QbSdk.PreInitCallback() {
 //
 //                @Override
@@ -55,6 +54,7 @@ public class MyAppLaction extends Application {
 //            };
 //            //x5内核初始化接口
 //            QbSdk.initX5Environment(getApplicationContext(), cb);
+
         } catch (Exception e) {
             Log.d("gggg", e.getMessage());
 

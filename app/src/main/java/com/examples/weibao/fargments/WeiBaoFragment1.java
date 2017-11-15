@@ -1,7 +1,7 @@
 package com.examples.weibao.fargments;
 
 
-import android.content.Intent;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import com.examples.weibao.BaogaoBeans.BaoGaoBean;
 import com.examples.weibao.MyAppLaction;
 import com.examples.weibao.R;
@@ -19,11 +18,9 @@ import com.examples.weibao.adapters.BaoGaoAdapter1;
 import com.examples.weibao.allbeans.DengLuBean;
 import com.examples.weibao.allbeans.DengLuBeanDao;
 import com.examples.weibao.beans.FanHuiBean;
-import com.examples.weibao.ui.ChaKanShiShiBaoGaoActivity;
 import com.examples.weibao.utils.GsonUtil;
 import com.examples.weibao.utils.Utils;
 import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
-import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
@@ -32,18 +29,13 @@ import com.github.jdsjlzx.recyclerview.ProgressStyle;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.sdsmdg.tastytoast.TastyToast;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.parceler.Parcels;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -65,6 +57,10 @@ public class WeiBaoFragment1 extends Fragment {
     private String ss=null;
     private int dangQianYe=1;
     private int qingQiuYe=1;
+    private DengLuBean dengLuBean=null;
+    private DengLuBeanDao dengLuBeanDao=null;
+
+
 
 
     public WeiBaoFragment1() {
@@ -78,11 +74,14 @@ public class WeiBaoFragment1 extends Fragment {
         baoCunBeanDao=MyAppLaction.myAppLaction.getDaoSession().getDengLuBeanDao();
         baoCunBean=baoCunBeanDao.load(123456L);
 
+
+
+
        View view=inflater.inflate(R.layout.fragment_wei_bao_fragment1, container, false);
 
         lRecyclerView= (LRecyclerView)view.findViewById(R.id.lrecyclerview);
 
-        adapter1=new BaoGaoAdapter1(stringList);
+        adapter1=new BaoGaoAdapter1(getActivity(),stringList);
         lRecyclerViewAdapter = new LRecyclerViewAdapter(adapter1);
         linearLayoutManager=new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -102,13 +101,7 @@ public class WeiBaoFragment1 extends Fragment {
         //设置底部加载文字提示
         lRecyclerView.setFooterViewHint("拼命加载中","--------我是有底线的--------","网络不给力...");
         lRecyclerView.setLoadingMoreProgressStyle(ProgressStyle.BallSpinFadeLoader);
-        lRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
 
-
-            }
-        });
         lRecyclerView.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -128,12 +121,7 @@ public class WeiBaoFragment1 extends Fragment {
             }
         });
 
-        lRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                startActivity(new Intent(getActivity(), ChaKanShiShiBaoGaoActivity.class).putExtra("itemId",stringList.get(position).getItem_id()));
-            }
-        });
+
 
 
         return view;

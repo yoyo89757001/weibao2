@@ -1,15 +1,25 @@
 package com.examples.weibao.adapters;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import com.examples.weibao.BaogaoBeans.BaoGaoBean;
+import com.examples.weibao.MyAppLaction;
 import com.examples.weibao.R;
+import com.examples.weibao.allbeans.PlansBean;
+import com.examples.weibao.allbeans.PlansBeanDao;
 import com.examples.weibao.intface.ClickIntface;
+import com.examples.weibao.ui.ChaKanShiShiBaoGaoActivity;
+import com.examples.weibao.views.MYListView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,13 +29,22 @@ import java.util.List;
 public class BaoGaoAdapter1 extends RecyclerView.Adapter<BaoGaoAdapter1.ViewHolder> {
     private List<BaoGaoBean.ObjectsBean> datas;
     private ClickIntface clickIntface;
+    private boolean isA;
+    private Context context;
+    private PlansBeanDao plansBeanDao=null;
+    private List<PlansBean> plansBeanList=new ArrayList<>();
+
 
     public void setClickIntface(ClickIntface clickIntface){
         this.clickIntface=clickIntface;
+
     }
 
-    public BaoGaoAdapter1(List<BaoGaoBean.ObjectsBean> datas) {
+    public BaoGaoAdapter1(Context context,List<BaoGaoBean.ObjectsBean> datas) {
         this.datas = datas;
+        isA=false;
+        this.context=context;
+        plansBeanDao= MyAppLaction.myAppLaction.getDaoSession().getPlansBeanDao();
     }
     //创建新View，被LayoutManager所调用
     @Override
@@ -35,8 +54,8 @@ public class BaoGaoAdapter1 extends RecyclerView.Adapter<BaoGaoAdapter1.ViewHold
     }
     //将数据与界面进行绑定的操作
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int position) {
-        viewHolder.t1.setText(datas.get(position).getPlanArea());
+    public void onBindViewHolder(final ViewHolder viewHolder, final int position) {
+        viewHolder.t1.setText(datas.get(position).getItemName());
         switch (datas.get(position).getStatus()){
             case 0:
                 //待发布
@@ -69,9 +88,44 @@ public class BaoGaoAdapter1 extends RecyclerView.Adapter<BaoGaoAdapter1.ViewHold
                 viewHolder.t2.setBackgroundResource(R.drawable.ju);
                 break;
         }
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (isA){
+                    viewHolder.myListView.setVisibility(View.GONE);
+                    isA=false;
+                }else {
+
+                    List<PlansBean>  plansBeans= plansBeanDao.queryBuilder().where(PlansBeanDao.Properties.ItemId.eq(datas.get(position).getItem_id())).list();
+                    if (plansBeans!=null){
+                        if (plansBeanList.size()!=0){
+                            plansBeanList.clear();
+                        }
+                        plansBeanList.addAll(plansBeans);
+                        BaoGao22Adapter adapter=new BaoGao22Adapter(context,plansBeanList);
+
+                        viewHolder.myListView.setAdapter(adapter);
+
+                    }
+                    viewHolder.myListView.setVisibility(View.VISIBLE);
+                    isA=true;
+                }
+
+
+            }
+        });
+        viewHolder.myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                context.startActivity(new Intent(context, ChaKanShiShiBaoGaoActivity.class).putExtra("planId",plansBeanList.get(position).getId()));
+            }
+        });
 
 
     }
+
+
     //获取数据的数量
     @Override
     public int getItemCount() {
@@ -80,12 +134,14 @@ public class BaoGaoAdapter1 extends RecyclerView.Adapter<BaoGaoAdapter1.ViewHold
     //自定义的ViewHolder，持有每个Item的的所有界面元素
       class ViewHolder extends RecyclerView.ViewHolder {
         private TextView t1,t2 ;
+        private MYListView myListView;
 
 
         private ViewHolder(View view){
             super(view);
             t1 = (TextView) view.findViewById(R.id.t1);
             t2 = (TextView) view.findViewById(R.id.t2);
+            myListView= (MYListView) view.findViewById(R.id.mtlistview);
 
 
         }
