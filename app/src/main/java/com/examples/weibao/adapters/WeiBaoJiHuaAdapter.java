@@ -38,7 +38,7 @@ public class WeiBaoJiHuaAdapter extends RecyclerView.Adapter<WeiBaoJiHuaAdapter.
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
         viewHolder.time.setText(DateUtils.time(datas.get(position).getModifyTime()+""));
-        viewHolder.jihua.setText(datas.get(position).getArea());
+        viewHolder.jihua.setText(datas.get(position).getArea()+datas.get(position).getPlanMonth()+"月份计划");
 
     }
     //获取数据的数量

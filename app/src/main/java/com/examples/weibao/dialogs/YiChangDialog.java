@@ -7,17 +7,14 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.examples.weibao.MyAppLaction;
 import com.examples.weibao.R;
 import com.examples.weibao.adapters.SheBei2Adapter;
 import com.examples.weibao.adapters.YiChangAdapter;
-import com.examples.weibao.adapters.ZhuangTaiXuanZeAdapter;
-import com.examples.weibao.allbeans.BenDiMenusBean;
 import com.examples.weibao.allbeans.BenDiMenusBeanDao;
 import com.examples.weibao.allbeans.DetectionsBean;
-import com.examples.weibao.allbeans.MenusBean;
 import com.examples.weibao.allbeans.MenusBeanDao;
+import com.examples.weibao.intface.ClickIntface;
 
 import java.util.List;
 
@@ -38,6 +35,9 @@ public class YiChangDialog extends Dialog   {
     private BenDiMenusBeanDao benDiMenusBeanDao=null;
     private int p=-1;
     private long sheBeiId=0;
+   // private ClickIntface clickIntface;
+    private long lv4Id=-1;
+
 
     public YiChangDialog(Context context, List<DetectionsBean> menusBeanList, MenusBeanDao menusBeanDao,long shedianId) {
         super(context, R.style.dialog_style2);
@@ -48,6 +48,10 @@ public class YiChangDialog extends Dialog   {
         benDiMenusBeanDao= MyAppLaction.myAppLaction.getDaoSession().getBenDiMenusBeanDao();
         setCustomDialog();
     }
+
+//    public void setClickIntface(ClickIntface clickIntface){
+//        this.clickIntface=clickIntface;
+//    }
 
 
     //4个数据的
@@ -62,6 +66,7 @@ public class YiChangDialog extends Dialog   {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 p=position;
+                lv4Id=menusBeanList.get(position).getId();
                int s= menusBeanList.size();
                for (int i=0;i<s;i++){
                   menusBeanList.get(i).setPageNum("qq");
@@ -76,6 +81,10 @@ public class YiChangDialog extends Dialog   {
         super.setContentView(mView);
 
 
+    }
+
+    public long  getLv4Id(){
+        return lv4Id;
     }
 
     public void baocun(SheBei2Adapter adapter){

@@ -44,30 +44,51 @@ import com.examples.weibao.R;
 import com.examples.weibao.adapters.XuanZeSheBeiAdapter;
 import com.examples.weibao.allbeans.BaoZhangDengJiBean;
 import com.examples.weibao.allbeans.BaoZhangDengJiBeanDao;
+import com.examples.weibao.allbeans.DengLuBean;
+import com.examples.weibao.allbeans.DengLuBeanDao;
 import com.examples.weibao.allbeans.DevicesBean;
 import com.examples.weibao.allbeans.DevicesBeanDao;
+import com.examples.weibao.allbeans.ItemsBeanDao;
 import com.examples.weibao.allbeans.PhotosBean;
 import com.examples.weibao.allbeans.PhotosBeanDao;
+import com.examples.weibao.dialogs.TiJIaoDialog;
 import com.examples.weibao.intface.ClickIntface;
 import com.examples.weibao.utils.DateUtils;
 import com.examples.weibao.utils.FileUtil;
 
+import com.examples.weibao.utils.GsonUtil;
 import com.examples.weibao.utils.Utils;
 import com.examples.weibao.views.MyDecoration;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.sdsmdg.tastytoast.TastyToast;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.Permission;
 import com.yanzhenjie.permission.PermissionListener;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
     @BindView(R.id.mingcheng)
@@ -107,6 +128,14 @@ public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
     private int jilu=0;
     private BaoZhangDengJiBean baoZhangDengJiBean=null;
     private long idid=0;
+    private DengLuBeanDao dengLuBeanDao=null;
+    private DengLuBean dengLuBean=null;
+    private TiJIaoDialog tiJIaoDialog=null;
+    private Call call=null;
+    private String bianhao;
+    private int itemId=-1;
+    private ItemsBeanDao itemsBeanDao=null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,6 +146,9 @@ public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
         baoZhangDengJiBeanDao= MyAppLaction.myAppLaction.getDaoSession().getBaoZhangDengJiBeanDao();
         if (idid!=0)
        baoZhangDengJiBean= baoZhangDengJiBeanDao.load(idid);
+        dengLuBeanDao=MyAppLaction.myAppLaction.getDaoSession().getDengLuBeanDao();
+        dengLuBean=dengLuBeanDao.load(123456L);
+        itemsBeanDao=MyAppLaction.myAppLaction.getDaoSession().getItemsBeanDao();
 
         photosBeanDao= MyAppLaction.myAppLaction.getDaoSession().getPhotosBeanDao();
 
@@ -193,7 +225,11 @@ public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
                 stringList.add(0,photosBeans.get(i).getPath());
             }
 
+        }else {
+            name.setText(dengLuBean.getName());
         }
+
+
 
         zhaoPianAdapter = new ZhaoPianAdapter(stringList);
         zhaoPianAdapter.setClickIntface(this);
@@ -215,6 +251,10 @@ public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                             shebei.setText(devicesBeanList.get(position).getDeviceNum());
                             shebeiID=devicesBeanList.get(position).getId();
+                            bianhao=devicesBeanList.get(position).getDeviceNum();
+                           // itemId=devicesBeanList.get(position).getItemId();
+                           // itemsBeanDao.load((long) itemId);
+
                             popupWindow.dismiss();
                         }
                     });
@@ -258,11 +298,8 @@ public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
                     dengJiBean.setGuzhangshijian(s5);
                     dengJiBean.setBaozhangren(s6);
                     dengJiBean.setDianhua(s7);
-                    if (ff){
-                        dengJiBean.setIsTiJiao(true);
-                    }else {
-                        dengJiBean.setIsTiJiao(false);
-                    }
+                    dengJiBean.setIsTiJiao(false);
+
                     baoZhangDengJiBeanDao.insert(dengJiBean);
 
                     if (stringList.size()>1){
@@ -271,10 +308,16 @@ public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
                             PhotosBean bean=new PhotosBean();
                             bean.setId(System.currentTimeMillis());
                             bean.setPath(stringList.get(i));
+                            Log.d("BaoZhangDengJiActivity", stringList.get(i));
                             bean.setPid(ccc);
                             photosBeanDao.insert(bean);
                         }
                     }
+                    if (ff){
+                    link_save();
+
+                    }
+
 
 
                 }else {
@@ -282,8 +325,129 @@ public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
                 }
 
 
+
                 break;
         }
+    }
+
+    private void showDialog(){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (tiJIaoDialog==null){
+                    tiJIaoDialog=new TiJIaoDialog(BaoZhangDengJiActivity.this);
+                    if (!BaoZhangDengJiActivity.this.isFinishing())
+                        tiJIaoDialog.show();
+                }
+            }
+        });
+    }
+    private void dismissDialog(){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (tiJIaoDialog!=null && tiJIaoDialog.isShowing()){
+                    tiJIaoDialog.dismiss();
+                    tiJIaoDialog=null;
+                }
+            }
+        });
+    }
+
+
+    private void link_save() {
+        showDialog();
+        final MediaType JSON=MediaType.parse("application/json; charset=utf-8");
+        OkHttpClient okHttpClient= MyAppLaction.getOkHttpClient();
+
+      //  String jiami=Utils.jiami(mima).toUpperCase();
+        String nonce=Utils.getNonce();
+        String timestamp=Utils.getTimestamp();
+
+//    /* form的分割线,自己定义 */
+//        String boundary = "xx--------------------------------------------------------------xx";
+        JSONObject jsonObject = new JSONObject();
+        JSONArray jsonArray=null;
+        try {
+            JSONObject tijiao = new JSONObject();
+            tijiao.put("status",0);
+            tijiao.put("id",0);
+            tijiao.put("accountId",dengLuBean.getUserId());
+            tijiao.put("address",dizhi.getText().toString().trim());
+            tijiao.put("companyId",dengLuBean.getCompanyId());
+            tijiao.put("deviceId",shebeiID);
+            tijiao.put("deviceNumber",bianhao);
+            tijiao.put("faultTime",System.currentTimeMillis());
+            tijiao.put("remark",guzhangEt.getText().toString().trim());
+            tijiao.put("contactTel",dianhua.getText().toString());
+            tijiao.put("faultImage",0);
+
+            jsonArray=new JSONArray();
+            jsonArray.put(tijiao);
+
+            jsonObject.put("cmd","100");
+            jsonObject.put("faults",jsonArray.toString());
+            Log.d("BaoZhangDengJiActivity", jsonArray.toString());
+         //   jsonObject.put("password",jiami);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        RequestBody body = RequestBody.create(JSON, jsonObject.toString());
+
+        Request.Builder requestBuilder = new Request.Builder()
+                .header("nonce", nonce)
+                .header("timestamp", timestamp)
+                .header("userId", dengLuBean.getUserId()+"")
+                .header("sign", Utils.encode("100"+jsonArray.toString()+nonce+timestamp
+                        +dengLuBean.getUserId()+Utils.signaturePassword))
+                .post(body)
+                .url(dengLuBean.getZhuji() + "uploadFaults.app");
+
+        // step 3：创建 Call 对象
+        call = okHttpClient.newCall(requestBuilder.build());
+
+        //step 4: 开始异步请求
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d("AllConnects", "请求识别失败"+e.getMessage());
+                dismissDialog();
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                dismissDialog();
+                Log.d("AllConnects", "请求识别成功"+call.request().toString());
+                //获得返回体
+                try {
+
+                    ResponseBody body = response.body();
+                    String ss=body.string().trim();
+                    Log.d("InFoActivity", "ss" + ss);
+
+
+//
+//                    }else {
+//                        showMSG(jsonObject.get("dtoDesc").getAsString(),4);
+//                    }
+
+                }catch (Exception e){
+
+                    dismissDialog();
+                    showMSG("获取数据失败",3);
+                    Log.d("WebsocketPushMsg", e.getMessage());
+                }
+            }
+        });
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (call!=null)
+            call.cancel();
+        super.onDestroy();
     }
 
 
@@ -336,7 +500,7 @@ public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
 
 
     @Override
-    public int BackId(int id) {
+    public int BackId(int id,String s) {
 
 
         AndPermission.with(BaoZhangDengJiActivity.this)
@@ -440,7 +604,7 @@ public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    clickIntface.BackId(position);
+                    clickIntface.BackId(position,null);
                 }
             });
             if (datas.get(position).equals("pathOne")){

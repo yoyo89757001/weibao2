@@ -29,6 +29,7 @@
                 android:text="设备1"
                 android:layout_marginTop="16dp"
                 android:ellipsize="end"
+                android:id="@+id/shebei_tv"
                 android:layout_marginLeft="@dimen/sp_16"
                 android:layout_marginRight="@dimen/sp_16"
                 android:layout_height="wrap_content" />
@@ -40,7 +41,7 @@
                     android:layout_marginTop="2dp"
                     android:textColor="@color/write"
                     android:textSize="16sp"
-                    android:text="需维修:"
+                    android:id="@+id/baozhang_tv"
                     android:layout_marginBottom="16dp"
                     android:layout_height="wrap_content" />
 
@@ -54,6 +55,7 @@
                 android:textColor="@color/textcolor"
                 android:textSize="16sp"
                 android:maxLines="2"
+                android:id="@+id/bianhao"
                 android:ellipsize="end"
                 android:text="编号："
                 android:layout_height="wrap_content" />
@@ -67,6 +69,7 @@
                 android:textColor="@color/textcolor"
                 android:textSize="16sp"
                 android:text="公司："
+                android:id="@+id/gongsi"
                 android:maxLines="2"
                 android:ellipsize="end"
                 android:layout_height="wrap_content" />
@@ -80,6 +83,7 @@
                 android:textSize="16sp"
                 android:text="位置："
                 android:maxLines="3"
+                android:id="@+id/weizhi"
                 android:ellipsize="end"
                 android:layout_height="wrap_content" />
 
@@ -100,6 +104,7 @@
                 android:textColor="@color/textcolor"
                 android:textSize="16sp"
                 android:maxLines="2"
+                android:id="@+id/shijian_tv"
                 android:ellipsize="end"
                 android:text="故障发现时间：2022-22-22"
                 android:layout_height="wrap_content" />
@@ -113,6 +118,8 @@
                 android:textColor="@color/textcolor"
                 android:textSize="16sp"
                 android:text="报障电话"
+                android:visibility="gone"
+                android:id="@+id/dianhua1"
                 android:maxLines="2"
                 android:ellipsize="end"
                 android:layout_height="wrap_content" />
@@ -125,6 +132,7 @@
                 android:textColor="@color/textcolor"
                 android:textSize="16sp"
                 android:text="联系电话"
+                android:id="@+id/dianhua2"
                 android:maxLines="2"
                 android:ellipsize="end"
                 android:layout_height="wrap_content" />
@@ -137,6 +145,8 @@
                 android:textColor="@color/textcolor"
                 android:textSize="16sp"
                 android:text="剩余时间"
+                android:visibility="gone"
+                android:id="@+id/shenyushijian"
                 android:maxLines="2"
                 android:ellipsize="end"
                 android:layout_height="wrap_content" />
@@ -146,6 +156,7 @@
                 android:src="@drawable/zidonghuoqu2"
                 android:paddingLeft="@dimen/sp_16"
                 android:paddingRight="@dimen/sp_16"
+                android:id="@+id/tupian"
                 android:layout_width="match_parent"
                 android:layout_height="250dp" />
 
@@ -176,6 +187,7 @@
                 android:hint="请输入回复内容"
                 android:background="@null"
                 android:gravity="top"
+                android:id="@+id/neirong_et"
                 android:textColorHint="@color/textcolor"
                 android:layout_marginTop="8dp"
                 android:layout_marginLeft="@dimen/sp_16"
@@ -193,6 +205,7 @@
                 android:layout_height="0.8dp"/>
 
             <RelativeLayout
+                android:id="@+id/paicha_rl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -211,7 +224,7 @@
                     android:text="2012-22-22 11:22"
                     android:textColor="@color/textcolor"
                     android:textSize="16sp"
-                    android:id="@+id/shijian"
+                    android:id="@+id/paichashijian"
                     android:layout_marginTop="20dp"
                     android:layout_toLeftOf="@+id/rtrt"
                     android:layout_centerVertical="true"
@@ -314,6 +327,7 @@
                     android:hint="请输入处理结果内容"
                     android:background="@null"
                     android:gravity="top"
+                    android:id="@+id/chulineirong"
                     android:textColorHint="@color/textcolor"
                     android:layout_marginTop="8dp"
                     android:layout_marginLeft="@dimen/sp_16"
@@ -335,7 +349,7 @@
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:text="回复人员"
+                        android:text="处理人员"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:layout_marginTop="20dp"
@@ -349,7 +363,7 @@
                         android:text="名字"
                         android:textColor="@color/textcolor"
                         android:textSize="16sp"
-                        android:id="@+id/renyuan2"
+                        android:id="@+id/chuliren"
                         android:layout_marginTop="20dp"
                         android:layout_toLeftOf="@+id/rtrtee"
                         android:layout_centerVertical="true"

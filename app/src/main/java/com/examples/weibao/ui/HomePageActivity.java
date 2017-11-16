@@ -341,10 +341,7 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
                             Log.d("HomePageActivity", ss.substring(i9, i9 += 4000));
                         }
 
-
-
                     }
-
 
 
                     JsonObject jsonObject= GsonUtil.parse(ss).getAsJsonObject();

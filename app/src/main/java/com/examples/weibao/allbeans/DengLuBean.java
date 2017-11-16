@@ -62,13 +62,14 @@ public class DengLuBean {
     private int status;
     private String qqTime;
     private String mima;
-    @Generated(hash = 1447208858)
+    private String company;
+    @Generated(hash = 828277090)
     public DengLuBean(@NotNull Long id, Long userId, String zhuji, String account,
             int admin_id, String cardNum, String certificate, int companyId,
             long createTime, int dtoResult, String email, String memberNum,
             long modifyTime, String name, int pageNum, int pageSize, String phone,
             int platType, String pwd, String remark, int role_id, int sex,
-            int status, String qqTime, String mima) {
+            int status, String qqTime, String mima, String company) {
         this.id = id;
         this.userId = userId;
         this.zhuji = zhuji;
@@ -94,6 +95,7 @@ public class DengLuBean {
         this.status = status;
         this.qqTime = qqTime;
         this.mima = mima;
+        this.company = company;
     }
     @Generated(hash = 715002548)
     public DengLuBean() {
@@ -248,8 +250,12 @@ public class DengLuBean {
     public void setMima(String mima) {
         this.mima = mima;
     }
+    public String getCompany() {
+        return this.company;
+    }
+    public void setCompany(String company) {
+        this.company = company;
+    }
 
-
-
-
+    
 }

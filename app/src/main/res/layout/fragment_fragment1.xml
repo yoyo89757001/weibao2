@@ -18,8 +18,8 @@
             android:layout_gravity="center_horizontal"
             android:id="@+id/touxiang"
             android:scaleType="fitXY"
+            android:src="@drawable/tuijianyisheng"
             android:layout_marginTop="4dp"
-           android:background="@color/red"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

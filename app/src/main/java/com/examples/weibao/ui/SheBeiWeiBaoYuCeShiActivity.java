@@ -18,6 +18,7 @@ import com.examples.weibao.allbeans.DevicesBean;
 import com.examples.weibao.allbeans.DevicesBeanDao;
 import com.examples.weibao.allbeans.MenusBean;
 import com.examples.weibao.allbeans.MenusBeanDao;
+import com.examples.weibao.beans.WeiBaoCeShiCSBean;
 import com.examples.weibao.intface.ClickIntface;
 import com.examples.weibao.utils.Utils;
 import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
@@ -25,10 +26,12 @@ import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
+import org.parceler.Parcels;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class SheBeiWeiBaoYuCeShiActivity extends Activity implements ClickIntface {
+public class SheBeiWeiBaoYuCeShiActivity extends Activity  {
     private int dw,dh;
     private LRecyclerView lRecyclerView;
     private TextView t1,t2,t3;
@@ -39,7 +42,6 @@ public class SheBeiWeiBaoYuCeShiActivity extends Activity implements ClickIntfac
     private String miaoshu;
     private long parentId=-2L;
 
-
     private List<MenusBean> menusBeanList2=null;
     private MenusBean menusBean=null;
     private MenusBeanDao menusBeanDao=null;
@@ -49,13 +51,13 @@ public class SheBeiWeiBaoYuCeShiActivity extends Activity implements ClickIntfac
     private long itemId=0;
     private String serialNumber3="";
     private String serialNumber4="";
-
-
+    private WeiBaoCeShiCSBean ceShiCSBean=null;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ceShiCSBean = Parcels.unwrap(getIntent().getParcelableExtra("chuansong"));
         itemId=getIntent().getLongExtra("itemId",0);
         serialNumber3=getIntent().getStringExtra("serialNumber3");
         serialNumber4=getIntent().getStringExtra("serialNumber4");
@@ -65,9 +67,7 @@ public class SheBeiWeiBaoYuCeShiActivity extends Activity implements ClickIntfac
         parentId=getIntent().getLongExtra("parentId",-2L);
         menusBeanDao= MyAppLaction.myAppLaction.getDaoSession().getMenusBeanDao();
         devicesBeanDao= MyAppLaction.myAppLaction.getDaoSession().getDevicesBeanDao();
-        Log.d("SheBeiWeiBaoYuCeShiActi", serialNumber3+"");
-        Log.d("SheBeiWeiBaoYuCeShiActi", serialNumber4+"");
-        Log.d("SheBeiWeiBaoYuCeShiActi", "itemId:" + itemId);
+
         if (serialNumber4!=null){
             List<DevicesBean> bb=devicesBeanDao.queryBuilder().where(DevicesBeanDao.Properties.WeibaoSystemId.eq(serialNumber3)
                     ,DevicesBeanDao.Properties.WeibaoSubSystemId.eq(serialNumber4),DevicesBeanDao.Properties.ItemId.eq(itemId)).list();
@@ -81,13 +81,7 @@ public class SheBeiWeiBaoYuCeShiActivity extends Activity implements ClickIntfac
                 devicesBeanList.addAll(bb);
             }
         }
-
         menusBeanList2=menusBeanDao.queryBuilder().where(MenusBeanDao.Properties.ParentId.eq(parentId)).list();
-        if (menusBeanList2!=null){
-            for (int i=0;i<menusBeanList2.size();i++){
-                Log.d("SheBeiWeiBaoYuCeShiActi", menusBeanList2.get(i).getName()+menusBeanList2.get(i).getType());
-            }
-        }
 
         setContentView(R.layout.activity_she_bei_wei_bao_yu_ce_shi);
 
@@ -96,9 +90,7 @@ public class SheBeiWeiBaoYuCeShiActivity extends Activity implements ClickIntfac
             SystemBarTintManager tintManager = new SystemBarTintManager(this);
             tintManager.setStatusBarTintEnabled(true);
             tintManager.setStatusBarTintResource(R.color.lanse33);
-
         }
-
 
         dw = Utils.getDisplaySize(this).x;
         dh = Utils.getDisplaySize(this).y;
@@ -124,8 +116,7 @@ public class SheBeiWeiBaoYuCeShiActivity extends Activity implements ClickIntfac
         l.invalidate();
 
         lRecyclerView= (LRecyclerView) findViewById(R.id.lrecyclerview);
-        sheBeiAdapter=new SheBeiAdapter(devicesBeanList,menusBeanDao,SheBeiWeiBaoYuCeShiActivity.this,menusBeanList2);
-        sheBeiAdapter.setClickIntface(this);
+        sheBeiAdapter=new SheBeiAdapter(devicesBeanList,menusBeanDao,SheBeiWeiBaoYuCeShiActivity.this,menusBeanList2,ceShiCSBean);
         lRecyclerViewAdapter = new LRecyclerViewAdapter(sheBeiAdapter);
 
         linearLayoutManager=new LinearLayoutManager(SheBeiWeiBaoYuCeShiActivity.this);
@@ -155,10 +146,5 @@ public class SheBeiWeiBaoYuCeShiActivity extends Activity implements ClickIntfac
 
     }
 
-    @Override
-    public int BackId(int id) {
 
-
-        return 0;
-    }
 }

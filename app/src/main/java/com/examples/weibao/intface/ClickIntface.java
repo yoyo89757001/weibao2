@@ -5,7 +5,7 @@ package com.examples.weibao.intface;
  */
 
 public interface ClickIntface {
-    public int BackId(int id);
+    public int BackId(int id,String s);
 
 
 }

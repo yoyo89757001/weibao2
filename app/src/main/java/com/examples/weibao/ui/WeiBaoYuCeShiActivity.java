@@ -24,6 +24,7 @@ import com.examples.weibao.R;
 import com.examples.weibao.adapters.PopupWindowAdapter;
 import com.examples.weibao.adapters.PopupWindowAdapter4;
 import com.examples.weibao.adapters.PopupWindowAdapter3;
+import com.examples.weibao.adapters.PopupWindowAdapter_jihua;
 import com.examples.weibao.allbeans.DetectionsBean;
 import com.examples.weibao.allbeans.DetectionsBeanDao;
 import com.examples.weibao.allbeans.DevicesBean;
@@ -36,18 +37,21 @@ import com.examples.weibao.allbeans.MenusBean;
 import com.examples.weibao.allbeans.MenusBeanDao;
 import com.examples.weibao.allbeans.PlansBean;
 import com.examples.weibao.allbeans.PlansBeanDao;
+import com.examples.weibao.beans.WeiBaoCeShiCSBean;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.sdsmdg.tastytoast.TastyToast;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListener {
-    private TextView t1,t2,t3,t4;
-    private RelativeLayout r1,r2,r3,r4;
+    private TextView t1,t2,t3,t4,jihua_tv;
+    private RelativeLayout r1,r2,r3,r4,jihua_rl;
     private Button button;
     private PopupWindow popupWindow=null;
-    private ImageView go,go3,go4;
+    private ImageView go,go3,go4,go6;
 
     private List<ItemsBean> itemsBeanList=new ArrayList<>();
     private ItemsBean itemsBean=null;
@@ -61,7 +65,7 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
     private List<MenusBean> menusBeanList=null;
     private MenusBean menusBean=null;
     private MenusBeanDao menusBeanDao=null;
-    private List<PlansBean> plansBeanList=null;
+    private List<PlansBean> plansBeanList=new ArrayList<>();
     private PlansBean plansBean=null;
     private PlansBeanDao plansBeanDao=null;
     private List<MenurefsBean> menurefsBeanList=null;
@@ -72,6 +76,9 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
     private int p1=-1;
     private int p4=-1;
     private int p3=-1;
+    private int p6=-1;
+    private WeiBaoCeShiCSBean ceShiCSBean=new WeiBaoCeShiCSBean();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,6 +124,7 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
         go= (ImageView) findViewById(R.id.go);
         go3= (ImageView) findViewById(R.id.go3);
         go4= (ImageView) findViewById(R.id.go4);
+        go6= (ImageView) findViewById(R.id.go6);
         r1= (RelativeLayout) findViewById(R.id.r1);
         r1.setOnClickListener(this);
         r2= (RelativeLayout) findViewById(R.id.r2);
@@ -127,6 +135,9 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
         r4.setOnClickListener(this);
         button= (Button) findViewById(R.id.xiayibu);
         button.setOnClickListener(this);
+        jihua_rl= (RelativeLayout) findViewById(R.id.jihua_rl);
+        jihua_rl.setOnClickListener(this);
+        jihua_tv= (TextView) findViewById(R.id.jihua_tv);
     }
 
 
@@ -194,7 +205,7 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
                 }
 
                 View contentView3 = LayoutInflater.from(WeiBaoYuCeShiActivity.this).inflate(R.layout.xiangmu_po_item, null);
-                popupWindow=new PopupWindow(contentView3,600, 660);
+                popupWindow=new PopupWindow(contentView3,600, 600);
                 ListView listView3= (ListView) contentView3.findViewById(R.id.dddddd);
                 PopupWindowAdapter3 adapter3=new PopupWindowAdapter3(WeiBaoYuCeShiActivity.this,menusBeanList3);
                 listView3.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -204,6 +215,8 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
                         p4=-1;
                         t3.setText(menusBeanList3.get(position).getName());
                         t4.setText("请选择");
+                        ceShiCSBean.setMenuLevel1Id(menusBeanList3.get(position).getId().intValue());
+
                         popupWindow.dismiss();
                     }
                 });
@@ -233,7 +246,7 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
 
 
                 View contentView4 = LayoutInflater.from(WeiBaoYuCeShiActivity.this).inflate(R.layout.xiangmu_po_item, null);
-                popupWindow=new PopupWindow(contentView4,600, 600);
+                popupWindow=new PopupWindow(contentView4,600, 540);
                 ListView listView4= (ListView) contentView4.findViewById(R.id.dddddd);
                 PopupWindowAdapter4 adapter4=new PopupWindowAdapter4(WeiBaoYuCeShiActivity.this,menusBeanList4);
                 listView4.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -241,6 +254,7 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         p4=position;
                         t4.setText(menusBeanList4.get(position).getName());
+                        ceShiCSBean.setMenuId(menusBeanList4.get(position).getId().intValue());
                         popupWindow.dismiss();
                     }
                 });
@@ -256,7 +270,10 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
 
                 break;
             case R.id.xiayibu:
-                if (p4!=-1){
+                if (p4!=-1 && p6!=-1){
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("chuansong", Parcels.wrap(ceShiCSBean));
+
                     startActivity(new Intent(WeiBaoYuCeShiActivity.this,SheBeiWeiBaoYuCeShiActivity.class).
                             putExtra("itemId",itemsBeanList.get(p1).getId()).
                             putExtra("serialNumber3",menusBeanList3.get(p3).getSerialNumber()).
@@ -264,9 +281,51 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
                             putExtra("parentId",menusBeanList4.get(p4).getId()).
                             putExtra("dizhi",itemsBeanList.get(p1).getAddress()).
                             putExtra("xitong",menusBeanList3.get(p3).getName()).
-                            putExtra("weibaoxiang",menusBeanList4.get(p4).getName()));
+                            putExtra("weibaoxiang",menusBeanList4.get(p4).getName()).putExtras(bundle));
                 }else {
                     showMSG("信息没有选择完整!",4);
+                }
+
+                break;
+            case R.id.jihua_rl:
+
+                if (p1==-1){
+                    break;
+                }
+                if (plansBeanList.size()!=0){
+                    plansBeanList.clear();
+                }
+
+                //项目ID
+                long itid =itemsBeanList.get(p1).getId();
+
+                //通过项目ID 在项目关系表中找出所有一级项目菜单
+               List<PlansBean> pp = plansBeanDao.queryBuilder().where(PlansBeanDao.Properties.ItemId.eq(itid)).list();
+                if (pp!=null){
+                    plansBeanList.addAll(pp);
+                }
+
+                View contentView6 = LayoutInflater.from(WeiBaoYuCeShiActivity.this).inflate(R.layout.xiangmu_po_item, null);
+                popupWindow=new PopupWindow(contentView6,600, 660);
+                ListView listView6= (ListView) contentView6.findViewById(R.id.dddddd);
+                PopupWindowAdapter_jihua adapter6=new PopupWindowAdapter_jihua(WeiBaoYuCeShiActivity.this,plansBeanList);
+                listView6.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        p6=position;
+                        ceShiCSBean.setPlanId(plansBeanList.get(position).getId().intValue());
+                        jihua_tv.setText(plansBeanList.get(position).getArea());
+                        popupWindow.dismiss();
+                    }
+                });
+                listView6.setAdapter(adapter6);
+
+                popupWindow.setFocusable(true);//获取焦点
+                popupWindow.setOutsideTouchable(true);//获取外部触摸事件
+                popupWindow.setTouchable(true);//能够响应触摸事件
+                popupWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));//设置背景
+                if (plansBeanList.size()!=0){
+                    popupWindow.showAsDropDown(jihua_rl,go6.getLeft()-600,0);
                 }
 
                 break;

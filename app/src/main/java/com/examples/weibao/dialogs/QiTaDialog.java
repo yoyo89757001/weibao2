@@ -8,7 +8,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.examples.weibao.R;
-import com.examples.weibao.views.RadioButton;
 
 
 /**
@@ -38,8 +37,8 @@ public class QiTaDialog extends Dialog {
 
 
     }
-    public int getIsTrue(){
-        return isTrue;
+    public String getContent(){
+        return shuru.getText().toString().trim();
     }
 
 

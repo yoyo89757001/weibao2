@@ -1,7 +1,6 @@
 package com.examples.weibao.adapters;
 
-import android.content.Context;
-import android.util.Log;
+import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +14,7 @@ import com.examples.weibao.allbeans.BenDiMenusBean;
 import com.examples.weibao.allbeans.BenDiMenusBeanDao;
 import com.examples.weibao.allbeans.MenusBean;
 import com.examples.weibao.allbeans.MenusBeanDao;
+import com.examples.weibao.beans.WeiBaoCeShiCSBean;
 import com.examples.weibao.dialogs.ZhuangTaiXuanZeDialog;
 import com.examples.weibao.intface.ClickIntface;
 import java.util.List;
@@ -29,15 +29,18 @@ public class SheBei2Adapter extends BaseAdapter {
     private LayoutInflater mInflater;//得到一个LayoutInfalter对象用来导入布局
     private List<MenusBean> fuWuQiBeanList;
     private BenDiMenusBeanDao benDiMenusBeanDao=null;
-    private Context context;
+    private Activity context;
     private MenusBeanDao menusBeanDao=null;
     private long shebeiId=0;
+    private WeiBaoCeShiCSBean ceShiCSBean=null;
+
 
     /*构造函数*/
-    public SheBei2Adapter(Context context, List<MenusBean> fuWuQiBeanList, MenusBeanDao menusBeanDao,Long id) {
+    public SheBei2Adapter(Activity context, List<MenusBean> fuWuQiBeanList, MenusBeanDao menusBeanDao, Long id, WeiBaoCeShiCSBean ceShiCSBean) {
         this.mInflater = LayoutInflater.from(context);
         this.fuWuQiBeanList=fuWuQiBeanList;
         this.context=context;
+        this.ceShiCSBean=ceShiCSBean;
         this.menusBeanDao=menusBeanDao;
         this.shebeiId=id;
         benDiMenusBeanDao=MyAppLaction.myAppLaction.getDaoSession().getBenDiMenusBeanDao();
@@ -97,6 +100,7 @@ public class SheBei2Adapter extends BaseAdapter {
         holder.item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ceShiCSBean.setMenuLevel3Id(fuWuQiBeanList.get(position).getId().intValue());
               //  Log.d("SheBei2Adapter", "点击"+position);
                 List<MenusBean> menusBeanList=menusBeanDao.queryBuilder().where(MenusBeanDao.Properties.ParentId.eq(fuWuQiBeanList.get(position).getId())).list();
                 if (menusBeanList!=null){
@@ -109,14 +113,15 @@ public class SheBei2Adapter extends BaseAdapter {
                     dialog.setOnPositiveListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-
-                         dialog.baocun(SheBei2Adapter.this,shebeiId);
+                            //第一个弹窗 点确定
+                         dialog.baocun(SheBei2Adapter.this,shebeiId,ceShiCSBean);
                          dialog.dismiss();
                         }
                     });
                     dialog.setOnQuXiaoListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            //第一个弹窗 点取消
                             dialog.dismiss();
                         }
                     });

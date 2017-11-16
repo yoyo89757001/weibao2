@@ -1,5 +1,6 @@
 package com.examples.weibao.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import com.examples.weibao.allbeans.DevicesBean;
 import com.examples.weibao.allbeans.MenusBean;
 import com.examples.weibao.allbeans.MenusBeanDao;
+import com.examples.weibao.beans.WeiBaoCeShiCSBean;
 import com.examples.weibao.intface.ClickIntface;
 import com.examples.weibao.R;
 
@@ -29,18 +31,20 @@ public class SheBeiAdapter extends RecyclerView.Adapter<SheBeiAdapter.ViewHolder
     private List<MenusBean> menusBeanList2=new ArrayList<>();
     private MenusBean menusBean=null;
     private MenusBeanDao menusBeanDao=null;
-    private Context context;
+    private Activity context;
     private List<MenusBean> allMenusBeanList=null;
+    private WeiBaoCeShiCSBean ceShiCSBean=null;
 
 
     public void setClickIntface(ClickIntface clickIntface){
         this.clickIntface=clickIntface;
     }
 
-    public SheBeiAdapter(List<DevicesBean> datas, MenusBeanDao menusBeanDao, Context context, List<MenusBean> menusBeanList22) {
+    public SheBeiAdapter(List<DevicesBean> datas, MenusBeanDao menusBeanDao, Activity context, List<MenusBean> menusBeanList22, WeiBaoCeShiCSBean ceShiCSBean) {
         this.datas = datas;
         this.menusBeanDao=menusBeanDao;
         this.context=context;
+        this.ceShiCSBean=ceShiCSBean;
         allMenusBeanList=menusBeanList22;
         int s=menusBeanList22.size();
         for (int i=0;i<s;i++){
@@ -66,7 +70,7 @@ public class SheBeiAdapter extends RecyclerView.Adapter<SheBeiAdapter.ViewHolder
            // menusBeanList1=menusBeanDao.queryBuilder().where(MenusBeanDao.Properties.ParentId.eq(datas.get(position).getId())).list();
           //  Log.d("SheBeiAdapter", "menusBeanList1.size():" + menusBeanList1.size());
             if (menusBeanList1!=null){
-            SheBei2Adapter sheBei2Adapter=new SheBei2Adapter(context,menusBeanList1,menusBeanDao,datas.get(position).getId());
+            SheBei2Adapter sheBei2Adapter=new SheBei2Adapter(context,menusBeanList1,menusBeanDao,datas.get(position).getId(),ceShiCSBean);
             viewHolder.listView1.setAdapter(sheBei2Adapter);
            // fixListViewHeight(viewHolder.listView1);
 
@@ -75,7 +79,7 @@ public class SheBeiAdapter extends RecyclerView.Adapter<SheBeiAdapter.ViewHolder
 
          //   menusBeanList2=menusBeanDao.queryBuilder().where(MenusBeanDao.Properties.ParentId.eq(datas.get(position).getId())).list();
             if (menusBeanList2!=null){
-                SheBei2Adapter sheBei2Adapter=new SheBei2Adapter(context,menusBeanList2,menusBeanDao,datas.get(position).getId());
+                SheBei2Adapter sheBei2Adapter=new SheBei2Adapter(context,menusBeanList2,menusBeanDao,datas.get(position).getId(),ceShiCSBean);
                 viewHolder.listView2.setAdapter(sheBei2Adapter);
               //  fixListViewHeight(viewHolder.listView2);
             }

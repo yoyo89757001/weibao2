@@ -18,15 +18,40 @@ public class BenDiMenusBean {
     private long parentId;
     private String name;
     private boolean isQiTa;
-    @Generated(hash = 238725694)
+    private int planId;
+    private int menuLevel1Id;
+    private int menuId2;
+    private int menuLevel3Id;
+    private int menuLevel4Id;
+    private int deviceId;
+    private String remark;
+    private String testData;
+    private int createBy;
+    private long createTime;
+    private boolean isTijiao;
+    @Generated(hash = 251480049)
     public BenDiMenusBean(@NotNull Long id, boolean isYiChang, long mensuId,
-            long parentId, String name, boolean isQiTa) {
+            long parentId, String name, boolean isQiTa, int planId,
+            int menuLevel1Id, int menuId2, int menuLevel3Id, int menuLevel4Id,
+            int deviceId, String remark, String testData, int createBy,
+            long createTime, boolean isTijiao) {
         this.id = id;
         this.isYiChang = isYiChang;
         this.mensuId = mensuId;
         this.parentId = parentId;
         this.name = name;
         this.isQiTa = isQiTa;
+        this.planId = planId;
+        this.menuLevel1Id = menuLevel1Id;
+        this.menuId2 = menuId2;
+        this.menuLevel3Id = menuLevel3Id;
+        this.menuLevel4Id = menuLevel4Id;
+        this.deviceId = deviceId;
+        this.remark = remark;
+        this.testData = testData;
+        this.createBy = createBy;
+        this.createTime = createTime;
+        this.isTijiao = isTijiao;
     }
     @Generated(hash = 670714680)
     public BenDiMenusBean() {
@@ -67,6 +92,75 @@ public class BenDiMenusBean {
     public void setIsQiTa(boolean isQiTa) {
         this.isQiTa = isQiTa;
     }
+    public int getPlanId() {
+        return this.planId;
+    }
+    public void setPlanId(int planId) {
+        this.planId = planId;
+    }
+    public int getMenuLevel1Id() {
+        return this.menuLevel1Id;
+    }
+    public void setMenuLevel1Id(int menuLevel1Id) {
+        this.menuLevel1Id = menuLevel1Id;
+    }
+    public int getMenuId2() {
+        return this.menuId2;
+    }
+    public void setMenuId2(int menuId2) {
+        this.menuId2 = menuId2;
+    }
+    public int getMenuLevel3Id() {
+        return this.menuLevel3Id;
+    }
+    public void setMenuLevel3Id(int menuLevel3Id) {
+        this.menuLevel3Id = menuLevel3Id;
+    }
+    public int getMenuLevel4Id() {
+        return this.menuLevel4Id;
+    }
+    public void setMenuLevel4Id(int menuLevel4Id) {
+        this.menuLevel4Id = menuLevel4Id;
+    }
+    public int getDeviceId() {
+        return this.deviceId;
+    }
+    public void setDeviceId(int deviceId) {
+        this.deviceId = deviceId;
+    }
+    public String getRemark() {
+        return this.remark;
+    }
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+    public String getTestData() {
+        return this.testData;
+    }
+    public void setTestData(String testData) {
+        this.testData = testData;
+    }
+    public int getCreateBy() {
+        return this.createBy;
+    }
+    public void setCreateBy(int createBy) {
+        this.createBy = createBy;
+    }
+    public long getCreateTime() {
+        return this.createTime;
+    }
+    public void setCreateTime(long createTime) {
+        this.createTime = createTime;
+    }
+    public boolean getIsTijiao() {
+        return this.isTijiao;
+    }
+    public void setIsTijiao(boolean isTijiao) {
+        this.isTijiao = isTijiao;
+    }
+
+
+   
 
 
 }

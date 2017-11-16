@@ -55,15 +55,16 @@ public class FaultsBean {
     private String replyContent;
     private long replyTime;
     private String replyUsername;
+    private String processUsername;
     private int status;
     private String faultImage;
-    @Generated(hash = 1327461146)
+    @Generated(hash = 1531120157)
     public FaultsBean(int accountId, String address, int companyId,
             String contactTel, int deviceId, String deviceNumber, int dtoResult,
             long faultTime, @NotNull Long id, long modifyTime, int pageNum,
             int pageSize, long planCheckTime, int processBy, String remark,
             int replyBy, String replyContent, long replyTime, String replyUsername,
-            int status, String faultImage) {
+            String processUsername, int status, String faultImage) {
         this.accountId = accountId;
         this.address = address;
         this.companyId = companyId;
@@ -83,6 +84,7 @@ public class FaultsBean {
         this.replyContent = replyContent;
         this.replyTime = replyTime;
         this.replyUsername = replyUsername;
+        this.processUsername = processUsername;
         this.status = status;
         this.faultImage = faultImage;
     }
@@ -203,6 +205,12 @@ public class FaultsBean {
     public void setReplyUsername(String replyUsername) {
         this.replyUsername = replyUsername;
     }
+    public String getProcessUsername() {
+        return this.processUsername;
+    }
+    public void setProcessUsername(String processUsername) {
+        this.processUsername = processUsername;
+    }
     public int getStatus() {
         return this.status;
     }
@@ -215,6 +223,7 @@ public class FaultsBean {
     public void setFaultImage(String faultImage) {
         this.faultImage = faultImage;
     }
+    
    
 
 }

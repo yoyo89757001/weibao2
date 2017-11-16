@@ -96,6 +96,7 @@ public class Fragment4 extends Fragment {
 
         name.setText(baoCunBean.getName());
         shouji.setText(baoCunBean.getPhone());
+        danwei.setText(baoCunBean.getCompany());
 
         return view;
     }
