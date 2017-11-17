@@ -25,6 +25,7 @@ import com.examples.weibao.allbeans.DetectionsBean;
 import com.examples.weibao.allbeans.DetectionsBeanDao;
 import com.examples.weibao.allbeans.MenusBean;
 import com.examples.weibao.allbeans.MenusBeanDao;
+import com.examples.weibao.beans.FanHuiBean;
 import com.examples.weibao.beans.WeiBaoCeShiCSBean;
 import com.examples.weibao.intface.ClickIntface;
 import com.examples.weibao.ui.HomePageActivity;
@@ -147,14 +148,15 @@ public class ZhuangTaiXuanZeDialog extends Dialog   {
                         qiTaDialog.setOnPositiveListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                neirong=qiTaDialog.getContent();
+
                                 qiTaDialog.dismiss();
                             }
                         });
                         qiTaDialog.setOnQuXiaoListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                            qiTaDialog.dismiss();
+                                neirong=qiTaDialog.getContents();
+                                qiTaDialog.dismiss();
                             }
                         });
                         qiTaDialog.show();
@@ -170,9 +172,9 @@ public class ZhuangTaiXuanZeDialog extends Dialog   {
 
     public void baocun(SheBei2Adapter adapter, long shebeiId, WeiBaoCeShiCSBean ceShiCSBean){
 
-
+     //   Log.d("ZhuangTaiXuanZeDialog", "shebeiId:" + shebeiId);
+    //    Log.d("ZhuangTaiXuanZeDialog", "menusBeanList.get(p).getParentId():" + menusBeanList.get(p).getParentId());
         if (p!=-1){
-
            BenDiMenusBean gg= benDiMenusBeanDao.queryBuilder().where(BenDiMenusBeanDao.Properties.MensuId.eq(menusBeanList.get(p).getParentId()),
                    BenDiMenusBeanDao.Properties.ParentId.eq(shebeiId)).unique();
             BenDiMenusBean benDiMenusBean=null;
@@ -184,28 +186,28 @@ public class ZhuangTaiXuanZeDialog extends Dialog   {
                 benDiMenusBean.setParentId(shebeiId);
                 benDiMenusBean.setIsYiChang(false);
                 benDiMenusBean.setName(menusBeanList.get(p).getName());
-                benDiMenusBean.setParentId(ceShiCSBean.getPlanId());
+                benDiMenusBean.setPlanId(ceShiCSBean.getPlanId());
                 benDiMenusBean.setMenuId2(ceShiCSBean.getMenuId());
+                benDiMenusBean.setDeviceId(ceShiCSBean.getDeviceId());
                 benDiMenusBean.setIsTijiao(false);
                 benDiMenusBean.setMenuLevel1Id(ceShiCSBean.getMenuLevel1Id());
                 benDiMenusBean.setMenuLevel3Id(ceShiCSBean.getMenuLevel3Id());
                 if (lv4Id==-1){
                     //选了设备异常，但是没选中下一级的任何一项
                     benDiMenusBean.setMenuLevel4Id(menusBeanList.get(p).getId().intValue());
-                    Log.d("ZhuangTaiXuanZeDialog", "可能选了设备异常，但是没选中下一级的任何一项");
+                   // Log.d("ZhuangTaiXuanZeDialog", "可能选了设备异常，但是没选中下一级的任何一项");
 
                 }else {
                     //选了设备异常
                     benDiMenusBean.setMenuLevel4Id((int) lv4Id);
-                    Log.d("ZhuangTaiXuanZeDialog", "选了设备异常");
+                   // Log.d("ZhuangTaiXuanZeDialog", "选了设备异常");
                 }
-                if (!neirong.equals("")){
-                    benDiMenusBean.setRemark(neirong);
-                }
+                benDiMenusBean.setRemark(neirong);
+
                benDiMenusBeanDao.insert(benDiMenusBean);
 
             }else {
-                 benDiMenusBean=new BenDiMenusBean();
+                benDiMenusBean=new BenDiMenusBean();
                 benDiMenusBean.setId(gg.getId());
                 benDiMenusBean.setMensuId(menusBeanList.get(p).getParentId()); //维保项ID 用于查询
                 benDiMenusBean.setIsQiTa(false);
@@ -213,7 +215,8 @@ public class ZhuangTaiXuanZeDialog extends Dialog   {
                 benDiMenusBean.setIsYiChang(false);
                 benDiMenusBean.setIsTijiao(false);
                 benDiMenusBean.setName(menusBeanList.get(p).getName());
-                benDiMenusBean.setParentId(ceShiCSBean.getPlanId());
+                benDiMenusBean.setDeviceId(ceShiCSBean.getDeviceId());
+                benDiMenusBean.setPlanId(ceShiCSBean.getPlanId());
                 benDiMenusBean.setMenuId2(ceShiCSBean.getMenuId());//维保项ID 用于上传
                 benDiMenusBean.setMenuLevel1Id(ceShiCSBean.getMenuLevel1Id());
                 benDiMenusBean.setMenuLevel3Id(ceShiCSBean.getMenuLevel3Id());
@@ -221,16 +224,15 @@ public class ZhuangTaiXuanZeDialog extends Dialog   {
                 if (lv4Id==-1){
                     //选了设备异常，但是没选中下一级的任何一项
                     benDiMenusBean.setMenuLevel4Id(menusBeanList.get(p).getId().intValue());
-                    Log.d("ZhuangTaiXuanZeDialog", "可能选了设备异常，但是没选中下一级的任何一项");
+                   // Log.d("ZhuangTaiXuanZeDialog", "可能选了设备异常，但是没选中下一级的任何一项2");
 
                 }else {
                     //选了设备异常
                     benDiMenusBean.setMenuLevel4Id((int) lv4Id);
-                    Log.d("ZhuangTaiXuanZeDialog", "选了设备异常");
+                 //   Log.d("ZhuangTaiXuanZeDialog", "选了设备异常2");
                 }
-                if (!neirong.equals("")){
-                    benDiMenusBean.setRemark(neirong);
-                }
+                benDiMenusBean.setRemark(neirong);
+
                 benDiMenusBeanDao.update(benDiMenusBean);
 
             }
@@ -238,6 +240,8 @@ public class ZhuangTaiXuanZeDialog extends Dialog   {
            boolean ff = !Utils.getNetTypeName(context).equals("无网络");
            if (ff){
                link_save(benDiMenusBean);
+           }else {
+               showMSG("没有检测到网络,已经保存到本地,请在有网络时点击主界面的'上传本地维保信息'",4);
            }
 
         }
@@ -311,7 +315,7 @@ public class ZhuangTaiXuanZeDialog extends Dialog   {
     }
 
 
-    private void link_save(BenDiMenusBean benDiMenusBean) {
+    private void link_save(final BenDiMenusBean benDiMenusBean) {
         showDialog();
         final MediaType JSON=MediaType.parse("application/json; charset=utf-8");
         OkHttpClient okHttpClient= MyAppLaction.getOkHttpClient();
@@ -328,15 +332,15 @@ public class ZhuangTaiXuanZeDialog extends Dialog   {
             JSONObject tijiao = new JSONObject();
           //  tijiao.put("status",0);
             tijiao.put("id",0);
-            tijiao.put("planId",benDiMenusBean.getParentId());
+            tijiao.put("planId",benDiMenusBean.getPlanId());
             tijiao.put("menuLevel1Id",benDiMenusBean.getMenuLevel1Id());
             tijiao.put("menuId",benDiMenusBean.getMenuId2());
             tijiao.put("menuLevel3Id",benDiMenusBean.getMenuLevel3Id());
             tijiao.put("menuLevel4Id",benDiMenusBean.getMenuLevel4Id());
             tijiao.put("deviceId",benDiMenusBean.getDeviceId());
             tijiao.put("remark",benDiMenusBean.getRemark());
-            tijiao.put("testData","");
-            tijiao.put("createBy",0);
+            tijiao.put("testData",benDiMenusBean.getName());
+            tijiao.put("createBy",dengLuBean.getUserId());
             tijiao.put("createTime",System.currentTimeMillis());
 
             jsonArray=new JSONArray();
@@ -344,7 +348,7 @@ public class ZhuangTaiXuanZeDialog extends Dialog   {
 
             jsonObject.put("cmd","100");
             jsonObject.put("records",jsonArray);
-
+        //    Log.d("ZhuangTaiXuanZeDialog", benDiMenusBean.getRemark());
            // jsonObject.put("password",jiami);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -355,7 +359,7 @@ public class ZhuangTaiXuanZeDialog extends Dialog   {
                 .header("nonce", nonce)
                 .header("timestamp", timestamp)
                 .header("userId", dengLuBean.getUserId()+"")
-                .header("sign", Utils.encode("100"+jsonArray+nonce+timestamp
+                .header("sign", Utils.encode("100"+nonce+timestamp
                         +dengLuBean.getUserId()+Utils.signaturePassword))
                 .post(body)
                 .url(dengLuBean.getZhuji() + "uploadWeibaoRecords.app");
@@ -384,15 +388,15 @@ public class ZhuangTaiXuanZeDialog extends Dialog   {
                     Log.d("InFoActivity", "ss" + ss);
                     JsonObject jsonObject= GsonUtil.parse(ss).getAsJsonObject();
                     Gson gson=new Gson();
-                    JsonObject jsonElement= jsonObject.get("account").getAsJsonObject();
-                    DengLuBean zhaoPianBean=gson.fromJson(jsonElement,DengLuBean.class);
-                    if (jsonObject.get("dtoResult").getAsString().equals("0")){
-                        showMSG(jsonObject.get("dtoDesc").getAsString(),4);
-
-
-
+                    FanHuiBean zhaoPianBean=gson.fromJson(jsonObject,FanHuiBean.class);
+                    if (zhaoPianBean.getDtoResult()==0){
+                        BenDiMenusBean gg= benDiMenusBeanDao.queryBuilder().where(BenDiMenusBeanDao.Properties.MensuId.eq(menusBeanList.get(p).getParentId()),
+                                BenDiMenusBeanDao.Properties.ParentId.eq(shebeiId)).unique();
+                       gg.setIsTijiao(true);
+                       benDiMenusBeanDao.update(gg);
+                        showMSG("保存成功",4);
                     }else {
-                        showMSG(jsonObject.get("dtoDesc").getAsString(),4);
+                        showMSG(zhaoPianBean.getDtoDesc(),4);
                     }
 
                 }catch (Exception e){

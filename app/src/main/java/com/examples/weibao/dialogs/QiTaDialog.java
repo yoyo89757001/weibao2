@@ -37,7 +37,7 @@ public class QiTaDialog extends Dialog {
 
 
     }
-    public String getContent(){
+    public String getContents(){
         return shuru.getText().toString().trim();
     }
 

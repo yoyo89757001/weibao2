@@ -69,6 +69,7 @@ public class SheBeiAdapter extends RecyclerView.Adapter<SheBeiAdapter.ViewHolder
       //  if (allMenusBeanList.get(position).getType()==1){
            // menusBeanList1=menusBeanDao.queryBuilder().where(MenusBeanDao.Properties.ParentId.eq(datas.get(position).getId())).list();
           //  Log.d("SheBeiAdapter", "menusBeanList1.size():" + menusBeanList1.size());
+            ceShiCSBean.setDeviceId(datas.get(position).getId().intValue());
             if (menusBeanList1!=null){
             SheBei2Adapter sheBei2Adapter=new SheBei2Adapter(context,menusBeanList1,menusBeanDao,datas.get(position).getId(),ceShiCSBean);
             viewHolder.listView1.setAdapter(sheBei2Adapter);
