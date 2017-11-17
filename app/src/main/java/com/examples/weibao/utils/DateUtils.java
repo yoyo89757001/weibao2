@@ -360,6 +360,29 @@ public class DateUtils {
     }
 
     /**
+     * 掉此方法输入所要转换的时间输入例如（"2014年06月14日16时09分00秒"）返回时间戳
+     *
+     * @param time
+     * @return
+     */
+    public static String getTimes(String time) {
+        SimpleDateFormat sdr = new SimpleDateFormat("yyyy-MM-dd HH:mm",
+                Locale.CHINA);
+        Date date;
+        String times = null;
+        try {
+            date = sdr.parse(time);
+            long l = date.getTime();
+            String stf = String.valueOf(l);
+            times = stf.substring(0, 10);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return times;
+    }
+
+
+    /**
      * 输入时间戳变星期
      *
      * @param time

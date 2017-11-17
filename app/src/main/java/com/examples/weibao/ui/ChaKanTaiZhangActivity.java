@@ -15,7 +15,6 @@ import com.examples.weibao.R;
 import com.examples.weibao.adapters.ChaKanTaiZhangAdapter;
 import com.examples.weibao.allbeans.DevicesBean;
 import com.examples.weibao.allbeans.DevicesBeanDao;
-import com.examples.weibao.allbeans.MenusBeanDao;
 import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;

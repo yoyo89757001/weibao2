@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.examples.weibao.MyAppLaction;
 import com.examples.weibao.R;
 import com.examples.weibao.allbeans.BenDiMenusBeanDao;
-import com.examples.weibao.allbeans.ItemsBean;
 import com.examples.weibao.allbeans.MenusBean;
 import com.examples.weibao.intface.ClickIntface;
 

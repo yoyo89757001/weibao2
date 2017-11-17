@@ -36,7 +36,7 @@ public class YiChangDialog extends Dialog   {
     private int p=-1;
     private long sheBeiId=0;
    // private ClickIntface clickIntface;
-    private long lv4Id=-1;
+    private String lv4Id="";
 
 
     public YiChangDialog(Context context, List<DetectionsBean> menusBeanList, MenusBeanDao menusBeanDao,long shedianId) {
@@ -66,7 +66,7 @@ public class YiChangDialog extends Dialog   {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 p=position;
-                lv4Id=menusBeanList.get(position).getId();
+                lv4Id=menusBeanList.get(position).getRemark();
                int s= menusBeanList.size();
                for (int i=0;i<s;i++){
                   menusBeanList.get(i).setPageNum("qq");
@@ -83,7 +83,7 @@ public class YiChangDialog extends Dialog   {
 
     }
 
-    public long  getLv4Id(){
+    public String  getLv4Id(){
         return lv4Id;
     }
 

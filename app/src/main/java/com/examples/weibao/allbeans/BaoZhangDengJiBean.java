@@ -1,13 +1,11 @@
 package com.examples.weibao.allbeans;
 
+import com.google.gson.annotations.SerializedName;
+
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.NotNull;
-import org.greenrobot.greendao.annotation.ToMany;
-
-import java.util.List;
 import org.greenrobot.greendao.annotation.Generated;
-import org.greenrobot.greendao.DaoException;
 
 /**
  * Created by Administrator on 2017/11/6.
@@ -18,185 +16,248 @@ public class BaoZhangDengJiBean {
     @Id
     @NotNull
     private Long id;
-    private String danwei;
-    private String dizhi;
-    private String shebei;
-    private String guzhangmiaoshu;
-    private String guzhangshijian;
-    private String baozhangren;
-    private String dianhua;
-    private boolean isTiJiao;
 
-    @ToMany(referencedJoinProperty = "pid")//指定与之关联的其他类的id
-    private List<PhotosBean> photosBeanList;
-    /** Used to resolve relations */
-    @Generated(hash = 2040040024)
-    private transient DaoSession daoSession;
-    /** Used for active entity operations. */
-    @Generated(hash = 1747493719)
-    private transient BaoZhangDengJiBeanDao myDao;
 
-    @Generated(hash = 331066935)
-    public BaoZhangDengJiBean(@NotNull Long id, String danwei, String dizhi,
-            String shebei, String guzhangmiaoshu, String guzhangshijian,
-            String baozhangren, String dianhua, boolean isTiJiao) {
+    /**
+     * status : 0
+     * id : 1
+     * accountId : 0
+     * address : 111
+     * companyId : 10001
+     * deviceId : 1
+     * deviceNumber : 123
+     * faultTime : 1509787543000
+     * remark : 111
+     * contactTel : 133123456789
+     * faultImage : 1234567890.jpg
+     * replyBy : 0
+     * replyContent : =========
+     * replyUsername : 用户名称
+     * replyTime : 1509788606570
+     * planCheckTime : 1509788606570
+     * processBy : 0
+     * processContent : ==========
+     * processUser : 用户名称
+     * processTime : 1509788606570
+     * modifyTime : 1509788606570
+     * dtoResult : 1
+     * pageNum : 0
+     * pageSize : 0
+     */
+
+    private int status;
+    private int accountId;
+    private String address;
+    private int companyId;
+    private int deviceId;
+    private String deviceNumber;
+    private long faultTime;
+    private String remark;
+    private String contactTel;
+    private String faultImage;
+    private int replyBy;
+    private String replyContent;
+    private String replyUsername;
+    private long replyTime;
+    private long planCheckTime;
+    private int processBy;
+    private String processContent;
+    private String processUser;
+    private long processTime;
+    private long modifyTime;
+    private int dtoResult;
+    private int pageNum;
+    private int pageSize;
+    private boolean isTijiao;
+    @Generated(hash = 871956218)
+    public BaoZhangDengJiBean(@NotNull Long id, int status, int accountId,
+            String address, int companyId, int deviceId, String deviceNumber,
+            long faultTime, String remark, String contactTel, String faultImage,
+            int replyBy, String replyContent, String replyUsername, long replyTime,
+            long planCheckTime, int processBy, String processContent,
+            String processUser, long processTime, long modifyTime, int dtoResult,
+            int pageNum, int pageSize, boolean isTijiao) {
         this.id = id;
-        this.danwei = danwei;
-        this.dizhi = dizhi;
-        this.shebei = shebei;
-        this.guzhangmiaoshu = guzhangmiaoshu;
-        this.guzhangshijian = guzhangshijian;
-        this.baozhangren = baozhangren;
-        this.dianhua = dianhua;
-        this.isTiJiao = isTiJiao;
+        this.status = status;
+        this.accountId = accountId;
+        this.address = address;
+        this.companyId = companyId;
+        this.deviceId = deviceId;
+        this.deviceNumber = deviceNumber;
+        this.faultTime = faultTime;
+        this.remark = remark;
+        this.contactTel = contactTel;
+        this.faultImage = faultImage;
+        this.replyBy = replyBy;
+        this.replyContent = replyContent;
+        this.replyUsername = replyUsername;
+        this.replyTime = replyTime;
+        this.planCheckTime = planCheckTime;
+        this.processBy = processBy;
+        this.processContent = processContent;
+        this.processUser = processUser;
+        this.processTime = processTime;
+        this.modifyTime = modifyTime;
+        this.dtoResult = dtoResult;
+        this.pageNum = pageNum;
+        this.pageSize = pageSize;
+        this.isTijiao = isTijiao;
     }
-
     @Generated(hash = 334163897)
     public BaoZhangDengJiBean() {
     }
-
     public Long getId() {
         return this.id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
-
-    public String getDanwei() {
-        return this.danwei;
+    public int getStatus() {
+        return this.status;
+    }
+    public void setStatus(int status) {
+        this.status = status;
+    }
+    public int getAccountId() {
+        return this.accountId;
+    }
+    public void setAccountId(int accountId) {
+        this.accountId = accountId;
+    }
+    public String getAddress() {
+        return this.address;
+    }
+    public void setAddress(String address) {
+        this.address = address;
+    }
+    public int getCompanyId() {
+        return this.companyId;
+    }
+    public void setCompanyId(int companyId) {
+        this.companyId = companyId;
+    }
+    public int getDeviceId() {
+        return this.deviceId;
+    }
+    public void setDeviceId(int deviceId) {
+        this.deviceId = deviceId;
+    }
+    public String getDeviceNumber() {
+        return this.deviceNumber;
+    }
+    public void setDeviceNumber(String deviceNumber) {
+        this.deviceNumber = deviceNumber;
+    }
+    public long getFaultTime() {
+        return this.faultTime;
+    }
+    public void setFaultTime(long faultTime) {
+        this.faultTime = faultTime;
+    }
+    public String getRemark() {
+        return this.remark;
+    }
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+    public String getContactTel() {
+        return this.contactTel;
+    }
+    public void setContactTel(String contactTel) {
+        this.contactTel = contactTel;
+    }
+    public String getFaultImage() {
+        return this.faultImage;
+    }
+    public void setFaultImage(String faultImage) {
+        this.faultImage = faultImage;
+    }
+    public int getReplyBy() {
+        return this.replyBy;
+    }
+    public void setReplyBy(int replyBy) {
+        this.replyBy = replyBy;
+    }
+    public String getReplyContent() {
+        return this.replyContent;
+    }
+    public void setReplyContent(String replyContent) {
+        this.replyContent = replyContent;
+    }
+    public String getReplyUsername() {
+        return this.replyUsername;
+    }
+    public void setReplyUsername(String replyUsername) {
+        this.replyUsername = replyUsername;
+    }
+    public long getReplyTime() {
+        return this.replyTime;
+    }
+    public void setReplyTime(long replyTime) {
+        this.replyTime = replyTime;
+    }
+    public long getPlanCheckTime() {
+        return this.planCheckTime;
+    }
+    public void setPlanCheckTime(long planCheckTime) {
+        this.planCheckTime = planCheckTime;
+    }
+    public int getProcessBy() {
+        return this.processBy;
+    }
+    public void setProcessBy(int processBy) {
+        this.processBy = processBy;
+    }
+    public String getProcessContent() {
+        return this.processContent;
+    }
+    public void setProcessContent(String processContent) {
+        this.processContent = processContent;
+    }
+    public String getProcessUser() {
+        return this.processUser;
+    }
+    public void setProcessUser(String processUser) {
+        this.processUser = processUser;
+    }
+    public long getProcessTime() {
+        return this.processTime;
+    }
+    public void setProcessTime(long processTime) {
+        this.processTime = processTime;
+    }
+    public long getModifyTime() {
+        return this.modifyTime;
+    }
+    public void setModifyTime(long modifyTime) {
+        this.modifyTime = modifyTime;
+    }
+    public int getDtoResult() {
+        return this.dtoResult;
+    }
+    public void setDtoResult(int dtoResult) {
+        this.dtoResult = dtoResult;
+    }
+    public int getPageNum() {
+        return this.pageNum;
+    }
+    public void setPageNum(int pageNum) {
+        this.pageNum = pageNum;
+    }
+    public int getPageSize() {
+        return this.pageSize;
+    }
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
+    public boolean getIsTijiao() {
+        return this.isTijiao;
+    }
+    public void setIsTijiao(boolean isTijiao) {
+        this.isTijiao = isTijiao;
     }
 
-    public void setDanwei(String danwei) {
-        this.danwei = danwei;
-    }
 
-    public String getDizhi() {
-        return this.dizhi;
-    }
 
-    public void setDizhi(String dizhi) {
-        this.dizhi = dizhi;
-    }
-
-    public String getShebei() {
-        return this.shebei;
-    }
-
-    public void setShebei(String shebei) {
-        this.shebei = shebei;
-    }
-
-    public String getGuzhangmiaoshu() {
-        return this.guzhangmiaoshu;
-    }
-
-    public void setGuzhangmiaoshu(String guzhangmiaoshu) {
-        this.guzhangmiaoshu = guzhangmiaoshu;
-    }
-
-    public String getGuzhangshijian() {
-        return this.guzhangshijian;
-    }
-
-    public void setGuzhangshijian(String guzhangshijian) {
-        this.guzhangshijian = guzhangshijian;
-    }
-
-    public String getBaozhangren() {
-        return this.baozhangren;
-    }
-
-    public void setBaozhangren(String baozhangren) {
-        this.baozhangren = baozhangren;
-    }
-
-    public String getDianhua() {
-        return this.dianhua;
-    }
-
-    public void setDianhua(String dianhua) {
-        this.dianhua = dianhua;
-    }
-
-    public boolean getIsTiJiao() {
-        return this.isTiJiao;
-    }
-
-    public void setIsTiJiao(boolean isTiJiao) {
-        this.isTiJiao = isTiJiao;
-    }
-
-    /**
-     * To-many relationship, resolved on first access (and after reset).
-     * Changes to to-many relations are not persisted, make changes to the target entity.
-     */
-    @Generated(hash = 1521561152)
-    public List<PhotosBean> getPhotosBeanList() {
-        if (photosBeanList == null) {
-            final DaoSession daoSession = this.daoSession;
-            if (daoSession == null) {
-                throw new DaoException("Entity is detached from DAO context");
-            }
-            PhotosBeanDao targetDao = daoSession.getPhotosBeanDao();
-            List<PhotosBean> photosBeanListNew = targetDao
-                    ._queryBaoZhangDengJiBean_PhotosBeanList(id);
-            synchronized (this) {
-                if (photosBeanList == null) {
-                    photosBeanList = photosBeanListNew;
-                }
-            }
-        }
-        return photosBeanList;
-    }
-
-    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
-    @Generated(hash = 1444559707)
-    public synchronized void resetPhotosBeanList() {
-        photosBeanList = null;
-    }
-
-    /**
-     * Convenient call for {@link org.greenrobot.greendao.AbstractDao#delete(Object)}.
-     * Entity must attached to an entity context.
-     */
-    @Generated(hash = 128553479)
-    public void delete() {
-        if (myDao == null) {
-            throw new DaoException("Entity is detached from DAO context");
-        }
-        myDao.delete(this);
-    }
-
-    /**
-     * Convenient call for {@link org.greenrobot.greendao.AbstractDao#refresh(Object)}.
-     * Entity must attached to an entity context.
-     */
-    @Generated(hash = 1942392019)
-    public void refresh() {
-        if (myDao == null) {
-            throw new DaoException("Entity is detached from DAO context");
-        }
-        myDao.refresh(this);
-    }
-
-    /**
-     * Convenient call for {@link org.greenrobot.greendao.AbstractDao#update(Object)}.
-     * Entity must attached to an entity context.
-     */
-    @Generated(hash = 713229351)
-    public void update() {
-        if (myDao == null) {
-            throw new DaoException("Entity is detached from DAO context");
-        }
-        myDao.update(this);
-    }
-
-    /** called by internal mechanisms, do not call yourself. */
-    @Generated(hash = 379854186)
-    public void __setDaoSession(DaoSession daoSession) {
-        this.daoSession = daoSession;
-        myDao = daoSession != null ? daoSession.getBaoZhangDengJiBeanDao() : null;
-    }
-
+  
 }

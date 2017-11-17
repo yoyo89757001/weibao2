@@ -44,6 +44,8 @@ import com.examples.weibao.R;
 import com.examples.weibao.adapters.XuanZeSheBeiAdapter;
 import com.examples.weibao.allbeans.BaoZhangDengJiBean;
 import com.examples.weibao.allbeans.BaoZhangDengJiBeanDao;
+import com.examples.weibao.allbeans.BenDiMenusBean;
+import com.examples.weibao.allbeans.BenDiMenusBeanDao;
 import com.examples.weibao.allbeans.DengLuBean;
 import com.examples.weibao.allbeans.DengLuBeanDao;
 import com.examples.weibao.allbeans.DevicesBean;
@@ -51,6 +53,7 @@ import com.examples.weibao.allbeans.DevicesBeanDao;
 import com.examples.weibao.allbeans.ItemsBeanDao;
 import com.examples.weibao.allbeans.PhotosBean;
 import com.examples.weibao.allbeans.PhotosBeanDao;
+import com.examples.weibao.beans.FanHuiBean;
 import com.examples.weibao.dialogs.TiJIaoDialog;
 import com.examples.weibao.intface.ClickIntface;
 import com.examples.weibao.utils.DateUtils;
@@ -209,20 +212,22 @@ public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
         }else {
             tijiao.setText("保存到本地");
         }
+        mingcheng.setText(dengLuBean.getCompany());
         if (jilu==1){
             tijiao.setVisibility(View.GONE);
             chakan.setVisibility(View.GONE);
-            mingcheng.setText(baoZhangDengJiBean.getDanwei());
-            dizhi.setText(baoZhangDengJiBean.getDizhi());
-            shebei.setText(baoZhangDengJiBean.getShebei());
-            guzhangEt.setText(baoZhangDengJiBean.getGuzhangmiaoshu());
-            shijian.setText(baoZhangDengJiBean.getGuzhangshijian());
-            name.setText(baoZhangDengJiBean.getBaozhangren());
-            dianhua.setText(baoZhangDengJiBean.getDianhua());
-          List<PhotosBean> photosBeans=  baoZhangDengJiBean.getPhotosBeanList();
-            int s=photosBeans.size();
+
+            dizhi.setText(baoZhangDengJiBean.getAddress());
+            shebei.setText(baoZhangDengJiBean.getDeviceNumber());
+            guzhangEt.setText(baoZhangDengJiBean.getRemark());
+            shijian.setText(DateUtils.time(baoZhangDengJiBean.getFaultTime()+""));
+            name.setText(dengLuBean.getName());
+            dianhua.setText(baoZhangDengJiBean.getContactTel());
+
+            String ss[] =baoZhangDengJiBean.getFaultImage().split(";");
+            int s=ss.length;
             for (int i=0;i<s;i++){
-                stringList.add(0,photosBeans.get(i).getPath());
+                stringList.add(0,ss[i]);
             }
 
         }else {
@@ -286,39 +291,41 @@ public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
                 String s5=shijian.getText().toString().trim();
                 String s6=name.getText().toString().trim();
                 String s7=dianhua.getText().toString().trim();
+                Log.d("BaoZhangDengJiActivity", "Long.parseLong(DateUtils.getTimes(s5)):" + Long.parseLong(DateUtils.getTimes(s5)));
 
                 if (!s1.equals("") && !s2.equals("") && !s3.equals("") && !s4.equals("") && !s1.equals("") && !s5.equals("") && !s6.equals("") && !s7.equals("")){
                     //信息全了
                     BaoZhangDengJiBean dengJiBean=new BaoZhangDengJiBean();
                     dengJiBean.setId(ccc);
-                    dengJiBean.setDanwei(s1);
-                    dengJiBean.setDizhi(s2);
-                    dengJiBean.setShebei(s3);
-                    dengJiBean.setGuzhangmiaoshu(s4);
-                    dengJiBean.setGuzhangshijian(s5);
-                    dengJiBean.setBaozhangren(s6);
-                    dengJiBean.setDianhua(s7);
-                    dengJiBean.setIsTiJiao(false);
+                    dengJiBean.setCompanyId(dengJiBean.getCompanyId());
+                    dengJiBean.setAddress(s2);
+                    dengJiBean.setDeviceId((int) shebeiID);
+                    dengJiBean.setDeviceNumber(bianhao);
+                    dengJiBean.setRemark(s4);
+                    dengJiBean.setFaultTime(Long.parseLong(DateUtils.getTimes(s5)+"000"));
+                    dengJiBean.setContactTel(s7);
+                    dengJiBean.setIsTijiao(false);
+
+                    if (stringList.size()>1){
+                        StringBuilder buffer = new StringBuilder();
+                        int ss=stringList.size()-1;
+                        for (int i=0;i<ss;i++){
+                            if (i<ss-1){
+                                buffer.append(stringList.get(i));
+                                buffer.append(";");
+                            }else {
+                                buffer.append(stringList.get(i));
+                            }
+                        }
+                        dengJiBean.setFaultImage(buffer.toString());
+                    }
 
                     baoZhangDengJiBeanDao.insert(dengJiBean);
 
-                    if (stringList.size()>1){
-                        int ss=stringList.size()-1;
-                        for (int i=0;i<ss;i++){
-                            PhotosBean bean=new PhotosBean();
-                            bean.setId(System.currentTimeMillis());
-                            bean.setPath(stringList.get(i));
-                            Log.d("BaoZhangDengJiActivity", stringList.get(i));
-                            bean.setPid(ccc);
-                            photosBeanDao.insert(bean);
-                        }
-                    }
                     if (ff){
                     link_save();
 
                     }
-
-
 
                 }else {
                     showMSG("信息没有填写完整",3);
@@ -386,8 +393,8 @@ public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
             jsonArray.put(tijiao);
 
             jsonObject.put("cmd","100");
-            jsonObject.put("faults",jsonArray.toString());
-            Log.d("BaoZhangDengJiActivity", jsonArray.toString());
+            jsonObject.put("faults",jsonArray);
+           // Log.d("BaoZhangDengJiActivity", jsonObject.toString());
          //   jsonObject.put("password",jiami);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -398,7 +405,7 @@ public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
                 .header("nonce", nonce)
                 .header("timestamp", timestamp)
                 .header("userId", dengLuBean.getUserId()+"")
-                .header("sign", Utils.encode("100"+jsonArray.toString()+nonce+timestamp
+                .header("sign", Utils.encode("100"+nonce+timestamp
                         +dengLuBean.getUserId()+Utils.signaturePassword))
                 .post(body)
                 .url(dengLuBean.getZhuji() + "uploadFaults.app");
@@ -425,13 +432,20 @@ public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
                     ResponseBody body = response.body();
                     String ss=body.string().trim();
                     Log.d("InFoActivity", "ss" + ss);
-
-
-//
-//                    }else {
-//                        showMSG(jsonObject.get("dtoDesc").getAsString(),4);
-//                    }
-
+                    JsonObject jsonObject= GsonUtil.parse(ss).getAsJsonObject();
+                    Gson gson=new Gson();
+                    FanHuiBean zhaoPianBean=gson.fromJson(jsonObject,FanHuiBean.class);
+                    if (zhaoPianBean.getDtoResult()==0){
+//                        BenDiMenusBean gg= benDiMenusBeanDao.queryBuilder().where(BenDiMenusBeanDao.Properties.MensuId.eq(menusBeanList.get(p).getParentId()),
+//                                BenDiMenusBeanDao.Properties.ParentId.eq(shebeiId)).unique();
+//                        gg.setIsTijiao(true);
+                       // benDiMenusBeanDao.update(gg);
+                        showMSG("保存成功",4);
+                    }else if (zhaoPianBean.getDtoResult()==-33){
+                        showMSG("账号登陆失效,请重新登陆",4);
+                    }else {
+                        showMSG(zhaoPianBean.getDtoDesc(),4);
+                    }
                 }catch (Exception e){
 
                     dismissDialog();

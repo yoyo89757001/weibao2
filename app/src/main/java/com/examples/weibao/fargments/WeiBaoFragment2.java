@@ -144,11 +144,17 @@ public class WeiBaoFragment2 extends Fragment {
                 Log.d("WeiBaoFragment2", "点");
 
                  p=position;
-                AndPermission.with(getActivity())
-                        .requestCode(300)
-                        .permission(Permission.STORAGE,Permission.CAMERA)
-                        .callback(listener)
-                        .start();
+                Intent intent33 = new Intent(getActivity(),ChaKanShiShiBaoGaoActivity.class);
+                intent33.putExtra("url", "http://14.23.169.42:8090/upload/PlanReport/"+stringList.get(p).getReportFile());
+              //  intent33.putExtra("receiver", new DownloadReceiver(new Handler()));
+               // intent33.putExtra("urlName",stringList.get(p).getReportFile().substring(7,stringList.get(p).getReportFile().length()));
+                getActivity().startActivity(intent33);
+
+//                AndPermission.with(getActivity())
+//                        .requestCode(300)
+//                        .permission(Permission.STORAGE,Permission.CAMERA)
+//                        .callback(listener)
+//                        .start();
 
             }
         });

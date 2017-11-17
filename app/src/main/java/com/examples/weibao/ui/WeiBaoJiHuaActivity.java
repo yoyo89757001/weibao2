@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -14,7 +13,6 @@ import com.examples.weibao.MyAppLaction;
 import com.examples.weibao.R;
 import com.examples.weibao.adapters.WeiBaoJiHuaAdapter;
 import com.examples.weibao.allbeans.ItemsBean;
-import com.examples.weibao.allbeans.ItemsBeanDao;
 import com.examples.weibao.allbeans.PlansBean;
 import com.examples.weibao.allbeans.PlansBeanDao;
 import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
@@ -22,7 +20,6 @@ import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,7 +86,8 @@ public class WeiBaoJiHuaActivity extends Activity {
             @Override
             public void onItemClick(View view, int position) {
 
-                startActivity(new Intent(WeiBaoJiHuaActivity.this,ChaKnaXiangMuJiHuaActivity.class));
+                startActivity(new Intent(WeiBaoJiHuaActivity.this,ChaKnaXiangMuJiHuaActivity.class).
+                        putExtra("jihuaID",plansBeanList.get(position).getId()));
 
             }
         });

@@ -1,8 +1,6 @@
 package com.examples.weibao.dialogs;
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -27,10 +25,6 @@ import com.examples.weibao.allbeans.MenusBean;
 import com.examples.weibao.allbeans.MenusBeanDao;
 import com.examples.weibao.beans.FanHuiBean;
 import com.examples.weibao.beans.WeiBaoCeShiCSBean;
-import com.examples.weibao.intface.ClickIntface;
-import com.examples.weibao.ui.HomePageActivity;
-import com.examples.weibao.ui.KaiPingActivity;
-import com.examples.weibao.ui.MainActivity;
 import com.examples.weibao.utils.GsonUtil;
 import com.examples.weibao.utils.Utils;
 import com.google.gson.Gson;
@@ -72,11 +66,12 @@ public class ZhuangTaiXuanZeDialog extends Dialog   {
     private long shebeiId=0;
     private DetectionsBeanDao detectionsBeanDao=null;
   //  private List<DetectionsBean> detectionsBeanList=null;
-    private long lv4Id=-1;
+    private String lv4Id="";
     private String neirong="";
     private DengLuBeanDao dengLuBeanDao=null;
     private DengLuBean dengLuBean=null;
     private TiJIaoDialog tiJIaoDialog=null;
+    private boolean i3=false,i4=false;
 
     public ZhuangTaiXuanZeDialog(Activity context, List<MenusBean> menusBeanList, MenusBeanDao menusBeanDao, long shebeiId) {
         super(context, R.style.dialog_style2);
@@ -129,6 +124,8 @@ public class ZhuangTaiXuanZeDialog extends Dialog   {
                             @Override
                             public void onClick(View v) {
                                 lv4Id=dialog.getLv4Id();
+                                i3=true;
+                                i4=false;
                                 dialog.dismiss();
 
                             }
@@ -156,6 +153,8 @@ public class ZhuangTaiXuanZeDialog extends Dialog   {
                             @Override
                             public void onClick(View v) {
                                 neirong=qiTaDialog.getContents();
+                                i4=true;
+                                i3=false;
                                 qiTaDialog.dismiss();
                             }
                         });
@@ -192,17 +191,14 @@ public class ZhuangTaiXuanZeDialog extends Dialog   {
                 benDiMenusBean.setIsTijiao(false);
                 benDiMenusBean.setMenuLevel1Id(ceShiCSBean.getMenuLevel1Id());
                 benDiMenusBean.setMenuLevel3Id(ceShiCSBean.getMenuLevel3Id());
-                if (lv4Id==-1){
-                    //选了设备异常，但是没选中下一级的任何一项
-                    benDiMenusBean.setMenuLevel4Id(menusBeanList.get(p).getId().intValue());
-                   // Log.d("ZhuangTaiXuanZeDialog", "可能选了设备异常，但是没选中下一级的任何一项");
-
-                }else {
-                    //选了设备异常
-                    benDiMenusBean.setMenuLevel4Id((int) lv4Id);
-                   // Log.d("ZhuangTaiXuanZeDialog", "选了设备异常");
+                benDiMenusBean.setMenuLevel4Id(menusBeanList.get(p).getId().intValue());
+                if (i3){
+                    benDiMenusBean.setRemark(neirong);
                 }
-                benDiMenusBean.setRemark(neirong);
+                if (i4){
+                    benDiMenusBean.setRemark(lv4Id);
+
+                    }
 
                benDiMenusBeanDao.insert(benDiMenusBean);
 
@@ -221,17 +217,13 @@ public class ZhuangTaiXuanZeDialog extends Dialog   {
                 benDiMenusBean.setMenuLevel1Id(ceShiCSBean.getMenuLevel1Id());
                 benDiMenusBean.setMenuLevel3Id(ceShiCSBean.getMenuLevel3Id());
 
-                if (lv4Id==-1){
-                    //选了设备异常，但是没选中下一级的任何一项
-                    benDiMenusBean.setMenuLevel4Id(menusBeanList.get(p).getId().intValue());
-                   // Log.d("ZhuangTaiXuanZeDialog", "可能选了设备异常，但是没选中下一级的任何一项2");
-
-                }else {
-                    //选了设备异常
-                    benDiMenusBean.setMenuLevel4Id((int) lv4Id);
-                 //   Log.d("ZhuangTaiXuanZeDialog", "选了设备异常2");
+                benDiMenusBean.setMenuLevel4Id(menusBeanList.get(p).getId().intValue());
+                if (i3){
+                    benDiMenusBean.setRemark(neirong);
                 }
-                benDiMenusBean.setRemark(neirong);
+                if (i4){
+                    benDiMenusBean.setRemark(lv4Id);
+                }
 
                 benDiMenusBeanDao.update(benDiMenusBean);
 
@@ -395,6 +387,8 @@ public class ZhuangTaiXuanZeDialog extends Dialog   {
                        gg.setIsTijiao(true);
                        benDiMenusBeanDao.update(gg);
                         showMSG("保存成功",4);
+                    }else if (zhaoPianBean.getDtoResult()==-33){
+                        showMSG("账号登陆失效,请重新登陆",4);
                     }else {
                         showMSG(zhaoPianBean.getDtoDesc(),4);
                     }

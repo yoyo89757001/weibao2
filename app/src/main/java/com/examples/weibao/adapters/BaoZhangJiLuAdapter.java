@@ -8,6 +8,8 @@ import android.widget.TextView;
 import com.examples.weibao.R;
 import com.examples.weibao.allbeans.BaoZhangDengJiBean;
 import com.examples.weibao.intface.ClickIntface;
+import com.examples.weibao.utils.DateUtils;
+
 import java.util.List;
 
 /**
@@ -34,8 +36,8 @@ public class BaoZhangJiLuAdapter extends RecyclerView.Adapter<BaoZhangJiLuAdapte
     //将数据与界面进行绑定的操作
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
-        viewHolder.time.setText("报障时间:"+datas.get(position).getGuzhangshijian());
-        viewHolder.jihua.setText("设备编号:"+datas.get(position).getShebei());
+        viewHolder.time.setText("报障时间:"+ DateUtils.time(datas.get(position).getFaultTime()+""));
+        viewHolder.jihua.setText("设备编号:"+datas.get(position).getDeviceNumber());
 
     }
     //获取数据的数量
