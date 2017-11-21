@@ -4,23 +4,33 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:id="@+id/top1"
-    android:background="#F5F5F9">
+    android:background="@color/white">
 
         <include
             android:id="@+id/pp"
             layout="@layout/base_title"/>
 
+        <Button
+            android:id="@+id/baocun"
+            android:textSize="@dimen/sp_16"
+            android:textColor="@color/white"
+            android:padding="10dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/jiaohu3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
         <WebView
             android:id="@+id/forum_context"
             android:layout_below="@+id/pp"
+            android:layout_marginBottom="2dp"
+            android:layout_above="@+id/baocun"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingLeft="5dp"
             android:paddingRight="5dp" />
-
-
-
-
 
 
 

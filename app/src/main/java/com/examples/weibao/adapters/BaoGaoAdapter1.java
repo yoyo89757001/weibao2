@@ -4,11 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.examples.weibao.BaogaoBeans.BaoGaoBean;
 import com.examples.weibao.MyAppLaction;
@@ -18,6 +20,7 @@ import com.examples.weibao.allbeans.PlansBeanDao;
 import com.examples.weibao.intface.ClickIntface;
 import com.examples.weibao.ui.ChaKanShiShiBaoGaoActivity;
 import com.examples.weibao.views.MYListView;
+import com.sdsmdg.tastytoast.TastyToast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -107,6 +110,10 @@ public class BaoGaoAdapter1 extends RecyclerView.Adapter<BaoGaoAdapter1.ViewHold
 
                         viewHolder.myListView.setAdapter(adapter);
 
+                    }else {
+                        Toast tastyToast= TastyToast.makeText(context,"该项目下暂时没有实时报告!",TastyToast.LENGTH_LONG,4);
+                        tastyToast.setGravity(Gravity.CENTER,0,0);
+                        tastyToast.show();
                     }
                     viewHolder.myListView.setVisibility(View.VISIBLE);
                     isA=true;

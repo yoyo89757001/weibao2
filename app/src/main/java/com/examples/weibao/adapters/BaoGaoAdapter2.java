@@ -1,27 +1,14 @@
 package com.examples.weibao.adapters;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.support.v4.os.ResultReceiver;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.examples.weibao.BaogaoBeans.BaoGaoBean;
-import com.examples.weibao.DownloadService.DownloadService;
 import com.examples.weibao.R;
-import com.examples.weibao.dialogs.TiJIaoDialog;
 import com.examples.weibao.intface.ClickIntface;
-import com.examples.weibao.ui.ChaKanShiShiBaoGaoActivity;
-import com.examples.weibao.utils.OpenFiles;
-import com.sdsmdg.tastytoast.TastyToast;
+
 
 import java.util.List;
 

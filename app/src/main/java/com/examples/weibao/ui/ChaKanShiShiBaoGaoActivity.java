@@ -1,16 +1,9 @@
 package com.examples.weibao.ui;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
-
-import android.content.Intent;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.Handler;
-
-import android.support.v4.os.ResultReceiver;
 
 import android.util.Log;
 import android.view.Gravity;
@@ -19,16 +12,18 @@ import android.view.WindowManager;
 
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.examples.weibao.DownloadService.DownloadService;
 import com.examples.weibao.MyAppLaction;
 import com.examples.weibao.R;
 import com.examples.weibao.allbeans.DengLuBean;
 import com.examples.weibao.allbeans.DengLuBeanDao;
 import com.examples.weibao.beans.FanHuiBean;
+import com.examples.weibao.dialogs.QueRenDialog2;
+import com.examples.weibao.dialogs.QueRenDialog3;
 import com.examples.weibao.dialogs.TiJIaoDialog;
 import com.examples.weibao.utils.GsonUtil;
 import com.examples.weibao.utils.Utils;
@@ -36,15 +31,12 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.sdsmdg.tastytoast.TastyToast;
-import com.yanzhenjie.permission.AndPermission;
-import com.yanzhenjie.permission.Permission;
-import com.yanzhenjie.permission.PermissionListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
+
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -59,22 +51,23 @@ public class ChaKanShiShiBaoGaoActivity extends Activity  {
     private Call call=null;
     private DengLuBean dengLuBean=null;
     private DengLuBeanDao dengLuBeanDao=null;
-    private long planId=0;
+    private long planId=-1;
     private String TAG="ddddddddd";
     private WebView webView;
     private  FanHuiBean fanHuiBean=null;
   //  private TbsReaderView mTbsReaderView;
     private String ididid=null;
+    private Button baocun;
     private String uil=null;
-    public  final String PATH_DOC =Environment.getExternalStorageDirectory().getAbsolutePath()+File.separator+ "docpathdoc"+File.separator;
-    public  final String PATH_IMAGE =Environment.getExternalStorageDirectory().getAbsolutePath()+File.separator+ "docpathim"+File.separator;
-    public  final String PATH_HTML =Environment.getExternalStorageDirectory().getAbsolutePath()+File.separator+ "docpathhtml"+File.separator;
+//    public  final String PATH_DOC =Environment.getExternalStorageDirectory().getAbsolutePath()+File.separator+ "docpathdoc"+File.separator;
+//    public  final String PATH_IMAGE =Environment.getExternalStorageDirectory().getAbsolutePath()+File.separator+ "docpathim"+File.separator;
+//    public  final String PATH_HTML =Environment.getExternalStorageDirectory().getAbsolutePath()+File.separator+ "docpathhtml"+File.separator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        planId=getIntent().getLongExtra("planId",0);
+        planId=getIntent().getLongExtra("planId",-1);
         dengLuBeanDao=MyAppLaction.myAppLaction.getDaoSession().getDengLuBeanDao();
         dengLuBean=dengLuBeanDao.load(123456L);
         uil=getIntent().getStringExtra("url");
@@ -95,9 +88,86 @@ public class ChaKanShiShiBaoGaoActivity extends Activity  {
                 finish();
             }
         });
+        baocun= (Button) findViewById(R.id.baocun);
+        switch (dengLuBean.getStatus()){
+            case 0:
+                //维保工程师
+                baocun.setText("提交审核报告");
+                break;
+            case 1:
+                //维保主管
+                baocun.setText("审核维保报告");
+
+                break;
+            case 2:
+                //甲方
+                baocun.setText("确认报告");
+
+                break;
+        }
+
+        if (planId==-1){
+            baocun.setVisibility(View.GONE);
+        }
+
+        baocun.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                switch (dengLuBean.getStatus()){
+                    case 0:
+                        //维保工程师
+                        link_save1();
+
+                        break;
+                    case 1:
+                        //维保主管
+                        final QueRenDialog2 dialog2=new QueRenDialog2(ChaKanShiShiBaoGaoActivity.this);
+                        dialog2.setOnPositiveListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                link_save2(11);
+                                dialog2.dismiss();
+                            }
+                        });
+                        dialog2.setCountText("请选择...");
+                        dialog2.setOnQuXiaoListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                link_save2(12);
+                                dialog2.dismiss();
+                            }
+                        });
+                        dialog2.show();
 
 
+                        break;
+                    case 2:
+                        //甲方
+                        final QueRenDialog3 dialog3=new QueRenDialog3(ChaKanShiShiBaoGaoActivity.this);
+                        dialog3.setOnPositiveListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                link_save3(13);
+                                dialog3.dismiss();
+                            }
+                        });
+                        dialog3.setCountText("请选择...");
+                        dialog3.setOnQuXiaoListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                link_save3(14);
+                                dialog3.dismiss();
+                            }
+                        });
+                        dialog3.show();
 
+                        break;
+                }
+
+
+            }
+        });
         webView= (WebView) findViewById(R.id.forum_context);
         //声明WebSettings子类
         WebSettings webSettings = webView.getSettings();
@@ -239,11 +309,11 @@ public class ChaKanShiShiBaoGaoActivity extends Activity  {
                                 // Log.d("ChaKanShiShiBaoGaoActiv", "开始下载");
                                 webView.loadUrl("http://14.23.169.42:8090/upload/realTimePlanReport/"+fanHuiBean.getDtoDesc());
 
-                                AndPermission.with(ChaKanShiShiBaoGaoActivity.this)
-                                        .requestCode(300)
-                                        .permission(Permission.STORAGE,Permission.CAMERA)
-                                        .callback(listener)
-                                        .start();
+//                                AndPermission.with(ChaKanShiShiBaoGaoActivity.this)
+//                                        .requestCode(300)
+//                                        .permission(Permission.STORAGE,Permission.CAMERA)
+//                                        .callback(listener)
+//                                        .start();
 
                             }
                         });
@@ -264,96 +334,366 @@ public class ChaKanShiShiBaoGaoActivity extends Activity  {
 
     }
 
-    private PermissionListener listener = new PermissionListener() {
-        @Override
-        public void onSucceed(int requestCode, List<String> grantedPermissions) {
-            // 权限申请成功回调。
 
-            // 这里的requestCode就是申请时设置的requestCode。
-            // 和onActivityResult()的requestCode一样，用来区分多个不同的请求。
-            if(requestCode == 300) {
+    private void link_save1() {
+        showDialog();
+        final MediaType JSON=MediaType.parse("application/json; charset=utf-8");
+        OkHttpClient okHttpClient= MyAppLaction.getOkHttpClient();
 
-                File file = new File(PATH_DOC);
-                if (!file.exists()) {
-                    file.mkdirs();
-                   // Log.d("ChaKanShiShiBaoGaoActiv", "创建目录");
-                }
-                File file2 = new File(PATH_IMAGE);
-                if (!file2.exists()) {
-                    file2.mkdirs();
-                   // Log.d("ChaKanShiShiBaoGaoActiv", "创建目录");
-                }
-                File file3 = new File(PATH_HTML);
-                if (!file3.exists()) {
-                    file3.mkdirs();
-                   // Log.d("ChaKanShiShiBaoGaoActiv", "创建目录");
-                }
+        String nonce=Utils.getNonce();
+        String timestamp=Utils.getTimestamp();
 
-                Intent intent33 = new Intent(ChaKanShiShiBaoGaoActivity.this, DownloadService.class);
-                intent33.putExtra("url", "http://14.23.169.42:8090/upload/realTimePlanReport/"+fanHuiBean.getDtoDesc());
-                intent33.putExtra("receiver", new DownloadReceiver(new Handler()));
-                intent33.putExtra("urlName",fanHuiBean.getDtoDesc().substring(7,fanHuiBean.getDtoDesc().length()));
-                startService(intent33);
+//    /* form的分割线,自己定义 */
+//        String boundary = "xx--------------------------------------------------------------xx";
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("cmd","100");
+            jsonObject.put("planId",planId);
+          //  jsonObject.put("baogaoModel","1");
+            //   jsonObject.put("baogaoModel","1");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        RequestBody body = RequestBody.create(JSON, jsonObject.toString());
+
+        Request.Builder requestBuilder = new Request.Builder()
+                .header("nonce", nonce)
+                .header("timestamp", timestamp)
+                .header("userId", dengLuBean.getUserId()+"")
+                .header("sign", Utils.encode("100"+planId+nonce+timestamp
+                        +dengLuBean.getUserId()+Utils.signaturePassword))
+                .post(body)
+                .url(dengLuBean.getZhuji() + "publishReport.app");
+
+        // step 3：创建 Call 对象
+        call = okHttpClient.newCall(requestBuilder.build());
+
+        //step 4: 开始异步请求
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d("AllConnects", "请求识别失败"+e.getMessage());
+                dismissDialog();
+
             }
-        }
 
-        @Override
-        public void onFailed(int requestCode, List<String> deniedPermissions) {
-            // 权限申请失败回调。
-            if(requestCode == 200) {
-                showMSG("存储授权失败",3);
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                dismissDialog();
+                Log.d("AllConnects", "请求识别成功"+call.request().toString());
+                //获得返回体
+                try {
 
-            }
-        }
-    };
+                    ResponseBody body = response.body();
+                    final String ss=body.string().trim();
+                    Log.d("ChaKanShiShiBaoGaoActiv", ss);
+
+                    JsonObject jsonObject= GsonUtil.parse(ss).getAsJsonObject();
+                    Gson gson=new Gson();
+                    fanHuiBean=gson.fromJson(jsonObject,FanHuiBean.class);
+                    if (fanHuiBean.getDtoResult()==0){
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                // Log.d("ChaKanShiShiBaoGaoActiv", "开始下载");
+                                webView.loadUrl("http://14.23.169.42:8090/upload/realTimePlanReport/"+fanHuiBean.getDtoDesc());
+
+//                                AndPermission.with(ChaKanShiShiBaoGaoActivity.this)
+//                                        .requestCode(300)
+//                                        .permission(Permission.STORAGE,Permission.CAMERA)
+//                                        .callback(listener)
+//                                        .start();
+
+                            }
+                        });
+                    }else {
+                        showMSG("获取数据失败",4);
+                    }
 
 
 
 
-    private class DownloadReceiver extends ResultReceiver {
-        @SuppressLint("RestrictedApi")
-        public DownloadReceiver(Handler handler) {
-            super(handler);
-        }
-        @SuppressLint("RestrictedApi")
-        @Override
-        protected void onReceiveResult(int resultCode, Bundle resultData) {
-            super.onReceiveResult(resultCode, resultData);
-            if (resultCode == DownloadService.UPDATE_PROGRESS) {
-                 ididid=resultData.getString("ididid2");
-             //   Log.d("DownloadReceiver", ididid);
-                int progress = resultData.getInt("progress");
-               // Log.d("ChaKanShiShiBaoGaoActiv", "progress:" + progress);
-
-                if (progress == 100) {
-                    Log.d("ChaKanShiShiBaoGaoActiv", "下载完成");
-//                    Bundle bundle = new Bundle();
-//                    bundle.putString("filePath", PATH_DOC+ididid);
-//                    bundle.putString("tempPath", Environment.getExternalStorageDirectory().getPath());
-//                    boolean result = mTbsReaderView.preOpen(parseFormat(ididid), false);
-//                    if (result) {
-//                        mTbsReaderView.openFile(bundle);
-//                    }
-                    webView.loadUrl("file://"+PATH_DOC+"ttt.html");
-
-//                    try{
-//                        //  sdcard/test2.docx为本地doc文件的路径
-//                        Intent intent =  OpenFiles.getWordFileIntent(PATH_DOC+ididid,ChaKanShiShiBaoGaoActivity.this);
-//                        startActivity(intent);
-//                        finish();
-//                }catch (Exception e){
-//                        Log.d("DownloadReceiver", e.getMessage()+"");
-//                        //没有安装第三方的软件会提示
-//                       showMSG("没有安装打开该文档的软件,请安装wps",4);
-//                   }
+                }catch (Exception e){
+                    dismissDialog();
+                    showMSG("获取数据失败",3);
+                    Log.d("WebsocketPushMsg", e.getMessage());
                 }
             }
-        }
+        });
+
     }
 
-    private String parseFormat(String fileName) {
-        return fileName.substring(fileName.lastIndexOf(".") + 1);
+
+    private void link_save2(int i) {
+        showDialog();
+        final MediaType JSON=MediaType.parse("application/json; charset=utf-8");
+        OkHttpClient okHttpClient= MyAppLaction.getOkHttpClient();
+
+        String nonce=Utils.getNonce();
+        String timestamp=Utils.getTimestamp();
+
+//    /* form的分割线,自己定义 */
+//        String boundary = "xx--------------------------------------------------------------xx";
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("cmd","100");
+            jsonObject.put("planId",planId);
+            jsonObject.put("status",i);
+            //jsonObject.put("baogaoModel","1");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        RequestBody body = RequestBody.create(JSON, jsonObject.toString());
+
+        Request.Builder requestBuilder = new Request.Builder()
+                .header("nonce", nonce)
+                .header("timestamp", timestamp)
+                .header("userId", dengLuBean.getUserId()+"")
+                .header("sign", Utils.encode("100"+planId+""+i+nonce+timestamp
+                        +dengLuBean.getUserId()+Utils.signaturePassword))
+                .post(body)
+                .url(dengLuBean.getZhuji() + "auditReport.app");
+
+        // step 3：创建 Call 对象
+        call = okHttpClient.newCall(requestBuilder.build());
+
+        //step 4: 开始异步请求
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d("AllConnects", "请求识别失败"+e.getMessage());
+                dismissDialog();
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                dismissDialog();
+                Log.d("AllConnects", "请求识别成功"+call.request().toString());
+                //获得返回体
+                try {
+
+                    ResponseBody body = response.body();
+                    final String ss=body.string().trim();
+                    Log.d("ChaKanShiShiBaoGaoActiv", ss);
+
+                    JsonObject jsonObject= GsonUtil.parse(ss).getAsJsonObject();
+                    Gson gson=new Gson();
+                    fanHuiBean=gson.fromJson(jsonObject,FanHuiBean.class);
+                    if (fanHuiBean.getDtoResult()==0){
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                // Log.d("ChaKanShiShiBaoGaoActiv", "开始下载");
+                                webView.loadUrl("http://14.23.169.42:8090/upload/realTimePlanReport/"+fanHuiBean.getDtoDesc());
+
+//                                AndPermission.with(ChaKanShiShiBaoGaoActivity.this)
+//                                        .requestCode(300)
+//                                        .permission(Permission.STORAGE,Permission.CAMERA)
+//                                        .callback(listener)
+//                                        .start();
+
+                            }
+                        });
+                    }else {
+                        showMSG("获取数据失败",4);
+                    }
+
+
+
+
+                }catch (Exception e){
+                    dismissDialog();
+                    showMSG("获取数据失败",3);
+                    Log.d("WebsocketPushMsg", e.getMessage());
+                }
+            }
+        });
+
     }
+
+
+    private void link_save3(int i) {
+        showDialog();
+        final MediaType JSON=MediaType.parse("application/json; charset=utf-8");
+        OkHttpClient okHttpClient= MyAppLaction.getOkHttpClient();
+
+        String nonce=Utils.getNonce();
+        String timestamp=Utils.getTimestamp();
+
+//    /* form的分割线,自己定义 */
+//        String boundary = "xx--------------------------------------------------------------xx";
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("cmd","100");
+            jsonObject.put("planId",planId);
+            jsonObject.put("status",i);
+            //   jsonObject.put("baogaoModel","1");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        RequestBody body = RequestBody.create(JSON, jsonObject.toString());
+
+        Request.Builder requestBuilder = new Request.Builder()
+                .header("nonce", nonce)
+                .header("timestamp", timestamp)
+                .header("userId", dengLuBean.getUserId()+"")
+                .header("sign", Utils.encode("100"+planId+""+i+nonce+timestamp
+                        +dengLuBean.getUserId()+Utils.signaturePassword))
+                .post(body)
+                .url(dengLuBean.getZhuji() + "confirmReport.app");
+
+        // step 3：创建 Call 对象
+        call = okHttpClient.newCall(requestBuilder.build());
+
+        //step 4: 开始异步请求
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d("AllConnects", "请求识别失败"+e.getMessage());
+                dismissDialog();
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                dismissDialog();
+                Log.d("AllConnects", "请求识别成功"+call.request().toString());
+                //获得返回体
+                try {
+
+                    ResponseBody body = response.body();
+                    final String ss=body.string().trim();
+                    Log.d("ChaKanShiShiBaoGaoActiv", ss);
+
+                    JsonObject jsonObject= GsonUtil.parse(ss).getAsJsonObject();
+                    Gson gson=new Gson();
+                    fanHuiBean=gson.fromJson(jsonObject,FanHuiBean.class);
+                    if (fanHuiBean.getDtoResult()==0){
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                // Log.d("ChaKanShiShiBaoGaoActiv", "开始下载");
+                                webView.loadUrl("http://14.23.169.42:8090/upload/realTimePlanReport/"+fanHuiBean.getDtoDesc());
+
+//                                AndPermission.with(ChaKanShiShiBaoGaoActivity.this)
+//                                        .requestCode(300)
+//                                        .permission(Permission.STORAGE,Permission.CAMERA)
+//                                        .callback(listener)
+//                                        .start();
+
+                            }
+                        });
+                    }else {
+                        showMSG("获取数据失败",4);
+                    }
+
+
+
+
+                }catch (Exception e){
+                    dismissDialog();
+                    showMSG("获取数据失败",3);
+                    Log.d("WebsocketPushMsg", e.getMessage());
+                }
+            }
+        });
+
+    }
+
+//    private PermissionListener listener = new PermissionListener() {
+//        @Override
+//        public void onSucceed(int requestCode, List<String> grantedPermissions) {
+//            // 权限申请成功回调。
+//
+//            // 这里的requestCode就是申请时设置的requestCode。
+//            // 和onActivityResult()的requestCode一样，用来区分多个不同的请求。
+//            if(requestCode == 300) {
+//
+//                File file = new File(PATH_DOC);
+//                if (!file.exists()) {
+//                    file.mkdirs();
+//                   // Log.d("ChaKanShiShiBaoGaoActiv", "创建目录");
+//                }
+//                File file2 = new File(PATH_IMAGE);
+//                if (!file2.exists()) {
+//                    file2.mkdirs();
+//                   // Log.d("ChaKanShiShiBaoGaoActiv", "创建目录");
+//                }
+//                File file3 = new File(PATH_HTML);
+//                if (!file3.exists()) {
+//                    file3.mkdirs();
+//                   // Log.d("ChaKanShiShiBaoGaoActiv", "创建目录");
+//                }
+//
+////                Intent intent33 = new Intent(ChaKanShiShiBaoGaoActivity.this, DownloadService.class);
+////                intent33.putExtra("url", "http://14.23.169.42:8090/upload/realTimePlanReport/"+fanHuiBean.getDtoDesc());
+////                intent33.putExtra("receiver", new DownloadReceiver(new Handler()));
+////                intent33.putExtra("urlName",fanHuiBean.getDtoDesc().substring(7,fanHuiBean.getDtoDesc().length()));
+////                startService(intent33);
+//            }
+//        }
+//
+//        @Override
+//        public void onFailed(int requestCode, List<String> deniedPermissions) {
+//            // 权限申请失败回调。
+//            if(requestCode == 200) {
+//                showMSG("存储授权失败",3);
+//
+//            }
+//        }
+//    };
+//
+//
+//
+//
+//    private class DownloadReceiver extends ResultReceiver {
+//        @SuppressLint("RestrictedApi")
+//        public DownloadReceiver(Handler handler) {
+//            super(handler);
+//        }
+//        @SuppressLint("RestrictedApi")
+//        @Override
+//        protected void onReceiveResult(int resultCode, Bundle resultData) {
+//            super.onReceiveResult(resultCode, resultData);
+//            if (resultCode == DownloadService.UPDATE_PROGRESS) {
+//                 ididid=resultData.getString("ididid2");
+//             //   Log.d("DownloadReceiver", ididid);
+//                int progress = resultData.getInt("progress");
+//               // Log.d("ChaKanShiShiBaoGaoActiv", "progress:" + progress);
+//
+//                if (progress == 100) {
+//                    Log.d("ChaKanShiShiBaoGaoActiv", "下载完成");
+////                    Bundle bundle = new Bundle();
+////                    bundle.putString("filePath", PATH_DOC+ididid);
+////                    bundle.putString("tempPath", Environment.getExternalStorageDirectory().getPath());
+////                    boolean result = mTbsReaderView.preOpen(parseFormat(ididid), false);
+////                    if (result) {
+////                        mTbsReaderView.openFile(bundle);
+////                    }
+//                    webView.loadUrl("file://"+PATH_DOC+"ttt.html");
+//
+////                    try{
+////                        //  sdcard/test2.docx为本地doc文件的路径
+////                        Intent intent =  OpenFiles.getWordFileIntent(PATH_DOC+ididid,ChaKanShiShiBaoGaoActivity.this);
+////                        startActivity(intent);
+////                        finish();
+////                }catch (Exception e){
+////                        Log.d("DownloadReceiver", e.getMessage()+"");
+////                        //没有安装第三方的软件会提示
+////                       showMSG("没有安装打开该文档的软件,请安装wps",4);
+////                   }
+//                }
+//            }
+//        }
+//    }
+//
+//    private String parseFormat(String fileName) {
+//        return fileName.substring(fileName.lastIndexOf(".") + 1);
+//    }
 
     @Override
     protected void onStop() {

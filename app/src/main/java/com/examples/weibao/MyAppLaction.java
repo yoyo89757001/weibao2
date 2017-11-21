@@ -111,4 +111,9 @@ public class MyAppLaction extends Application {
   //  parent_id>0的是维保项
 //“项目item”，"计划plans"，"维保项menus"，"设备(台账)devices"以及“维保问题及处理措施detections”
     //有dto_result字段。这个字段如果是1表示新增，2表示修改，3表示删除
+   // 用fault里面的status
+//    '状态，1待回复，2回复审核通过，3回复审核不通过，4处理待审核，5处理审核通过，6处理审核不通过，7已完成处理'
+//
+//            0是待提交，也就是客户端报障未提交到后台的状态
+
 }

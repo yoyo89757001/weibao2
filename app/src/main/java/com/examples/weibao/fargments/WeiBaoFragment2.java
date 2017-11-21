@@ -277,7 +277,7 @@ public class WeiBaoFragment2 extends Fragment {
                     ResponseBody body = response.body();
                     // Log.d("AllConnects", "识别结果返回"+response.body().string());
                     ss=body.string();
-                    Log.d("Fragment1", ss);
+                    Log.d("Fragment2", ss);
                     JsonObject jsonObject= GsonUtil.parse(ss).getAsJsonObject();
                     Gson gson=new Gson();
                     final BaoGaoBean zhaoPianBean=gson.fromJson(jsonObject,BaoGaoBean.class);
