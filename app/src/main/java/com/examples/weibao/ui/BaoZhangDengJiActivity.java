@@ -33,12 +33,9 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
-
 import com.examples.weibao.MyAppLaction;
 import com.examples.weibao.R;
-
 import com.examples.weibao.adapters.XuanZeSheBeiAdapter;
 import com.examples.weibao.allbeans.BaoZhangDengJiBean;
 import com.examples.weibao.allbeans.BaoZhangDengJiBeanDao;
@@ -66,19 +63,17 @@ import com.yanzhenjie.permission.PermissionListener;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.File;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -315,7 +310,18 @@ public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
                     baoZhangDengJiBeanDao.insert(dengJiBean);
 
                     if (ff){
-                    link_save();
+                        //传图片
+                        if (stringList.size()>1){
+                            link_P1(stringList);
+
+                        }else {
+
+                            showMSG("没有报障图片",4);
+
+                        }
+
+
+                  //  link_save();
 
                     }
 
@@ -725,5 +731,80 @@ public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
         } else {
             showMSG("没有得到图片",4);
         }
+    }
+
+    private void link_P1(List<String> stringList) {
+        showDialog();
+
+        //final MediaType JSON=MediaType.parse("application/json; charset=utf-8");
+        //http://192.168.2.4:8080/sign?cmd=getUnSignList&subjectId=jfgsdf
+        OkHttpClient okHttpClient= MyAppLaction.getOkHttpClient();
+        MultipartBody mBody;
+        MultipartBody.Builder builder=new MultipartBody.Builder().setType(MultipartBody.FORM);
+        int ss=stringList.size()-1;
+        for (int i=0;i<ss;i++){
+            File file1 = new File(stringList.get(i));
+            RequestBody fileBody1 = RequestBody.create(MediaType.parse("application/octet-stream") , file1);
+            builder. addFormDataPart("file" , stringList.get(i) , fileBody1);
+            Log.d("BaoZhangDengJiActivity", stringList.get(i)+">>>>");
+        }
+        mBody=builder.build();
+
+
+//         /* 第一个要上传的file */
+//       File file1 = new File(filename1);
+//        RequestBody fileBody1 = RequestBody.create(MediaType.parse("application/octet-stream") , file1);
+//        final String file1Name = System.currentTimeMillis()+"testFile1.jpg";
+//
+//
+//        MultipartBody mBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+//            /* 底下是上传了两个文件 */
+//                .addFormDataPart("file" , file1Name , fileBody1)
+//                  /* 上传一个普通的String参数 */
+//                //  .addFormDataPart("subject_id" , subject_id+"")
+//                //  .addFormDataPart("image_2" , file2Name , fileBody2)
+//                .build();
+        Request.Builder requestBuilder = new Request.Builder()
+                // .header("Content-Type", "application/json")
+                .post(mBody)
+                .url(dengLuBean.getZhuji() + "uploadFaultImages.app?cmd=100");
+
+        // step 3：创建 Call 对象
+        Call call = okHttpClient.newCall(requestBuilder.build());
+
+        //step 4: 开始异步请求
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+               dismissDialog();
+                showMSG("上传图片出错",4);
+                Log.d("AllConnects", "请求识别失败"+e.getMessage());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Log.d("AllConnects", "请求识别成功"+call.request().toString());
+                //获得返回体
+                try {
+
+                    ResponseBody body = response.body();
+                    String ss=body.string();
+
+                       Log.d("AllConnects", "aa   "+ss);
+
+                    JsonObject jsonObject= GsonUtil.parse(ss).getAsJsonObject();
+                    Gson gson=new Gson();
+                  //  Photos zhaoPianBean=gson.fromJson(jsonObject,Photos.class);
+                //    userInfoBena.setCardPhoto(zhaoPianBean.getExDesc());
+
+
+
+                }catch (Exception e){
+                 showMSG("上传图片出错",4);
+                    Log.d("WebsocketPushMsg", e.getMessage());
+                }
+            }
+        });
+
     }
 }

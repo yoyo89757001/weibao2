@@ -14,12 +14,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.examples.weibao.MyAppLaction;
 import com.examples.weibao.R;
+import com.examples.weibao.allbeans.BenDiMenusBean;
+import com.examples.weibao.allbeans.BenDiMenusBeanDao;
 import com.examples.weibao.allbeans.DengLuBean;
 import com.examples.weibao.allbeans.DengLuBeanDao;
 import com.examples.weibao.allbeans.DetectionsBean;
 import com.examples.weibao.allbeans.DetectionsBeanDao;
 import com.examples.weibao.allbeans.DevicesBean;
 import com.examples.weibao.allbeans.DevicesBeanDao;
+import com.examples.weibao.allbeans.FaultsBean;
+import com.examples.weibao.allbeans.FaultsBeanDao;
 import com.examples.weibao.allbeans.ItemsBean;
 import com.examples.weibao.allbeans.ItemsBeanDao;
 import com.examples.weibao.allbeans.MenurefsBean;
@@ -30,6 +34,7 @@ import com.examples.weibao.allbeans.PlansBean;
 import com.examples.weibao.allbeans.PlansBeanDao;
 import com.examples.weibao.beans.FanHuiBean;
 import com.examples.weibao.beans.JianChaBean;
+import com.examples.weibao.dialogs.QueRenDialog;
 import com.examples.weibao.dialogs.TiJIaoDialog;
 import com.examples.weibao.ui.BaoZhangChuLiActivity;
 import com.examples.weibao.ui.TaiZhangActivity;
@@ -44,9 +49,14 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.sdsmdg.tastytoast.TastyToast;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -79,13 +89,15 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
    // private List<PlansBean> plansBeanList=null;
     private PlansBeanDao plansBeanDao=null;
     private MenurefsBeanDao menurefsBeanDao=null;
-
+    private FaultsBeanDao faultsBeanDao=null;
     public static boolean isTrue=true;
     public static boolean isTrue2=true;
     public static int count=0;
     private int maxCount=0;
     private TiJIaoDialog tiJIaoDialog=null;
-
+    private BenDiMenusBeanDao benDiMenusBeanDao=null;
+    private List<BenDiMenusBean> benDiMenusBeanList=null;
+    private List<BenDiMenusBean> benDiMenusBeanList_ls=new ArrayList<>();
 
     public Fragment1() {
 
@@ -119,7 +131,8 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
         menusBeanDao=MyAppLaction.myAppLaction.getDaoSession().getMenusBeanDao();
         plansBeanDao=MyAppLaction.myAppLaction.getDaoSession().getPlansBeanDao();
         menurefsBeanDao=MyAppLaction.myAppLaction.getDaoSession().getMenurefsBeanDao();
-
+        faultsBeanDao=MyAppLaction.myAppLaction.getDaoSession().getFaultsBeanDao();
+        benDiMenusBeanDao=MyAppLaction.myAppLaction.getDaoSession().getBenDiMenusBeanDao();
     }
 
 
@@ -175,6 +188,84 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
                 startActivity(new Intent(getContext(), XiangMuKuanJinDuActivity.class));
                 break;
             case R.id.l4:
+                final QueRenDialog dialog=new QueRenDialog(getActivity());
+                dialog.setCountText("提交前请确认一台设备的所有维保项都已维护？点击确定将立即提交!");
+                dialog.setOnPositiveListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                benDiMenusBeanList=benDiMenusBeanDao.loadAll();
+                                if (benDiMenusBeanList!=null){
+                                    if (benDiMenusBeanList_ls.size()>0){
+                                        benDiMenusBeanList_ls.clear();
+                                    }
+                                    int s=benDiMenusBeanList.size();
+                                    for (int i=0;i<s;i++){
+                                        if (!benDiMenusBeanList.get(i).getIsTijiao()){
+                                            //没有提交的
+                                            benDiMenusBeanList_ls.add(benDiMenusBeanList.get(i));
+                                        }else {
+                                            //提交过的
+                                            benDiMenusBeanDao.delete(benDiMenusBeanList.get(i));
+                                        }
+
+                                    }
+                                    int si=benDiMenusBeanList_ls.size();
+                                    if (si>0){
+                                        JSONObject jsonObject = new JSONObject();
+                                        JSONArray jsonArray=new JSONArray();
+                                        try {
+                                        for (int i=0;i<si;i++){
+
+                                                JSONObject tijiao = new JSONObject();
+                                                //  tijiao.put("status",0);
+                                                tijiao.put("id",0);
+                                                tijiao.put("planId",benDiMenusBeanList_ls.get(i).getPlanId());
+                                                tijiao.put("menuLevel1Id",benDiMenusBeanList_ls.get(i).getMenuLevel1Id());
+                                                tijiao.put("menuId",benDiMenusBeanList_ls.get(i).getMenuId2());
+                                                tijiao.put("menuLevel3Id",benDiMenusBeanList_ls.get(i).getMenuLevel3Id());
+                                                tijiao.put("menuLevel4Id",benDiMenusBeanList_ls.get(i).getMenuLevel4Id());
+                                                tijiao.put("deviceId",benDiMenusBeanList_ls.get(i).getDeviceId());
+                                                tijiao.put("remark",benDiMenusBeanList_ls.get(i).getRemark());
+                                                tijiao.put("testData",benDiMenusBeanList_ls.get(i).getName());
+                                                tijiao.put("createBy",dengLuBean.getUserId());
+                                                tijiao.put("createTime",System.currentTimeMillis());
+
+                                                jsonArray.put(tijiao);
+
+                                                //    Log.d("ZhuangTaiXuanZeDialog", benDiMenusBean.getRemark());
+                                                // jsonObject.put("password",jiami);
+
+                                        }
+                                        jsonObject.put("cmd","100");
+                                        jsonObject.put("records",jsonArray);
+                                        } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                        link_shangchuan(jsonObject);
+                                    }else {
+                                        showMSG("没有可提交的数据",4);
+                                    }
+
+                                }
+
+                            }
+                        }).start();
+                        dialog.dismiss();
+                    }
+                });
+                dialog.setOnQuXiaoListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
+
+
 
                 break;
             case R.id.l5:
@@ -340,11 +431,11 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                dismissDialog();
+               // dismissDialog();
+                ItemsBean zhaoPianBean=null;
                 Log.d("AllConnects", "请求识别成功"+call.request().toString());
                 //获得返回体
                 try {
-
 
                     ResponseBody body = response.body();
                     String ss=body.string().trim();
@@ -353,25 +444,30 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
 
                     JsonObject jsonObject= GsonUtil.parse(ss).getAsJsonObject();
                     Gson gson=new Gson();
-                    JsonObject items= jsonObject.get("item").getAsJsonObject();
+                    JsonArray items= jsonObject.get("items").getAsJsonArray();
                     JsonArray detections= jsonObject.get("detections").getAsJsonArray();
                     JsonArray menus= jsonObject.get("menus").getAsJsonArray();
                     JsonArray devices= jsonObject.get("devices").getAsJsonArray();
                     JsonArray plans= jsonObject.get("plans").getAsJsonArray();
                     JsonArray menurefs= jsonObject.get("menurefs").getAsJsonArray();
+                    JsonArray faults= jsonObject.get("faults").getAsJsonArray();
 
-                    ItemsBean zhaoPianBean=gson.fromJson(items,ItemsBean.class);
-                    int i1=zhaoPianBean.getDtoResult();
-                    if (itemsBeanDao.load(zhaoPianBean.getId())==null && (i1==1 || i1==2)){
-                        Log.d("HomePageActivity", "插入items");
-                        itemsBeanDao.insert(zhaoPianBean);
-                    }else if (i1==1 || i1==2){
-                        itemsBeanDao.update(zhaoPianBean);
-                        Log.d("HomePageActivity", "更新items");
-                    }else {
-                        itemsBeanDao.delete(zhaoPianBean);
-                        Log.d("HomePageActivity", "删除items");
+                    int itemSize=items.size();
+                    for (int i=0;i<itemSize;i++){
+                        zhaoPianBean=gson.fromJson(items.get(i),ItemsBean.class);
+                        int i1=zhaoPianBean.getDtoResult();
+                        if (itemsBeanDao.load(zhaoPianBean.getId())==null && (i1==1 || i1==2)){
+                            // Log.d("HomePageActivity", "插入items");
+                            itemsBeanDao.insert(zhaoPianBean);
+                        }else if (i1==1 || i1==2){
+                            itemsBeanDao.update(zhaoPianBean);
+                            // Log.d("HomePageActivity", "更新items");
+                        }else {
+                            itemsBeanDao.delete(zhaoPianBean);
+                            //  Log.d("HomePageActivity", "删除items");
+                        }
                     }
+
 
                     int detectionsSize=detections.size();
                     for (int i=0;i<detectionsSize;i++){
@@ -379,15 +475,17 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
                         int i2=detectionsBean.getDtoResult();
                         if (detectionsBeanDao.load(detectionsBean.getId())==null && (i2==1 || i2==2)){
                             detectionsBeanDao.insert(detectionsBean);
-                            Log.d("HomePageActivity", "插入detectionsBean");
+                            //  Log.d("HomePageActivity", "插入detectionsBean");
                         }else if (i2==1 || i2==2){
                             detectionsBeanDao.update(detectionsBean);
-                            Log.d("HomePageActivity", "更新detectionsBean");
+                            //  Log.d("HomePageActivity", "更新detectionsBean");
                         }else {
                             detectionsBeanDao.delete(detectionsBean);
-                            Log.d("HomePageActivity", "删除detectionsBean");
+                            //  Log.d("HomePageActivity", "删除detectionsBean");
                         }
                     }
+
+
 
                     int menusSize=menus.size();
                     for (int i=0;i<menusSize;i++){
@@ -395,13 +493,13 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
                         int i3=menusBean.getDtoResult();
                         if (menusBeanDao.load(menusBean.getId())==null && (i3==1 || i3==2)){
                             menusBeanDao.insert(menusBean);
-                            Log.d("HomePageActivity", "插入menus");
+                            // Log.d("HomePageActivity", "插入menus");
                         }else if (i3==1 || i3==2){
                             menusBeanDao.update(menusBean);
-                            Log.d("HomePageActivity", "更新menus");
+                            // Log.d("HomePageActivity", "更新menus");
                         }else {
                             menusBeanDao.delete(menusBean);
-                            Log.d("HomePageActivity", "删除menus");
+                            //  Log.d("HomePageActivity", "删除menus");
                         }
                     }
 
@@ -412,13 +510,13 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
                         int i4=devicesBean.getDtoResult();
                         if (devicesBeanDao.load(devicesBean.getId())==null && (i4==1 || i4==2)){
                             devicesBeanDao.insert(devicesBean);
-                            Log.d("HomePageActivity", "插入devicesBean");
+                            //  Log.d("HomePageActivity", "插入devicesBean");
                         }else if (i4==1 || i4==2){
                             devicesBeanDao.update(devicesBean);
-                            Log.d("HomePageActivity", "更新devicesBean");
+                            // Log.d("HomePageActivity", "更新devicesBean");
                         }else {
                             devicesBeanDao.delete(devicesBean);
-                            Log.d("HomePageActivity", "删除devicesBean");
+                            // Log.d("HomePageActivity", "删除devicesBean");
                         }
                     }
 
@@ -428,13 +526,13 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
                         int i5=plansBean.getDtoResult();
                         if (plansBeanDao.load(plansBean.getId())==null && (i5==1 || i5==2)){
                             plansBeanDao.insert(plansBean);
-                            Log.d("HomePageActivity", "插入plansBeanBean");
+                            // Log.d("HomePageActivity", "插入plansBeanBean");
                         }else if (i5==1 || i5==2){
                             plansBeanDao.update(plansBean);
-                            Log.d("HomePageActivity", "更新plansBeanBean");
+                            //   Log.d("HomePageActivity", "更新plansBeanBean");
                         }else {
                             plansBeanDao.delete(plansBean);
-                            Log.d("HomePageActivity", "删除plansBeanBean");
+                            //  Log.d("HomePageActivity", "删除plansBeanBean");
                         }
                     }
 
@@ -444,23 +542,38 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
                         int i6=menurefsBean.getDtoResult();
                         if (menurefsBeanDao.load(menurefsBean.getId())==null && (i6==1 || i6==2)){
                             menurefsBeanDao.insert(menurefsBean);
-                            Log.d("HomePageActivity", "插入menurefsBean");
+                            //  Log.d("HomePageActivity", "插入menurefsBean");
                         }else if (i6==1 || i6==2){
                             menurefsBeanDao.update(menurefsBean);
-                            Log.d("HomePageActivity", "更新menurefsBean");
+                            //  Log.d("HomePageActivity", "更新menurefsBean");
                         }else {
                             menurefsBeanDao.delete(menurefsBean);
-                            Log.d("HomePageActivity", "删除menurefsBean");
+                            //  Log.d("HomePageActivity", "删除menurefsBean");
                         }
                     }
 
-                        //保存时间
-                        Log.d("HomePageActivity", "保存时间"+time);
-                     //   dengLuBean.setQqTime(time);
-                        //   dengLuBeanDao.update(dengLuBean);
-                        //  Log.d("HomePageActivity", dengLuBeanDao.load(123456L).getQqTime());
-
-
+                    int faultsSize=faults.size();
+                    for (int i=0;i<faultsSize;i++){
+                        FaultsBean faultsBean=gson.fromJson(faults.get(i),FaultsBean.class);
+                        int i7=faultsBean.getDtoResult();
+                        if (faultsBeanDao.load(faultsBean.getId())==null && (i7==1 || i7==2)){
+                            faultsBeanDao.insert(faultsBean);
+                            //  Log.d("HomePageActivity", "插入menurefsBean");
+                        }else if (i7==1 || i7==2){
+                            faultsBeanDao.update(faultsBean);
+                            //  Log.d("HomePageActivity", "更新menurefsBean");
+                        }else {
+                            faultsBeanDao.delete(faultsBean);
+                            //  Log.d("HomePageActivity", "删除menurefsBean");
+                        }
+                    }
+                    //保存时间
+                    Log.d("HomePageActivity", "保存时间"+time);
+                    //   dengLuBean.setQqTime(time);
+                    //   dengLuBeanDao.update(dengLuBean);
+                    //  Log.d("HomePageActivity", dengLuBeanDao.load(123456L).getQqTime());
+                    dismissDialog();
+                    showMSG("更新成功",4);
                 }catch (Exception e){
 
                     dismissDialog();
@@ -512,6 +625,110 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
 
             }
         });
+    }
+
+    private void link_shangchuan(JSONObject jsonObject) {
+        showDialog();
+        final MediaType JSON=MediaType.parse("application/json; charset=utf-8");
+        OkHttpClient okHttpClient= MyAppLaction.getOkHttpClient();
+
+        // String jiami=Utils.jiami(mima).toUpperCase();
+        String nonce=Utils.getNonce();
+        String timestamp=Utils.getTimestamp();
+
+//    /* form的分割线,自己定义 */
+//        String boundary = "xx--------------------------------------------------------------xx";
+//        JSONObject jsonObject = new JSONObject();
+//        JSONArray jsonArray=null;
+//        try {
+//            JSONObject tijiao = new JSONObject();
+//            //  tijiao.put("status",0);
+//            tijiao.put("id",0);
+//            tijiao.put("planId",benDiMenusBean.getPlanId());
+//            tijiao.put("menuLevel1Id",benDiMenusBean.getMenuLevel1Id());
+//            tijiao.put("menuId",benDiMenusBean.getMenuId2());
+//            tijiao.put("menuLevel3Id",benDiMenusBean.getMenuLevel3Id());
+//            tijiao.put("menuLevel4Id",benDiMenusBean.getMenuLevel4Id());
+//            tijiao.put("deviceId",benDiMenusBean.getDeviceId());
+//            tijiao.put("remark",benDiMenusBean.getRemark());
+//            tijiao.put("testData",benDiMenusBean.getName());
+//            tijiao.put("createBy",dengLuBean.getUserId());
+//            tijiao.put("createTime",System.currentTimeMillis());
+//
+//            jsonArray=new JSONArray();
+//            jsonArray.put(tijiao);
+//
+//            jsonObject.put("cmd","100");
+//            jsonObject.put("records",jsonArray);
+//            //    Log.d("ZhuangTaiXuanZeDialog", benDiMenusBean.getRemark());
+//            // jsonObject.put("password",jiami);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+        RequestBody body = RequestBody.create(JSON, jsonObject.toString());
+        Log.d("Fragment1", jsonObject.toString());
+        Request.Builder requestBuilder = new Request.Builder()
+                .header("nonce", nonce)
+                .header("timestamp", timestamp)
+                .header("userId", dengLuBean.getUserId()+"")
+                .header("sign", Utils.encode("100"+nonce+timestamp
+                        +dengLuBean.getUserId()+Utils.signaturePassword))
+                .post(body)
+                .url(dengLuBean.getZhuji() + "uploadWeibaoRecords.app");
+
+        // step 3：创建 Call 对象
+        Call  call = okHttpClient.newCall(requestBuilder.build());
+
+        //step 4: 开始异步请求
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d("AllConnects", "请求识别失败"+e.getMessage());
+                dismissDialog();
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                dismissDialog();
+                Log.d("AllConnects", "请求识别成功"+call.request().toString());
+                //获得返回体
+                try {
+
+                    ResponseBody body = response.body();
+                    String ss=body.string().trim();
+                    Log.d("InFoActivity", "ss" + ss);
+                    JsonObject jsonObject= GsonUtil.parse(ss).getAsJsonObject();
+                    Gson gson=new Gson();
+                    FanHuiBean zhaoPianBean=gson.fromJson(jsonObject,FanHuiBean.class);
+                    if (zhaoPianBean.getDtoResult()==0){
+
+                        int s=benDiMenusBeanList_ls.size();
+                        for (int i=0;i<s;i++){
+                            benDiMenusBeanList_ls.get(i).setIsTijiao(true);
+                            benDiMenusBeanDao.update(benDiMenusBeanList_ls.get(i));
+                        }
+//                        BenDiMenusBean gg= benDiMenusBeanDao.queryBuilder().where(BenDiMenusBeanDao.Properties.MensuId.eq(menusBeanList.get(p).getParentId()),
+//                                BenDiMenusBeanDao.Properties.ParentId.eq(shebeiId)).unique();
+//                        gg.setIsTijiao(true);
+//                        benDiMenusBeanDao.update(gg);
+                        showMSG("保存成功",4);
+                    }else if (zhaoPianBean.getDtoResult()==-33){
+                        showMSG("账号登陆失效,请重新登陆",4);
+                    }else {
+                        showMSG(zhaoPianBean.getDtoDesc(),4);
+                    }
+
+                }catch (Exception e){
+                    //  finish();
+                    //  startActivity(new Intent(MainActivity.this,HomePageActivity.class));
+                    dismissDialog();
+                    showMSG("获取数据失败",3);
+                    Log.d("WebsocketPushMsg", e.getMessage());
+                }
+            }
+        });
+
     }
 
 }

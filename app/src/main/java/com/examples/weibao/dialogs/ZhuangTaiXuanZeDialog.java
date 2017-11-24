@@ -225,12 +225,12 @@ public class ZhuangTaiXuanZeDialog extends Dialog   {
 
             }
             adapter.gengxin();
-           boolean ff = !Utils.getNetTypeName(context).equals("无网络");
-           if (ff){
-               link_save(benDiMenusBean);
-           }else {
-               showMSG("没有检测到网络,已经保存到本地,请在有网络时点击主界面的'上传本地维保信息'",4);
-           }
+         //  boolean ff = !Utils.getNetTypeName(context).equals("无网络");
+//           if (ff){
+//               link_save(benDiMenusBean);
+//           }else {
+//               showMSG("没有检测到网络,已经保存到本地,请在有网络时点击主界面的'上传本地维保信息'",4);
+//           }
 
         }
 
@@ -303,102 +303,6 @@ public class ZhuangTaiXuanZeDialog extends Dialog   {
     }
 
 
-    private void link_save(final BenDiMenusBean benDiMenusBean) {
-        showDialog();
-        final MediaType JSON=MediaType.parse("application/json; charset=utf-8");
-        OkHttpClient okHttpClient= MyAppLaction.getOkHttpClient();
 
-       // String jiami=Utils.jiami(mima).toUpperCase();
-        String nonce=Utils.getNonce();
-        String timestamp=Utils.getTimestamp();
-
-//    /* form的分割线,自己定义 */
-//        String boundary = "xx--------------------------------------------------------------xx";
-        JSONObject jsonObject = new JSONObject();
-        JSONArray jsonArray=null;
-        try {
-            JSONObject tijiao = new JSONObject();
-          //  tijiao.put("status",0);
-            tijiao.put("id",0);
-            tijiao.put("planId",benDiMenusBean.getPlanId());
-            tijiao.put("menuLevel1Id",benDiMenusBean.getMenuLevel1Id());
-            tijiao.put("menuId",benDiMenusBean.getMenuId2());
-            tijiao.put("menuLevel3Id",benDiMenusBean.getMenuLevel3Id());
-            tijiao.put("menuLevel4Id",benDiMenusBean.getMenuLevel4Id());
-            tijiao.put("deviceId",benDiMenusBean.getDeviceId());
-            tijiao.put("remark",benDiMenusBean.getRemark());
-            tijiao.put("testData",benDiMenusBean.getName());
-            tijiao.put("createBy",dengLuBean.getUserId());
-            tijiao.put("createTime",System.currentTimeMillis());
-
-            jsonArray=new JSONArray();
-            jsonArray.put(tijiao);
-
-            jsonObject.put("cmd","100");
-            jsonObject.put("records",jsonArray);
-        //    Log.d("ZhuangTaiXuanZeDialog", benDiMenusBean.getRemark());
-           // jsonObject.put("password",jiami);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        RequestBody body = RequestBody.create(JSON, jsonObject.toString());
-
-        Request.Builder requestBuilder = new Request.Builder()
-                .header("nonce", nonce)
-                .header("timestamp", timestamp)
-                .header("userId", dengLuBean.getUserId()+"")
-                .header("sign", Utils.encode("100"+nonce+timestamp
-                        +dengLuBean.getUserId()+Utils.signaturePassword))
-                .post(body)
-                .url(dengLuBean.getZhuji() + "uploadWeibaoRecords.app");
-
-        // step 3：创建 Call 对象
-      Call  call = okHttpClient.newCall(requestBuilder.build());
-
-        //step 4: 开始异步请求
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.d("AllConnects", "请求识别失败"+e.getMessage());
-                dismissDialog();
-
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                dismissDialog();
-                Log.d("AllConnects", "请求识别成功"+call.request().toString());
-                //获得返回体
-                try {
-
-                    ResponseBody body = response.body();
-                    String ss=body.string().trim();
-                    Log.d("InFoActivity", "ss" + ss);
-                    JsonObject jsonObject= GsonUtil.parse(ss).getAsJsonObject();
-                    Gson gson=new Gson();
-                    FanHuiBean zhaoPianBean=gson.fromJson(jsonObject,FanHuiBean.class);
-                    if (zhaoPianBean.getDtoResult()==0){
-                        BenDiMenusBean gg= benDiMenusBeanDao.queryBuilder().where(BenDiMenusBeanDao.Properties.MensuId.eq(menusBeanList.get(p).getParentId()),
-                                BenDiMenusBeanDao.Properties.ParentId.eq(shebeiId)).unique();
-                       gg.setIsTijiao(true);
-                       benDiMenusBeanDao.update(gg);
-                        showMSG("保存成功",4);
-                    }else if (zhaoPianBean.getDtoResult()==-33){
-                        showMSG("账号登陆失效,请重新登陆",4);
-                    }else {
-                        showMSG(zhaoPianBean.getDtoDesc(),4);
-                    }
-
-                }catch (Exception e){
-                    //  finish();
-                    //  startActivity(new Intent(MainActivity.this,HomePageActivity.class));
-                    dismissDialog();
-                    showMSG("获取数据失败",3);
-                    Log.d("WebsocketPushMsg", e.getMessage());
-                }
-            }
-        });
-
-    }
 
 }

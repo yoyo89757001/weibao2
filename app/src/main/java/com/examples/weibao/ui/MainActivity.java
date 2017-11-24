@@ -56,7 +56,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         dengLuBean=dengLuBeanDao.load(123456L);
         if (dengLuBean!=null && dengLuBean.getAccount()!=null && !dengLuBean.getAccount().equals("")){
             setContentView(R.layout.activity_kai_ping);
-            link_save(dengLuBean.getAccount(),dengLuBean.getMima());
+            link_save(dengLuBean.getAccount(),dengLuBean.getMima(),1);
         }else {
             setContentView(R.layout.activity_main);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -93,7 +93,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         switch (view.getId()){
             case R.id.login:
                 if (!zhanghao.getText().toString().trim().equals("") && !mima.getText().toString().trim().equals("")){
-                    link_save(zhanghao.getText().toString().trim(),mima.getText().toString().trim());
+                    link_save(zhanghao.getText().toString().trim(),mima.getText().toString().trim(),2);
                 }else {
                     showMSG("请先填写完整信息!",4);
                 }
@@ -146,7 +146,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
 
-    private void link_save(final String zhanghao, final String mima) {
+    private void link_save(final String zhanghao, final String mima, final int i) {
         showDialog();
         final MediaType JSON=MediaType.parse("application/json; charset=utf-8");
         OkHttpClient okHttpClient= MyAppLaction.getOkHttpClient();
@@ -228,12 +228,18 @@ public class MainActivity extends Activity implements View.OnClickListener {
                         startActivity(new Intent(MainActivity.this,HomePageActivity.class));
 
                     }else {
+                        if (i==1){
+                            finish();
+                            startActivity(new Intent(MainActivity.this,HomePageActivity.class));
+                        }
                         showMSG(jsonObject.get("dtoDesc").getAsString(),4);
                     }
 
                 }catch (Exception e){
-                  //  finish();
-                  //  startActivity(new Intent(MainActivity.this,HomePageActivity.class));
+                    if (i==1){
+                        finish();
+                        startActivity(new Intent(MainActivity.this,HomePageActivity.class));
+                    }
                  dismissDialog();
                  showMSG("获取数据失败",3);
                     Log.d("WebsocketPushMsg", e.getMessage());
