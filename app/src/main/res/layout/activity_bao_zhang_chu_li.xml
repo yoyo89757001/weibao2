@@ -9,30 +9,69 @@
     android:orientation="vertical"
     tools:context="com.examples.weibao.ui.BaoZhangChuLiActivity">
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:id="@+id/ii"
+    <RelativeLayout
+        android:id="@+id/ee"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:background="@color/titlecolor"
+        android:layout_height="50dp">
 
-    <include
-        android:id="@+id/pp"
-        layout="@layout/base_title"/>
+        <ImageView
+            android:src="@drawable/ic_back"
+            android:id="@+id/leftim"
+            android:padding="8dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp" />
 
-    <include
-        android:id="@+id/ooo"
-        layout="@layout/activity_baozhang_top_tab"/>
+        <TextView
+            android:id="@+id/title"
+            android:textSize="20sp"
+            android:textColor="@color/write"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_marginRight="12dp"
+            android:gravity="center"
+            android:id="@+id/ttttt"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/rightim"
+                android:layout_width="50dp"
+                android:padding="16dp"
+                android:layout_marginRight="-10dp"
+                android:src="@drawable/xia"
+                android:layout_height="50dp" />
+
+            <TextView
+                android:id="@+id/xuanze"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:text="全部"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
 
         </LinearLayout>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/id_page_vp"
-        android:layout_above="@+id/dengji"
-        android:layout_below="@+id/ii"
-        android:layout_marginBottom="8dp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
 
+
+    </RelativeLayout>
+
+
+    <com.github.jdsjlzx.recyclerview.LRecyclerView
+        android:layout_width="match_parent"
+        android:id="@+id/lrecyclerview"
+        android:layout_below="@+id/ee"
+        android:layout_above="@+id/dengji"
+        android:layout_height="match_parent">
+
+    </com.github.jdsjlzx.recyclerview.LRecyclerView>
 
     <Button
         android:layout_marginLeft="20dp"

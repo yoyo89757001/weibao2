@@ -1,6 +1,7 @@
 package com.examples.weibao.ui;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -46,7 +47,9 @@ public class ChaKanTaiZhangActivity extends Activity {
         devicesBeanDao= MyAppLaction.myAppLaction.getDaoSession().getDevicesBeanDao();
 
        if (position!=-1){
+           Log.d("ChaKanTaiZhangActivity", "position:" + position);
         List<DevicesBean> ddd=devicesBeanDao.queryBuilder().where(DevicesBeanDao.Properties.ItemId.eq(position)).list();
+           Log.d("ChaKanTaiZhangActivity", "ddd.size():" + ddd.size());
            if (ddd!=null){
                devicesBeanList.addAll(ddd);
            }
@@ -107,6 +110,9 @@ public class ChaKanTaiZhangActivity extends Activity {
         lRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
+                startActivity(new Intent(ChaKanTaiZhangActivity.this,SaoYiSaoTanChuActivity.class)
+                        .putExtra("idid",devicesBeanList.get(position).getId()));
+
 
             }
         });

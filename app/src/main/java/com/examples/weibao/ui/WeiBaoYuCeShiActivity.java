@@ -314,7 +314,8 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         p6=position;
                         ceShiCSBean.setPlanId(plansBeanList.get(position).getId().intValue());
-                        jihua_tv.setText(plansBeanList.get(position).getArea());
+                        jihua_tv.setText(plansBeanList.get(position).getArea()+plansBeanList.get(position).getPlanMonth()+"月份计划");
+
                         popupWindow.dismiss();
                     }
                 });

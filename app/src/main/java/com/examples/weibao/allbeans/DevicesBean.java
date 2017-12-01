@@ -99,7 +99,8 @@ import org.greenrobot.greendao.annotation.Generated;
     private long validTime;
     private String weibaoSubSystemId;
     private String weibaoSystemId;
-    @Generated(hash = 1697208712)
+    private boolean isXiazai;
+    @Generated(hash = 1816797761)
     public DevicesBean(@NotNull Long id, Long devid, long allocationTime,
             String area, int auditBy, long auditTime, String buildingNum,
             String checkCase, int checkPeriod, long checkTime, String city,
@@ -111,7 +112,7 @@ import org.greenrobot.greendao.annotation.Generated;
             int pageSize, long producedTime, String provider, String province,
             String qrCodePath, String sign, int status, String submitter,
             String unit, long validTime, String weibaoSubSystemId,
-            String weibaoSystemId) {
+            String weibaoSystemId, boolean isXiazai) {
         this.id = id;
         this.devid = devid;
         this.allocationTime = allocationTime;
@@ -154,6 +155,7 @@ import org.greenrobot.greendao.annotation.Generated;
         this.validTime = validTime;
         this.weibaoSubSystemId = weibaoSubSystemId;
         this.weibaoSystemId = weibaoSystemId;
+        this.isXiazai = isXiazai;
     }
     @Generated(hash = 1295633009)
     public DevicesBean() {
@@ -409,6 +411,12 @@ import org.greenrobot.greendao.annotation.Generated;
     }
     public void setWeibaoSystemId(String weibaoSystemId) {
         this.weibaoSystemId = weibaoSystemId;
+    }
+    public boolean getIsXiazai() {
+        return this.isXiazai;
+    }
+    public void setIsXiazai(boolean isXiazai) {
+        this.isXiazai = isXiazai;
     }
 
    

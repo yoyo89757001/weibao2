@@ -4,6 +4,7 @@ import android.app.Application;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+
 import com.examples.weibao.allbeans.DaoMaster;
 import com.examples.weibao.allbeans.DaoSession;
 import com.examples.weibao.allbeans.DengLuBean;
@@ -115,5 +116,6 @@ public class MyAppLaction extends Application {
 //    '状态，1待回复，2回复审核通过，3回复审核不通过，4处理待审核，5处理审核通过，6处理审核不通过，7已完成处理'
 //
 //            0是待提交，也就是客户端报障未提交到后台的状态
+
 
 }

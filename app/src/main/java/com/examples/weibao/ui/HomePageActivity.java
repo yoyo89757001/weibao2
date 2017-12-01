@@ -1,17 +1,27 @@
 package com.examples.weibao.ui;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+
+import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.FileProvider;
+import android.support.v4.os.ResultReceiver;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
@@ -23,6 +33,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+
+import com.examples.weibao.DownloadService.DownloadService;
 import com.examples.weibao.MyAppLaction;
 import com.examples.weibao.R;
 import com.examples.weibao.allbeans.DengLuBean;
@@ -49,6 +62,7 @@ import com.examples.weibao.fargments.Fragment2;
 import com.examples.weibao.fargments.Fragment3;
 import com.examples.weibao.fargments.Fragment4;
 import com.examples.weibao.utils.DateUtils;
+import com.examples.weibao.utils.FileUtil;
 import com.examples.weibao.utils.GsonUtil;
 import com.examples.weibao.utils.Utils;
 import com.examples.weibao.views.ViewPagerFragmentAdapter;
@@ -59,8 +73,16 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.sdsmdg.tastytoast.TastyToast;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.Permission;
+import com.yanzhenjie.permission.PermissionListener;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -78,7 +100,6 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
     private LinearLayout zhong_ll;
     private ViewPager mViewPager;
     private ViewPagerFragmentAdapter mViewPagerFragmentAdapter;
-    private FragmentManager mFragmentManager;
     private List<Fragment> mFragmentList = new ArrayList<>();
     private ImageView tabIm,tabIm2,tabIm3,tabIm4;
     private TextView tabText,tabText2,tabText3,tabText4;
@@ -89,9 +110,6 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
     private Call call=null;
     private DengLuBean dengLuBean=null;
     private DengLuBeanDao dengLuBeanDao=null;
-    public static boolean isTrue=true;
-    public static boolean isTrue2=true;
-    public static int count=0;
     private int maxCount=0;
     //定义一个过滤器；
     private IntentFilter intentFilter;
@@ -110,7 +128,7 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
     private PlansBeanDao plansBeanDao=null;
     private MenurefsBeanDao menurefsBeanDao=null;
     private FaultsBeanDao faultsBeanDao=null;
-
+    private ImageView fff;
 
 
     Handler mHandler = new Handler() {
@@ -126,7 +144,7 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mFragmentManager = getSupportFragmentManager();
+        FragmentManager mFragmentManager = getSupportFragmentManager();
         setContentView(R.layout.activity_home_page);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -134,7 +152,7 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
             tintManager.setStatusBarTintEnabled(true);
             tintManager.setStatusBarTintResource(R.color.lanse33);
         }
-
+        fff= (ImageView) findViewById(R.id.fff);
 
         initDao();
 
@@ -153,9 +171,40 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
 
         initView();
         initViewPager();
-        link_jc();
+
+
+        AndPermission.with(HomePageActivity.this)
+                .requestCode(300)
+                .permission(Permission.STORAGE,Permission.CAMERA)
+                .callback(listener)
+                .start();
+
+
 
     }
+
+
+    private PermissionListener listener = new PermissionListener() {
+        @Override
+        public void onSucceed(int requestCode, List<String> grantedPermissions) {
+            // 权限申请成功回调。
+
+            // 这里的requestCode就是申请时设置的requestCode。
+            // 和onActivityResult()的requestCode一样，用来区分多个不同的请求。
+            if(requestCode == 300) {
+                link_jc();
+            }
+        }
+
+        @Override
+        public void onFailed(int requestCode, List<String> deniedPermissions) {
+            // 权限申请失败回调。
+            if(requestCode == 200) {
+                showMSG("拍照授权失败",3);
+
+            }
+        }
+    };
 
     private void initDao() {
         dengLuBeanDao=MyAppLaction.myAppLaction.getDaoSession().getDengLuBeanDao();
@@ -331,151 +380,198 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
 
 
                     ResponseBody body = response.body();
-                    String ss=body.string().trim();
-                    int i9=0;
-                    while (true){
-                        if (i9+4000>=ss.length()){
+                    String ss = body.string().trim();
+                    int i9 = 0;
+                    while (true) {
+                        if (i9 + 4000 >= ss.length()) {
                             Log.d("HomePageActivity", ss.substring(i9, ss.length()));
                             break;
-                        }else {
+                        } else {
                             Log.d("HomePageActivity", ss.substring(i9, i9 += 4000));
                         }
 
                     }
 
 
-                    JsonObject jsonObject= GsonUtil.parse(ss).getAsJsonObject();
-                    Gson gson=new Gson();
-                    JsonArray items= jsonObject.get("items").getAsJsonArray();
-                    JsonArray detections= jsonObject.get("detections").getAsJsonArray();
-                    JsonArray menus= jsonObject.get("menus").getAsJsonArray();
-                    JsonArray devices= jsonObject.get("devices").getAsJsonArray();
-                    JsonArray plans= jsonObject.get("plans").getAsJsonArray();
-                    JsonArray menurefs= jsonObject.get("menurefs").getAsJsonArray();
-                    JsonArray faults= jsonObject.get("faults").getAsJsonArray();
+                    JsonObject jsonObject = GsonUtil.parse(ss).getAsJsonObject();
+                    Gson gson = new Gson();
+                    JsonArray items = jsonObject.get("items").getAsJsonArray();
+                    JsonArray detections = jsonObject.get("detections").getAsJsonArray();
+                    JsonArray menus = jsonObject.get("menus").getAsJsonArray();
+                    JsonArray devices = jsonObject.get("devices").getAsJsonArray();
+                    JsonArray plans = jsonObject.get("plans").getAsJsonArray();
+                    JsonArray menurefs = jsonObject.get("menurefs").getAsJsonArray();
+                    JsonArray faults = jsonObject.get("faults").getAsJsonArray();
 
-                    int itemSize=items.size();
-                    for (int i=0;i<itemSize;i++){
-                         zhaoPianBean=gson.fromJson(items.get(i),ItemsBean.class);
-                        int i1=zhaoPianBean.getDtoResult();
-                        if (itemsBeanDao.load(zhaoPianBean.getId())==null && (i1==1 || i1==2)){
-                           // Log.d("HomePageActivity", "插入items");
+                    int itemSize = items.size();
+                    for (int i = 0; i < itemSize; i++) {
+                        zhaoPianBean = gson.fromJson(items.get(i), ItemsBean.class);
+                        int i1 = zhaoPianBean.getDtoResult();
+                        if (itemsBeanDao.load(zhaoPianBean.getId()) == null && (i1 == 1 || i1 == 2)) {
+                            // Log.d("HomePageActivity", "插入items");
                             itemsBeanDao.insert(zhaoPianBean);
-                        }else if (i1==1 || i1==2){
+                        } else if (i1 == 1 || i1 == 2) {
                             itemsBeanDao.update(zhaoPianBean);
-                           // Log.d("HomePageActivity", "更新items");
-                        }else {
+                            // Log.d("HomePageActivity", "更新items");
+                        } else {
                             itemsBeanDao.delete(zhaoPianBean);
-                          //  Log.d("HomePageActivity", "删除items");
+                            //  Log.d("HomePageActivity", "删除items");
                         }
                     }
 
 
-                    int detectionsSize=detections.size();
-                    for (int i=0;i<detectionsSize;i++){
-                        DetectionsBean detectionsBean=gson.fromJson(detections.get(i),DetectionsBean.class);
-                        int i2=detectionsBean.getDtoResult();
-                        if (detectionsBeanDao.load(detectionsBean.getId())==null && (i2==1 || i2==2)){
+                    int detectionsSize = detections.size();
+                    for (int i = 0; i < detectionsSize; i++) {
+                        DetectionsBean detectionsBean = gson.fromJson(detections.get(i), DetectionsBean.class);
+                        int i2 = detectionsBean.getDtoResult();
+                        if (detectionsBeanDao.load(detectionsBean.getId()) == null && (i2 == 1 || i2 == 2)) {
                             detectionsBeanDao.insert(detectionsBean);
-                          //  Log.d("HomePageActivity", "插入detectionsBean");
-                        }else if (i2==1 || i2==2){
+                            //  Log.d("HomePageActivity", "插入detectionsBean");
+                        } else if (i2 == 1 || i2 == 2) {
                             detectionsBeanDao.update(detectionsBean);
-                          //  Log.d("HomePageActivity", "更新detectionsBean");
-                        }else {
+                            //  Log.d("HomePageActivity", "更新detectionsBean");
+                        } else {
                             detectionsBeanDao.delete(detectionsBean);
-                          //  Log.d("HomePageActivity", "删除detectionsBean");
+                            //  Log.d("HomePageActivity", "删除detectionsBean");
                         }
                     }
 
 
-
-                    int menusSize=menus.size();
-                    for (int i=0;i<menusSize;i++){
-                        MenusBean menusBean=gson.fromJson(menus.get(i),MenusBean.class);
-                        int i3=menusBean.getDtoResult();
-                        if (menusBeanDao.load(menusBean.getId())==null && (i3==1 || i3==2)){
+                    int menusSize = menus.size();
+                    for (int i = 0; i < menusSize; i++) {
+                        MenusBean menusBean = gson.fromJson(menus.get(i), MenusBean.class);
+                        int i3 = menusBean.getDtoResult();
+                        if (menusBeanDao.load(menusBean.getId()) == null && (i3 == 1 || i3 == 2)) {
                             menusBeanDao.insert(menusBean);
-                           // Log.d("HomePageActivity", "插入menus");
-                        }else if (i3==1 || i3==2){
+                            // Log.d("HomePageActivity", "插入menus");
+                        } else if (i3 == 1 || i3 == 2) {
                             menusBeanDao.update(menusBean);
-                           // Log.d("HomePageActivity", "更新menus");
-                        }else {
+                            // Log.d("HomePageActivity", "更新menus");
+                        } else {
                             menusBeanDao.delete(menusBean);
-                          //  Log.d("HomePageActivity", "删除menus");
+                            //  Log.d("HomePageActivity", "删除menus");
                         }
                     }
 
 
-                    int devicesSize=devices.size();
-                    for (int i=0;i<devicesSize;i++){
-                        DevicesBean devicesBean=gson.fromJson(devices.get(i),DevicesBean.class);
-                        int i4=devicesBean.getDtoResult();
-                        if (devicesBeanDao.load(devicesBean.getId())==null && (i4==1 || i4==2)){
+                    int devicesSize = devices.size();
+                    for (int i = 0; i < devicesSize; i++) {
+                        DevicesBean devicesBean = gson.fromJson(devices.get(i), DevicesBean.class);
+                        int i4 = devicesBean.getDtoResult();
+                        if (devicesBeanDao.load(devicesBean.getId()) == null && (i4 == 1 || i4 == 2)) {
                             devicesBeanDao.insert(devicesBean);
-                          //  Log.d("HomePageActivity", "插入devicesBean");
-                        }else if (i4==1 || i4==2){
+                            //  Log.d("HomePageActivity", "插入devicesBean");
+                        } else if (i4 == 1 || i4 == 2) {
                             devicesBeanDao.update(devicesBean);
-                           // Log.d("HomePageActivity", "更新devicesBean");
-                        }else {
+                            // Log.d("HomePageActivity", "更新devicesBean");
+                        } else {
                             devicesBeanDao.delete(devicesBean);
-                           // Log.d("HomePageActivity", "删除devicesBean");
+                            // Log.d("HomePageActivity", "删除devicesBean");
                         }
                     }
 
-                    int plansSize=plans.size();
-                    for (int i=0;i<plansSize;i++){
-                        PlansBean plansBean=gson.fromJson(plans.get(i),PlansBean.class);
-                        int i5=plansBean.getDtoResult();
-                        if (plansBeanDao.load(plansBean.getId())==null && (i5==1 || i5==2)){
+                    int plansSize = plans.size();
+                    for (int i = 0; i < plansSize; i++) {
+                        PlansBean plansBean = gson.fromJson(plans.get(i), PlansBean.class);
+                        int i5 = plansBean.getDtoResult();
+                        if (plansBeanDao.load(plansBean.getId()) == null && (i5 == 1 || i5 == 2)) {
                             plansBeanDao.insert(plansBean);
-                           // Log.d("HomePageActivity", "插入plansBeanBean");
-                        }else if (i5==1 || i5==2){
+                            // Log.d("HomePageActivity", "插入plansBeanBean");
+                        } else if (i5 == 1 || i5 == 2) {
                             plansBeanDao.update(plansBean);
-                         //   Log.d("HomePageActivity", "更新plansBeanBean");
-                        }else {
+                            //   Log.d("HomePageActivity", "更新plansBeanBean");
+                        } else {
                             plansBeanDao.delete(plansBean);
-                          //  Log.d("HomePageActivity", "删除plansBeanBean");
+                            //  Log.d("HomePageActivity", "删除plansBeanBean");
                         }
                     }
 
-                    int menurefsSize=menurefs.size();
-                    for (int i=0;i<menurefsSize;i++){
-                        MenurefsBean menurefsBean=gson.fromJson(menurefs.get(i),MenurefsBean.class);
-                        int i6=menurefsBean.getDtoResult();
-                        if (menurefsBeanDao.load(menurefsBean.getId())==null && (i6==1 || i6==2)){
+                    int menurefsSize = menurefs.size();
+                    for (int i = 0; i < menurefsSize; i++) {
+                        MenurefsBean menurefsBean = gson.fromJson(menurefs.get(i), MenurefsBean.class);
+                        int i6 = menurefsBean.getDtoResult();
+                        if (menurefsBeanDao.load(menurefsBean.getId()) == null && (i6 == 1 || i6 == 2)) {
                             menurefsBeanDao.insert(menurefsBean);
-                          //  Log.d("HomePageActivity", "插入menurefsBean");
-                        }else if (i6==1 || i6==2){
+                            //  Log.d("HomePageActivity", "插入menurefsBean");
+                        } else if (i6 == 1 || i6 == 2) {
                             menurefsBeanDao.update(menurefsBean);
-                          //  Log.d("HomePageActivity", "更新menurefsBean");
-                        }else {
+                            //  Log.d("HomePageActivity", "更新menurefsBean");
+                        } else {
                             menurefsBeanDao.delete(menurefsBean);
-                          //  Log.d("HomePageActivity", "删除menurefsBean");
+                            //  Log.d("HomePageActivity", "删除menurefsBean");
                         }
                     }
 
-                    int faultsSize=faults.size();
-                    for (int i=0;i<faultsSize;i++){
-                        FaultsBean faultsBean=gson.fromJson(faults.get(i),FaultsBean.class);
-                        int i7=faultsBean.getDtoResult();
-                        if (faultsBeanDao.load(faultsBean.getId())==null && (i7==1 || i7==2)){
+                    final int faultsSize = faults.size();
+                    for (int i = 0; i < faultsSize; i++) {
+                        FaultsBean faultsBean = gson.fromJson(faults.get(i), FaultsBean.class);
+                        int i7 = faultsBean.getDtoResult();
+                        if (faultsBeanDao.load(faultsBean.getId()) == null && (i7 == 1 || i7 == 2)) {
+                            faultsBean.setIsXiazai(false);
                             faultsBeanDao.insert(faultsBean);
                             //  Log.d("HomePageActivity", "插入menurefsBean");
-                        }else if (i7==1 || i7==2){
+                        } else if (i7 == 1 || i7 == 2) {
+                            faultsBean.setIsXiazai(false);
                             faultsBeanDao.update(faultsBean);
                             //  Log.d("HomePageActivity", "更新menurefsBean");
-                        }else {
+                        } else {
                             faultsBeanDao.delete(faultsBean);
                             //  Log.d("HomePageActivity", "删除menurefsBean");
                         }
                     }
-                        //保存时间
-                        Log.d("HomePageActivity", "保存时间"+time);
-                     //   dengLuBean.setQqTime(time);
-                     //   dengLuBeanDao.update(dengLuBean);
-                      //  Log.d("HomePageActivity", dengLuBeanDao.load(123456L).getQqTime());
+                    //保存时间
+                    Log.d("HomePageActivity", "保存时间" + time);
+
+                    String ssss="dsdsds;";
+                    String s[]=ssss.split(";");
+                    Log.d("HomePageActivity", "s.length:" + s.length);
+
+                    //   dengLuBean.setQqTime(time);
+                    //   dengLuBeanDao.update(dengLuBean);
+                    //  Log.d("HomePageActivity", dengLuBeanDao.load(123456L).getQqTime());
+
+                    final List<FaultsBean> faultsBeanList = faultsBeanDao.loadAll();
+
+                    if (faultsBeanList != null) {
+                       final int  fsize = faultsBeanList.size();
+                        Log.d("HomePageActivity", "faults:" + fsize);
+                        runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            for (int ii = 0; ii < fsize; ii++) {
+                                if (!faultsBeanList.get(ii).getIsXiazai()) {
+                                    //下载图片
+                                    if (faultsBeanList.get(ii).getFaultImage()!=null){
+
+                                      // String ss[] = faultsBeanList.get(ii).getFaultImage().split(";");
+                                        String ss[] = "dsfds.jpg;fdgg.jpg;hghghg.jpg;".split(";");
+                                       int ds=ss.length;
+
+                                       for (int d=0;d<ds;d++){
+                                           String fn=ss[d];
+                                           FileUtil.isExists(FileUtil.PATH,fn);
+
+                                           Intent intent33 = new Intent(HomePageActivity.this, DownloadService.class);
+                                           intent33.putExtra("url", "https://image.baidu.com/search/down?tn=download&word=download&ie=utf8&fr=detail&url=https%3A%2F%2Ftimgsa.baidu.com%2Ftimg%3Fimage%26quality%3D80%26size%3Db9999_10000%26sec%3D1511844509261%26di%3D6a8899eecdb0e6e0575c5460c4d93a92%26imgtype%3D0%26src%3Dhttp%253A%252F%252Fpic.962.net%252Fup%252F2014-8%252F2014081214542360470.jpg&thumburl=https%3A%2F%2Fss1.bdstatic.com%2F70cFvXSh_Q1YnxGkpoWK1HF6hhy%2Fit%2Fu%3D3106156002%2C3254559731%26fm%3D27%26gp%3D0.jpg");
+                                           intent33.putExtra("receiver", new DownloadReceiver(new Handler()));
+                                           intent33.putExtra("faultsId",faultsBeanList.get(ii).getId());
+                                           intent33.putExtra("urlName",FileUtil.SDPATH+ File.separator+FileUtil.PATH+File.separator+fn);
+                                           startService(intent33);
+                                       }
 
 
+                                    }
+
+
+                                }
+
+                            }
+
+
+                        }
+                    });
+                }
                 }catch (Exception e){
 
                     dismissDialog();
@@ -487,6 +583,68 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
+    private class DownloadReceiver extends ResultReceiver {
+
+        private DownloadReceiver(Handler handler) {
+            super(handler);
+        }
+
+        @Override
+        protected void onReceiveResult(int resultCode, Bundle resultData) {
+            super.onReceiveResult(resultCode, resultData);
+            if (resultCode == DownloadService.UPDATE_PROGRESS) {
+             //  String  ididid=resultData.getString("ididid2");
+               long faultsId=resultData.getLong("faultsId");
+                Log.d("DownloadReceiver", faultsId+"");
+                int progress = resultData.getInt("progress");
+              if (progress==100){
+                  Log.d("DownloadReceiver", "下载完成");
+                  FaultsBean f=faultsBeanDao.load(faultsId);
+                  f.setIsXiazai(true);
+                  faultsBeanDao.update(f);
+
+              }
+
+            }
+        }
+    }
+
+    /***
+     *保存bitmap对象到文件中
+     * @param bm
+     * @param path
+     * @param quality
+     * @return
+     */
+    public  void saveBitmap2File(Bitmap bm, final String path, int quality) {
+        if (null == bm || bm.isRecycled()) {
+            Log.d("InFoActivity", "回收|空");
+            return ;
+        }
+        try {
+            File file = new File(path);
+            if (file.exists()) {
+                file.delete();
+            }
+            BufferedOutputStream bos = new BufferedOutputStream(
+                    new FileOutputStream(file));
+            bm.compress(Bitmap.CompressFormat.JPEG, quality, bos);
+            bos.flush();
+            bos.close();
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+        //finally {
+
+//            if (!bm.isRecycled()) {
+//                bm.recycle();
+//            }
+//            bm = null;
+   //     }
+    }
 
     private void showDialog(){
         runOnUiThread(new Runnable() {

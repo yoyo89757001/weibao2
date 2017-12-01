@@ -10,10 +10,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.request.RequestOptions;
 import com.examples.weibao.R;
 import com.examples.weibao.beans.ItemIdBean;
 import com.examples.weibao.intface.ClickIntface;
-import com.examples.weibao.views.GlideCircleTransform;
+
 
 import java.util.List;
 
@@ -25,6 +27,8 @@ public class XiaoXiAdapter extends RecyclerView.Adapter<XiaoXiAdapter.ViewHolder
     private List<ItemIdBean.ObjectsBean> datas;
     private ClickIntface clickIntface;
     private Context context;
+    private RequestOptions requestOptions = RequestOptions.circleCropTransform();
+
 
     public void setClickIntface(ClickIntface clickIntface){
         this.clickIntface=clickIntface;
@@ -46,7 +50,8 @@ public class XiaoXiAdapter extends RecyclerView.Adapter<XiaoXiAdapter.ViewHolder
         viewHolder.content.setText(datas.get(position).getName());
         Glide.with(context)
                 .load(R.drawable.tuijianyisheng)
-                .transform(new GlideCircleTransform(context,2, Color.parseColor("#ffffffff")))
+                .apply(RequestOptions.bitmapTransform(new CircleCrop()))
+              //  .transform(new GlideCircleTransform(context,2, Color.parseColor("#ffffffff")))
                 .into(viewHolder.touxiang);
 
     }

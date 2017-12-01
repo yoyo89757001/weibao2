@@ -54,6 +54,42 @@ public class BaoZhangAdapter1 extends RecyclerView.Adapter<BaoZhangAdapter1.View
             viewHolder.bianhao.setText("编号:"+devicesBean.getDeviceNum());
             viewHolder.shijian.setText("报障时间:"+DateUtils.time(devicesBean.getFailureTime()+""));
         }
+        switch (datas.get(position).getStatus()){
+            case 0:
+                viewHolder.zhuangtai.setText("待提交");
+                viewHolder.zhuangtai.setBackgroundResource(R.drawable.ju);
+                break;
+            case 1:
+                viewHolder.zhuangtai.setText("待回复");
+                viewHolder.zhuangtai.setBackgroundResource(R.drawable.ju);
+                break;
+            case 2:
+                viewHolder.zhuangtai.setText("回复审核通过");
+                viewHolder.zhuangtai.setBackgroundResource(R.drawable.luse);
+                break;
+            case 3:
+                viewHolder.zhuangtai.setText("回复审核不通过");
+                viewHolder.zhuangtai.setBackgroundResource(R.drawable.ju);
+                break;
+            case 4:
+                viewHolder.zhuangtai.setText("处理待审核");
+                viewHolder.zhuangtai.setBackgroundResource(R.drawable.ju);
+                break;
+            case 5:
+                viewHolder.zhuangtai.setText("处理审核通过");
+                viewHolder.zhuangtai.setBackgroundResource(R.drawable.luse);
+                break;
+            case 6:
+                viewHolder.zhuangtai.setText("处理审核不通过");
+                viewHolder.zhuangtai.setBackgroundResource(R.drawable.ju);
+                break;
+            case 7:
+                viewHolder.zhuangtai.setText("已完成处理");
+                viewHolder.zhuangtai.setBackgroundResource(R.drawable.ju);
+                break;
+
+        }
+
 
 
     }
@@ -64,7 +100,7 @@ public class BaoZhangAdapter1 extends RecyclerView.Adapter<BaoZhangAdapter1.View
     }
     //自定义的ViewHolder，持有每个Item的的所有界面元素
       class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView bianhao,shebei,weizhi,shijian ;
+        private TextView bianhao,shebei,weizhi,shijian ,zhuangtai;
 
 
         private ViewHolder(View view){
@@ -73,7 +109,7 @@ public class BaoZhangAdapter1 extends RecyclerView.Adapter<BaoZhangAdapter1.View
             shebei = (TextView) view.findViewById(R.id.shebei);
             weizhi = (TextView) view.findViewById(R.id.weizhi);
             shijian = (TextView) view.findViewById(R.id.shijian);
-
+            zhuangtai = (TextView) view.findViewById(R.id.zhuangtai);
 
         }
     }

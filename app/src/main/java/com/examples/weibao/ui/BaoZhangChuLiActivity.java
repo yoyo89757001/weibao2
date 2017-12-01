@@ -1,58 +1,68 @@
 package com.examples.weibao.ui;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.util.DisplayMetrics;
+import android.support.v7.widget.LinearLayoutManager;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.examples.weibao.MyAppLaction;
 import com.examples.weibao.R;
-import com.examples.weibao.fargments.Fragment_BZ1;
-import com.examples.weibao.fargments.Fragment_BZ2;
-import com.examples.weibao.fargments.Fragment_BZ3;
-import com.examples.weibao.views.ViewPagerFragmentAdapter;
+import com.examples.weibao.adapters.BaoZhangAdapter1;
+import com.examples.weibao.adapters.PopupWindowAdapter5;
+import com.examples.weibao.allbeans.DengLuBean;
+import com.examples.weibao.allbeans.DengLuBeanDao;
+import com.examples.weibao.allbeans.DevicesBean;
+import com.examples.weibao.allbeans.DevicesBeanDao;
+import com.examples.weibao.allbeans.FaultsBean;
+import com.examples.weibao.allbeans.FaultsBeanDao;
+import com.examples.weibao.beans.XuanZeBean;
+import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
+import com.github.jdsjlzx.interfaces.OnItemClickListener;
+import com.github.jdsjlzx.recyclerview.LRecyclerView;
+import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BaoZhangChuLiActivity extends AppCompatActivity implements View.OnClickListener {
-    private List<Fragment> mFragmentList = new ArrayList<>();
-    private ViewPagerFragmentAdapter mFragmentAdapter;
-    private LinearLayout l1,l2,l3;
-    private ViewPager mPageVp;
-    /**
-     * Tab显示内容TextView
-     */
-    private TextView mTabChatTv, mTabContactsTv, mTabFriendTv;
-    /**
-     * Tab的那个引导线
-     */
-    private ImageView mTabLineIv;
-    /**
-     * Fragment
-     */
-    private Fragment_BZ1 mChatFg;
-    private Fragment_BZ2 mFriendFg;
-    private Fragment_BZ3 mContactsFg;
-    /**
-     * ViewPager的当前选中页
-     */
-    private int currentIndex;
-    /**
-     * 屏幕的宽度
-     */
-    private int screenWidth;
-
+public class BaoZhangChuLiActivity extends Activity {
+    private LRecyclerView lRecyclerView;
+    private LRecyclerViewAdapter lRecyclerViewAdapter;
+    private LinearLayoutManager linearLayoutManager;
+    private BaoZhangAdapter1 adapter1=null;
+    private DengLuBeanDao dengLuBeanDao=null;
+    private DengLuBean dengLuBean=null;
+    private FaultsBeanDao faultsBeanDao=null;
+    private List<FaultsBean> faultsBeanList0=new ArrayList<>();
+    private List<FaultsBean> faultsBeanList1=new ArrayList<>();
+    private List<FaultsBean> faultsBeanList2=new ArrayList<>();
+    private List<FaultsBean> faultsBeanList3=new ArrayList<>();
+    private List<FaultsBean> faultsBeanList4=new ArrayList<>();
+    private List<FaultsBean> faultsBeanList5=new ArrayList<>();
+    private List<FaultsBean> faultsBeanList6=new ArrayList<>();
+    private List<FaultsBean> faultsBeanList7=new ArrayList<>();
+    private DevicesBeanDao devicesBeanDao=null;
+    private List<DevicesBean> devicesBeanList=null;
+    private PopupWindow popupWindow=null;
+    private List<XuanZeBean> stringList=new ArrayList<>();
+    private int p4=-1;
+    private LinearLayout ll;
+    private RelativeLayout ee;
+    private List<FaultsBean> faultsBeanList=new ArrayList<>();
+    private  List<FaultsBean> f=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,155 +71,253 @@ public class BaoZhangChuLiActivity extends AppCompatActivity implements View.OnC
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             //透明状态栏
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            //透明导航栏
-            //  getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
             SystemBarTintManager tintManager = new SystemBarTintManager(this);
-            // 激活状态栏
             tintManager.setStatusBarTintEnabled(true);
-            // enable navigation bar tint 激活导航栏
-            //  tintManager.setNavigationBarTintEnabled(true);
-            //设置系统栏设置颜色
-            //tintManager.setTintColor(R.color.red);
-            //给状态栏设置颜色
             tintManager.setStatusBarTintResource(R.color.lanse33);
-            //Apply the specified drawable or color resource to the system navigation bar.
-            //给导航栏设置资源
-            // tintManager.setNavigationBarTintResource(R.color.dark_grey);
         }
+        faultsBeanDao= MyAppLaction.myAppLaction.getDaoSession().getFaultsBeanDao();
+        dengLuBeanDao=MyAppLaction.myAppLaction.getDaoSession().getDengLuBeanDao();
+        dengLuBean=dengLuBeanDao.load(123456L);
+
+        stringList.add(new XuanZeBean("全部",-1));
+        stringList.add(new XuanZeBean("待提交",0));
+        stringList.add(new XuanZeBean("待回复",1));
+        stringList.add(new XuanZeBean("回复审核通过",2));
+        stringList.add(new XuanZeBean("回复审核不通过",3));
+        stringList.add(new XuanZeBean("处理待审核",4));
+        stringList.add(new XuanZeBean("处理审核通过",5));
+        stringList.add(new XuanZeBean("处理审核不通过",6));
+        stringList.add(new XuanZeBean("已完成处理",7));
+
 
         findById();
         init();
-        initTabLineWidth();
+
     }
 
     private void findById() {
+        ll= (LinearLayout) findViewById(R.id.ttttt);
+        ee= (RelativeLayout) findViewById(R.id.ee);
         TextView tit= (TextView) findViewById(R.id.title);
         tit.setText("报障列表");
-        ImageView f= (ImageView) findViewById(R.id.leftim);
-        f.setOnClickListener(new View.OnClickListener() {
+        ImageView ff= (ImageView) findViewById(R.id.leftim);
+        ff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-        Button baozhangdengji= (Button) findViewById(R.id.dengji);
-        baozhangdengji.setOnClickListener(new View.OnClickListener() {
+        final TextView xx= (TextView) findViewById(R.id.xuanze);
+        final ImageView ri= (ImageView) findViewById(R.id.rightim);
+        ll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(BaoZhangChuLiActivity.this,BaoZhangDengJiActivity.class));
+
+                View contentView4 = LayoutInflater.from(BaoZhangChuLiActivity.this).inflate(R.layout.xiangmu_po_item, null);
+                popupWindow=new PopupWindow(contentView4,300, 500);
+                ListView listView4= (ListView) contentView4.findViewById(R.id.dddddd);
+                PopupWindowAdapter5 adapter4=new PopupWindowAdapter5(BaoZhangChuLiActivity.this,stringList);
+                listView4.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        p4=position;
+                        xx.setText(stringList.get(position).getS());
+                       if (faultsBeanList.size()>0){
+                           faultsBeanList.clear();
+                       }
+                        switch (stringList.get(position).getP()){
+                            case -1:
+                                faultsBeanList.addAll(f);
+                                adapter1.notifyDataSetChanged();
+                                break;
+                            case 0:
+                                faultsBeanList.addAll(faultsBeanList0);
+                                adapter1.notifyDataSetChanged();
+                                break;
+                            case 1:
+                                faultsBeanList.addAll(faultsBeanList1);
+                                adapter1.notifyDataSetChanged();
+                                break;
+                            case 2:
+                                faultsBeanList.addAll(faultsBeanList2);
+                                adapter1.notifyDataSetChanged();
+                                break;
+                            case 3:
+                                faultsBeanList.addAll(faultsBeanList3);
+                                adapter1.notifyDataSetChanged();
+                                break;
+                            case 4:
+                                faultsBeanList.addAll(faultsBeanList4);
+                                adapter1.notifyDataSetChanged();
+                                break;
+                            case 5:
+                                faultsBeanList.addAll(faultsBeanList5);
+                                adapter1.notifyDataSetChanged();
+                                break;
+                            case 6:
+                                faultsBeanList.addAll(faultsBeanList6);
+                                adapter1.notifyDataSetChanged();
+                                break;
+                            case 7:
+                                faultsBeanList.addAll(faultsBeanList7);
+                                adapter1.notifyDataSetChanged();
+                                break;
+
+                        }
+
+                        popupWindow.dismiss();
+
+
+                    }
+                });
+                listView4.setAdapter(adapter4);
+
+                popupWindow.setFocusable(true);//获取焦点
+                popupWindow.setOutsideTouchable(true);//获取外部触摸事件
+                popupWindow.setTouchable(true);//能够响应触摸事件
+                popupWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));//设置背景
+                popupWindow.showAsDropDown(ee,ll.getLeft(),0);
+
+
             }
         });
-        mTabContactsTv = (TextView) findViewById(R.id.id_contacts_tv);
-        mTabChatTv = (TextView) findViewById(R.id.id_chat_tv);
-        mTabFriendTv = (TextView) findViewById(R.id.id_friend_tv);
-        mTabLineIv = (ImageView) findViewById(R.id.id_tab_line_iv);
-        mPageVp = (ViewPager) findViewById(R.id.id_page_vp);
-        l1= (LinearLayout) findViewById(R.id.id_tab_chat_ll);
-        l1.setOnClickListener(this);
-        l2= (LinearLayout) findViewById(R.id.id_tab_friend_ll);
-        l2.setOnClickListener(this);
-        l3= (LinearLayout) findViewById(R.id.id_tab_contacts_ll);
-        l3.setOnClickListener(this);
+
+        lRecyclerView= (LRecyclerView)findViewById(R.id.lrecyclerview);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                 f=faultsBeanDao.loadAll();
+                if (f!=null){
+                    int s=f.size();
+                    for (int i=0;i<s;i++){
+                        switch (f.get(i).getStatus()){
+                            case 0:
+                                faultsBeanList0.add(f.get(i));
+                                break;
+                            case 1:
+                                faultsBeanList1.add(f.get(i));
+                                break;
+                            case 2:
+                                faultsBeanList2.add(f.get(i));
+                                break;
+                            case 3:
+                                faultsBeanList3.add(f.get(i));
+                                break;
+                            case 4:
+                                faultsBeanList4.add(f.get(i));
+                                break;
+                            case 5:
+                                faultsBeanList5.add(f.get(i));
+                                break;
+                            case 6:
+                                faultsBeanList6.add(f.get(i));
+                                break;
+                            case 7:
+                                faultsBeanList7.add(f.get(i));
+                                break;
+                        }
+                    }
+                    faultsBeanList.addAll(f);
+                    //循环完了
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            adapter1=new BaoZhangAdapter1(faultsBeanList);
+                            lRecyclerViewAdapter = new LRecyclerViewAdapter(adapter1);
+                            linearLayoutManager=new LinearLayoutManager(BaoZhangChuLiActivity.this);
+                            linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                            lRecyclerView.setLayoutManager(linearLayoutManager);
+                            lRecyclerView.setAdapter(lRecyclerViewAdapter);
+                            lRecyclerView.setPullRefreshEnabled(false);
+                            lRecyclerView.setLoadMoreEnabled(false);
+
+                            DividerDecoration divider = new DividerDecoration.Builder(BaoZhangChuLiActivity.this)
+                                    .setHeight(R.dimen.default_divider_height)
+                                    .setPadding(R.dimen.default_divider_padding)
+                                    .setColorResource(R.color.transparent)
+                                    .build();
+                            lRecyclerView.addItemDecoration(divider);
+                            lRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
+                                @Override
+                                public void onItemClick(View view, int position) {
+                                    switch (p4){
+                                        case -1:
+                                            startActivity(new Intent(BaoZhangChuLiActivity.this, BaoZhangChaKanActivity.class)
+                                                    .putExtra("shebeiID",f.get(position).getDeviceId())
+                                                    .putExtra("baozhangID",f.get(position).getId()));
+                                            break;
+                                        case 0:
+                                            startActivity(new Intent(BaoZhangChuLiActivity.this, BaoZhangChaKanActivity.class)
+                                                    .putExtra("shebeiID",faultsBeanList0.get(position).getDeviceId())
+                                                    .putExtra("baozhangID",faultsBeanList0.get(position).getId()));
+                                            break;
+                                        case 1:
+                                            startActivity(new Intent(BaoZhangChuLiActivity.this, BaoZhangChaKanActivity.class)
+                                                    .putExtra("shebeiID",faultsBeanList1.get(position).getDeviceId())
+                                                    .putExtra("baozhangID",faultsBeanList1.get(position).getId()));
+                                            break;
+                                        case 2:
+                                            startActivity(new Intent(BaoZhangChuLiActivity.this, BaoZhangChaKanActivity.class)
+                                                    .putExtra("shebeiID",faultsBeanList2.get(position).getDeviceId())
+                                                    .putExtra("baozhangID",faultsBeanList2.get(position).getId()));
+                                            break;
+                                        case 3:
+                                            startActivity(new Intent(BaoZhangChuLiActivity.this, BaoZhangChaKanActivity.class)
+                                                    .putExtra("shebeiID",faultsBeanList3.get(position).getDeviceId())
+                                                    .putExtra("baozhangID",faultsBeanList3.get(position).getId()));
+                                            break;
+                                        case 4:
+                                            startActivity(new Intent(BaoZhangChuLiActivity.this, BaoZhangChaKanActivity.class)
+                                                    .putExtra("shebeiID",faultsBeanList4.get(position).getDeviceId())
+                                                    .putExtra("baozhangID",faultsBeanList4.get(position).getId()));
+                                            break;
+                                        case 5:
+                                            startActivity(new Intent(BaoZhangChuLiActivity.this, BaoZhangChaKanActivity.class)
+                                                    .putExtra("shebeiID",faultsBeanList5.get(position).getDeviceId())
+                                                    .putExtra("baozhangID",faultsBeanList5.get(position).getId()));
+                                            break;
+                                        case 6:
+                                            startActivity(new Intent(BaoZhangChuLiActivity.this, BaoZhangChaKanActivity.class)
+                                                    .putExtra("shebeiID",faultsBeanList6.get(position).getDeviceId())
+                                                    .putExtra("baozhangID",faultsBeanList6.get(position).getId()));
+                                            break;
+                                        case 7:
+                                            startActivity(new Intent(BaoZhangChuLiActivity.this, BaoZhangChaKanActivity.class)
+                                                    .putExtra("shebeiID",faultsBeanList7.get(position).getDeviceId())
+                                                    .putExtra("baozhangID",faultsBeanList7.get(position).getId()));
+                                            break;
+
+                                    }
+
+
+                                }
+                            });
+
+
+                            Button baozhangdengji= (Button) findViewById(R.id.dengji);
+                            baozhangdengji.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    startActivity(new Intent(BaoZhangChuLiActivity.this,BaoZhangDengJiActivity.class));
+                                }
+                            });
+                        }
+                    });
+
+                }
+
+            }
+        }).start();
+
 
     }
 
 
     private void init() {
-        mFriendFg = new Fragment_BZ2();
-        mContactsFg = new Fragment_BZ3();
-        mChatFg = new Fragment_BZ1();
-        mFragmentList.add(mChatFg);
-        mFragmentList.add(mFriendFg);
-        mFragmentList.add(mContactsFg);
 
-        mFragmentAdapter = new ViewPagerFragmentAdapter(
-                this.getSupportFragmentManager(), mFragmentList);
-        mPageVp.setAdapter(mFragmentAdapter);
-        mPageVp.setCurrentItem(0);
-        mPageVp.setOffscreenPageLimit(3);
-        mPageVp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-
-            /**
-             * state滑动中的状态 有三种状态（0，1，2） 1：正在滑动 2：滑动完毕 0：什么都没做。
-             */
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-
-            /**
-             * position :当前页面，及你点击滑动的页面 offset:当前页面偏移的百分比
-             * offsetPixels:当前页面偏移的像素位置
-             */
-            @Override
-            public void onPageScrolled(int position, float offset,
-                                       int offsetPixels) {
-                LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mTabLineIv.getLayoutParams();
-                lp.leftMargin = screenWidth/3*position+offsetPixels/3;
-                mTabLineIv.setLayoutParams(lp);
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                resetTextView();
-                switch (position) {
-                    case 0:
-                        mTabChatTv.setTextColor(Color.BLUE);
-                        break;
-                    case 1:
-                        mTabFriendTv.setTextColor(Color.BLUE);
-                        break;
-                    case 2:
-                        mTabContactsTv.setTextColor(Color.BLUE);
-                        break;
-                }
-                currentIndex = position;
-            }
-        });
 
     }
 
-    /**
-     * 设置滑动条的宽度为屏幕的1/3(根据Tab的个数而定)
-     */
-    private void initTabLineWidth() {
-        DisplayMetrics dpMetrics = new DisplayMetrics();
-        getWindow().getWindowManager().getDefaultDisplay()
-                .getMetrics(dpMetrics);
-        screenWidth = dpMetrics.widthPixels;
-        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mTabLineIv.getLayoutParams();
-        lp.width = screenWidth / 3;
-        mTabLineIv.setLayoutParams(lp);
-    }
 
-    /**
-     * 重置颜色
-     */
-    private void resetTextView() {
-        mTabChatTv.setTextColor(0xff8c8c8c);
-        mTabFriendTv.setTextColor(0xff8c8c8c);
-        mTabContactsTv.setTextColor(0xff8c8c8c);
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.id_tab_chat_ll:
-                resetTextView();
-                mTabChatTv.setTextColor(Color.BLUE);
-                mPageVp.setCurrentItem(0);
-                break;
-            case R.id.id_tab_friend_ll:
-                resetTextView();
-                mTabFriendTv.setTextColor(Color.BLUE);
-                mPageVp.setCurrentItem(1);
-                break;
-            case R.id.id_tab_contacts_ll:
-                resetTextView();
-                mTabContactsTv.setTextColor(Color.BLUE);
-                mPageVp.setCurrentItem(2);
-                break;
-        }
-
-    }
 }

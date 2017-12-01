@@ -1,10 +1,16 @@
 package com.examples.weibao.ui;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -19,8 +25,18 @@ import com.examples.weibao.allbeans.DevicesBeanDao;
 import com.examples.weibao.allbeans.FaultsBean;
 import com.examples.weibao.allbeans.FaultsBeanDao;
 import com.examples.weibao.utils.DateUtils;
+import com.examples.weibao.utils.FileUtil;
+import com.jude.rollviewpager.HintView;
+import com.jude.rollviewpager.RollPagerView;
+import com.jude.rollviewpager.adapter.LoopPagerAdapter;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 public class BaoZhangChaKanActivity extends Activity {
@@ -37,6 +53,10 @@ public class BaoZhangChaKanActivity extends Activity {
     private EditText huifuneirong,chulineirong;
     private ImageView tupian;
     private RelativeLayout paicha_rl;
+    private View view;
+    private Button bt1,bt2;
+    private RollPagerView rollPagerView=null;
+    private  List<String> photoPathList=new ArrayList<>();
 
 
     @Override
@@ -50,7 +70,7 @@ public class BaoZhangChaKanActivity extends Activity {
         devicesBeanDao=MyAppLaction.myAppLaction.getDaoSession().getDevicesBeanDao();
         devicesBean=devicesBeanDao.load((long) shebeiID);
         faultsBean=faultsBeanDao.load(baozhangID);
-
+        Log.d("BaoZhangChaKanActivity", "shebeiID:" + shebeiID);
 
         setContentView(R.layout.activity_bao_zhang_cha_kan);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -67,12 +87,117 @@ public class BaoZhangChaKanActivity extends Activity {
             }
         });
         initView();
+        initTuPian();
+
+
+        if (devicesBean!=null){
+            switch (devicesBean.getStatus()){
+                case 0:
+                    bt1.setVisibility(View.GONE);
+                    view.setVisibility(View.GONE);
+                    break;
+                case 1:
+
+
+                    break;
+                case 2:
+
+                    break;
+
+            }
+        }
 
 
 
     }
 
+    private void initTuPian() {
+        if (faultsBean!=null && faultsBean.getFaultImage()!=null){
+            String s[] =faultsBean.getFaultImage().split(";");
+            if (photoPathList.size()>0){
+                photoPathList.clear();
+            }
+//            for (String value : s) {
+//                photoPathList.add(FileUtil.SDPATH + File.separator + FileUtil.PATH + File.separator + value);
+//            }
+            photoPathList.add(FileUtil.SDPATH + File.separator + FileUtil.PATH + File.separator +"fdgg.jpg");
+            photoPathList.add(FileUtil.SDPATH + File.separator + FileUtil.PATH + File.separator +"fdgg.jpg");
+            photoPathList.add(FileUtil.SDPATH + File.separator + FileUtil.PATH + File.separator +"fdgg.jpg");
+        }
+
+        rollPagerView.setAdapter(new TestLoopAdapter(rollPagerView));
+
+
+    }
+
+    private class TestLoopAdapter extends LoopPagerAdapter {
+
+        public TestLoopAdapter(RollPagerView viewPager) {
+            super(viewPager);
+        }
+
+        @Override
+        public View getView(ViewGroup container, int position) {
+            ImageView view = new ImageView(container.getContext());
+            try {
+
+                view.setImageDrawable(getImageDrawable(photoPathList.get(position)));
+            } catch (IOException e) {
+                Log.d("test", e.getMessage());
+            }
+
+            view.setScaleType(ImageView.ScaleType.FIT_XY);
+            view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            return view;
+        }
+
+        @Override
+        public int getRealCount() {
+            return photoPathList.size();
+        }
+    }
+    /**
+     * 将文件生成位图
+     * @param path
+     * @return
+     * @throws IOException
+     */
+    public BitmapDrawable getImageDrawable(String path)
+            throws IOException
+    {
+        //打开文件
+        File file = new File(path);
+        if(!file.exists())
+        {
+            return null;
+        }
+
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+        byte[] bt = new byte[1024];
+
+        //得到文件的输入流
+        InputStream in = new FileInputStream(file);
+
+        //将文件读出到输出流中
+        int readLength = in.read(bt);
+        while (readLength != -1) {
+            outStream.write(bt, 0, readLength);
+            readLength = in.read(bt);
+        }
+
+        //转换成byte 后 再格式化成位图
+        byte[] data = outStream.toByteArray();
+        Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);// 生成位图
+        BitmapDrawable bd = new BitmapDrawable(getResources(),bitmap);
+
+        return bd;
+    }
+
     private void initView() {
+        rollPagerView= (RollPagerView) findViewById(R.id.lunbo);
+        view=findViewById(R.id.bt_view);
+        bt1= (Button) findViewById(R.id.bt1);
+        bt2= (Button) findViewById(R.id.bt2);
         shebei= (TextView) findViewById(R.id.shebei_tv);
         baozhangtoubu_tv= (TextView) findViewById(R.id.baozhang_tv);
         bianhao= (TextView) findViewById(R.id.bianhao);

@@ -1,18 +1,20 @@
 package com.examples.weibao.adapters;
 
 import android.content.Context;
-import android.graphics.Color;
+
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.request.RequestOptions;
 import com.examples.weibao.R;
 import com.examples.weibao.intface.ClickIntface;
-import com.examples.weibao.views.GlideCircleTransform;
+
 import com.examples.weibao.xiaoxibeans.XiaoXiBean;
 
 import java.util.List;
@@ -26,6 +28,7 @@ public class XiaoXi2Adapter extends RecyclerView.Adapter<XiaoXi2Adapter.ViewHold
     private ClickIntface clickIntface;
     private Context context;
     private String actiom;
+    private RequestOptions requestOptions = RequestOptions.circleCropTransform();
 
     public void setClickIntface(ClickIntface clickIntface){
         this.clickIntface=clickIntface;
@@ -51,7 +54,8 @@ public class XiaoXi2Adapter extends RecyclerView.Adapter<XiaoXi2Adapter.ViewHold
             viewHolder.button2.setText(datas.get(position).getContent());
             Glide.with(context)
                     .load(R.drawable.tuijianyisheng)
-                    .transform(new GlideCircleTransform(context,2, Color.parseColor("#ffffffff")))
+                    .apply(RequestOptions.bitmapTransform(new CircleCrop()))
+                  //  .transform(new GlideCircleTransform(context,2, Color.parseColor("#ffffffff")))
                     .into(viewHolder.touxiang2);
             viewHolder.name2.setVisibility(View.VISIBLE);
             viewHolder.button2.setVisibility(View.VISIBLE);
@@ -72,7 +76,8 @@ public class XiaoXi2Adapter extends RecyclerView.Adapter<XiaoXi2Adapter.ViewHold
             viewHolder.button1.setText(datas.get(position).getContent());
             Glide.with(context)
                     .load(R.drawable.tuijianyisheng)
-                    .transform(new GlideCircleTransform(context,2, Color.parseColor("#ffffffff")))
+                    .apply(RequestOptions.bitmapTransform(new CircleCrop()))
+                  //  .transform(new GlideCircleTransform(context,2, Color.parseColor("#ffffffff")))
                     .into(viewHolder.touxiang);
         }
 

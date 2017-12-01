@@ -387,8 +387,6 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
         // showDialog();
         final MediaType JSON=MediaType.parse("application/json; charset=utf-8");
         OkHttpClient okHttpClient= MyAppLaction.getOkHttpClient();
-
-
         String nonce=Utils.getNonce();
         String timestamp=Utils.getTimestamp();
         final String time=DateUtils.getTodayDateTimes();

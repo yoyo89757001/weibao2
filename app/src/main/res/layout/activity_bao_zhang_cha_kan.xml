@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/write"
     android:fitsSystemWindows="true"
     tools:context="com.examples.weibao.ui.BaoZhangChaKanActivity">
@@ -151,14 +152,12 @@
                 android:ellipsize="end"
                 android:layout_height="wrap_content" />
 
-            <ImageView
-                android:layout_marginTop="16dp"
-                android:src="@drawable/zidonghuoqu2"
-                android:paddingLeft="@dimen/sp_16"
-                android:paddingRight="@dimen/sp_16"
-                android:id="@+id/tupian"
+            <com.jude.rollviewpager.RollPagerView
                 android:layout_width="match_parent"
-                android:layout_height="250dp" />
+                android:id="@+id/lunbo"
+                android:padding="10dp"
+                android:layout_height="260dp"
+                app:rollviewpager_play_delay="5000"/>
 
             <View
                 android:background="@color/view_bg"

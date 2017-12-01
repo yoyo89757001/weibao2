@@ -4,14 +4,11 @@ import android.annotation.SuppressLint;
 import android.app.IntentService;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.os.ResultReceiver;
 import android.util.Log;
 
-import com.examples.weibao.utils.FileUtil;
 
 import java.io.BufferedInputStream;
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,6 +32,7 @@ public class DownloadService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         String urlToDownload = intent.getStringExtra("url");
         ResultReceiver receiver = intent.getParcelableExtra("receiver");
+        long faultsId=intent.getLongExtra("faultsId",0);
         ididid = intent.getStringExtra("urlName");
       //  Log.d("DownloadService", "获取的idid" + ididid);
      //   String nameType = intent.getStringExtra("nameType");
@@ -48,7 +46,7 @@ public class DownloadService extends IntentService {
             int fileLength = connection.getContentLength();
             // download the file
             InputStream input = new BufferedInputStream(connection.getInputStream());
-            OutputStream output = new FileOutputStream(Environment.getExternalStorageDirectory().getAbsolutePath()+File.separator+ "docpathdoc"+File.separator+ "ttt.html");
+            OutputStream output = new FileOutputStream(ididid);
             byte data[] = new byte[1024];
             long total = 0;
             int count;
@@ -57,27 +55,28 @@ public class DownloadService extends IntentService {
                 // publishing the progress....
 
 
-                Bundle resultData = new Bundle();
-                resultData.putInt("progress", (int) (total * 100 / fileLength));
-                resultData.putString("ididid2", ididid);
-                receiver.send(UPDATE_PROGRESS, resultData);
+//                Bundle resultData = new Bundle();
+//                resultData.putInt("progress", (int) (total * 100 / fileLength));
+//                resultData.putString("ididid2", ididid);
+//                receiver.send(UPDATE_PROGRESS, resultData);
                 output.write(data, 0, count);
 
             }
             output.flush();
             output.close();
             input.close();
-           // Bundle resultData = new Bundle();
 
+            Bundle resultData = new Bundle();
+            resultData.putInt("progress", 100);
+            resultData.putLong("faultsId",faultsId);
+            resultData.putString("ididid2", ididid);
+            receiver.send(UPDATE_PROGRESS, resultData);
 
-          //  resultData.putInt("progress", 100);
-          //  Log.d("DownloadService", "下载的文件" + ididid);
-
-         //   receiver.send(UPDATE_PROGRESS, resultData);
         } catch (IOException e) {
             e.printStackTrace();
             Bundle resultData = new Bundle();
-            // resultData.putString("ididid2", ididid);
+            resultData.putLong("faultsId",faultsId);
+            resultData.putString("ididid2", ididid);
             resultData.putInt("progress", 0);
             Log.d("DownloadService", "下载异常" + e.getMessage());
             receiver.send(UPDATE_PROGRESS, resultData);
