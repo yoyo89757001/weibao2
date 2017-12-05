@@ -46,7 +46,6 @@ public class BaoZhangChuLiActivity extends Activity {
     private DengLuBeanDao dengLuBeanDao=null;
     private DengLuBean dengLuBean=null;
     private FaultsBeanDao faultsBeanDao=null;
-    private List<FaultsBean> faultsBeanList0=new ArrayList<>();
     private List<FaultsBean> faultsBeanList1=new ArrayList<>();
     private List<FaultsBean> faultsBeanList2=new ArrayList<>();
     private List<FaultsBean> faultsBeanList3=new ArrayList<>();
@@ -80,7 +79,6 @@ public class BaoZhangChuLiActivity extends Activity {
         dengLuBean=dengLuBeanDao.load(123456L);
 
         stringList.add(new XuanZeBean("全部",-1));
-        stringList.add(new XuanZeBean("待提交",0));
         stringList.add(new XuanZeBean("待回复",1));
         stringList.add(new XuanZeBean("回复审核通过",2));
         stringList.add(new XuanZeBean("回复审核不通过",3));
@@ -128,10 +126,6 @@ public class BaoZhangChuLiActivity extends Activity {
                         switch (stringList.get(position).getP()){
                             case -1:
                                 faultsBeanList.addAll(f);
-                                adapter1.notifyDataSetChanged();
-                                break;
-                            case 0:
-                                faultsBeanList.addAll(faultsBeanList0);
                                 adapter1.notifyDataSetChanged();
                                 break;
                             case 1:
@@ -192,9 +186,6 @@ public class BaoZhangChuLiActivity extends Activity {
                     int s=f.size();
                     for (int i=0;i<s;i++){
                         switch (f.get(i).getStatus()){
-                            case 0:
-                                faultsBeanList0.add(f.get(i));
-                                break;
                             case 1:
                                 faultsBeanList1.add(f.get(i));
                                 break;
@@ -244,13 +235,9 @@ public class BaoZhangChuLiActivity extends Activity {
                                     switch (p4){
                                         case -1:
                                             startActivity(new Intent(BaoZhangChuLiActivity.this, BaoZhangChaKanActivity.class)
+                                                    .putExtra("status",f.get(position).getStatus())
                                                     .putExtra("shebeiID",f.get(position).getDeviceId())
                                                     .putExtra("baozhangID",f.get(position).getId()));
-                                            break;
-                                        case 0:
-                                            startActivity(new Intent(BaoZhangChuLiActivity.this, BaoZhangChaKanActivity.class)
-                                                    .putExtra("shebeiID",faultsBeanList0.get(position).getDeviceId())
-                                                    .putExtra("baozhangID",faultsBeanList0.get(position).getId()));
                                             break;
                                         case 1:
                                             startActivity(new Intent(BaoZhangChuLiActivity.this, BaoZhangChaKanActivity.class)
@@ -259,31 +246,38 @@ public class BaoZhangChuLiActivity extends Activity {
                                             break;
                                         case 2:
                                             startActivity(new Intent(BaoZhangChuLiActivity.this, BaoZhangChaKanActivity.class)
+                                                    .putExtra("status",faultsBeanList2.get(position).getStatus())
                                                     .putExtra("shebeiID",faultsBeanList2.get(position).getDeviceId())
                                                     .putExtra("baozhangID",faultsBeanList2.get(position).getId()));
                                             break;
                                         case 3:
                                             startActivity(new Intent(BaoZhangChuLiActivity.this, BaoZhangChaKanActivity.class)
+                                                    .putExtra("status",faultsBeanList3.get(position).getStatus())
                                                     .putExtra("shebeiID",faultsBeanList3.get(position).getDeviceId())
                                                     .putExtra("baozhangID",faultsBeanList3.get(position).getId()));
                                             break;
                                         case 4:
                                             startActivity(new Intent(BaoZhangChuLiActivity.this, BaoZhangChaKanActivity.class)
+                                                    .putExtra("status",faultsBeanList4.get(position).getStatus())
                                                     .putExtra("shebeiID",faultsBeanList4.get(position).getDeviceId())
                                                     .putExtra("baozhangID",faultsBeanList4.get(position).getId()));
                                             break;
                                         case 5:
                                             startActivity(new Intent(BaoZhangChuLiActivity.this, BaoZhangChaKanActivity.class)
+                                                    .putExtra("status",faultsBeanList5.get(position).getStatus())
                                                     .putExtra("shebeiID",faultsBeanList5.get(position).getDeviceId())
                                                     .putExtra("baozhangID",faultsBeanList5.get(position).getId()));
                                             break;
                                         case 6:
                                             startActivity(new Intent(BaoZhangChuLiActivity.this, BaoZhangChaKanActivity.class)
+                                                    .putExtra("status",faultsBeanList6.get(position).getStatus())
                                                     .putExtra("shebeiID",faultsBeanList6.get(position).getDeviceId())
                                                     .putExtra("baozhangID",faultsBeanList6.get(position).getId()));
                                             break;
                                         case 7:
+
                                             startActivity(new Intent(BaoZhangChuLiActivity.this, BaoZhangChaKanActivity.class)
+                                                    .putExtra("status",faultsBeanList7.get(position).getStatus())
                                                     .putExtra("shebeiID",faultsBeanList7.get(position).getDeviceId())
                                                     .putExtra("baozhangID",faultsBeanList7.get(position).getId()));
                                             break;

@@ -1,8 +1,11 @@
 package com.examples.weibao.fargments;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.os.ResultReceiver;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -12,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.examples.weibao.DownloadService.DownloadService;
 import com.examples.weibao.MyAppLaction;
 import com.examples.weibao.R;
 import com.examples.weibao.allbeans.BenDiMenusBean;
@@ -37,12 +42,14 @@ import com.examples.weibao.beans.JianChaBean;
 import com.examples.weibao.dialogs.QueRenDialog;
 import com.examples.weibao.dialogs.TiJIaoDialog;
 import com.examples.weibao.ui.BaoZhangChuLiActivity;
+import com.examples.weibao.ui.HomePageActivity;
 import com.examples.weibao.ui.TaiZhangActivity;
 import com.examples.weibao.ui.WeiBaoBaoGaoActivity;
 import com.examples.weibao.ui.WeiBaoJiHuaActivity;
 import com.examples.weibao.ui.WeiBaoYuCeShiActivity;
 import com.examples.weibao.ui.XiangMuKuanJinDuActivity;
 import com.examples.weibao.utils.DateUtils;
+import com.examples.weibao.utils.FileUtil;
 import com.examples.weibao.utils.GsonUtil;
 import com.examples.weibao.utils.Utils;
 import com.google.gson.Gson;
@@ -53,6 +60,8 @@ import com.sdsmdg.tastytoast.TastyToast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -567,9 +576,53 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
                     }
                     //保存时间
                     Log.d("HomePageActivity", "保存时间"+time);
-                    //   dengLuBean.setQqTime(time);
-                    //   dengLuBeanDao.update(dengLuBean);
+                      dengLuBean.setQqTime(time);
+                      dengLuBeanDao.update(dengLuBean);
                     //  Log.d("HomePageActivity", dengLuBeanDao.load(123456L).getQqTime());
+
+                    final List<FaultsBean> faultsBeanList = faultsBeanDao.loadAll();
+
+                    if (faultsBeanList != null) {
+                        final int  fsize = faultsBeanList.size();
+
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                for (int ii = 0; ii < fsize; ii++) {
+                                    if (!faultsBeanList.get(ii).getIsXiazai()) {
+                                        //下载图片
+                                        if (faultsBeanList.get(ii).getFaultImage()!=null){
+
+                                            String ss[] = faultsBeanList.get(ii).getFaultImage().split(";");
+                                            //   String ss[] = "dsfds.jpg;fdgg.jpg;hghghg.jpg;".split(";");
+                                            int ds=ss.length;
+
+                                            for (int d=0;d<ds;d++){
+                                                String fn=ss[d];
+                                                FileUtil.isExists(FileUtil.PATH,fn);
+
+                                                Intent intent33 = new Intent(getActivity(), DownloadService.class);
+                                                intent33.putExtra("url", "http://14.23.169.42:8090/faultImages/"+fn);
+                                                intent33.putExtra("receiver", new DownloadReceiver(new Handler()));
+                                                intent33.putExtra("faultsId",faultsBeanList.get(ii).getId());
+                                                intent33.putExtra("urlName",FileUtil.SDPATH+ File.separator+FileUtil.PATH+File.separator+fn);
+                                                getActivity().startService(intent33);
+                                            }
+
+
+                                        }
+
+
+                                    }
+
+                                }
+
+
+                            }
+                        });
+                    }
+
                     dismissDialog();
                     showMSG("更新成功",4);
                 }catch (Exception e){
@@ -582,6 +635,35 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
         });
 
     }
+
+
+    private class DownloadReceiver extends ResultReceiver {
+
+        @SuppressLint("RestrictedApi")
+        private DownloadReceiver(Handler handler) {
+            super(handler);
+        }
+
+        @SuppressLint("RestrictedApi")
+        @Override
+        protected void onReceiveResult(int resultCode, Bundle resultData) {
+            super.onReceiveResult(resultCode, resultData);
+            if (resultCode == DownloadService.UPDATE_PROGRESS) {
+                //  String  ididid=resultData.getString("ididid2");
+                long faultsId=resultData.getLong("faultsId");
+                int progress = resultData.getInt("progress");
+                if (progress==100){
+                    Log.d("DownloadReceiver", "下载完成");
+                    FaultsBean f=faultsBeanDao.load(faultsId);
+                    f.setIsXiazai(true);
+                    faultsBeanDao.update(f);
+
+                }
+
+            }
+        }
+    }
+
 
     private void showDialog(){
         if (getActivity()!=null)

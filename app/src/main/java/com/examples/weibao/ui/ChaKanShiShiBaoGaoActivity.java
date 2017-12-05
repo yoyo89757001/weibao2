@@ -387,31 +387,16 @@ public class ChaKanShiShiBaoGaoActivity extends Activity  {
 
                     ResponseBody body = response.body();
                     final String ss=body.string().trim();
-                    Log.d("ChaKanShiShiBaoGaoActiv", ss);
+                    Log.d("ChaKanShiShiBaoGaoActiv", ss+"lllll");
 
                     JsonObject jsonObject= GsonUtil.parse(ss).getAsJsonObject();
                     Gson gson=new Gson();
                     fanHuiBean=gson.fromJson(jsonObject,FanHuiBean.class);
                     if (fanHuiBean.getDtoResult()==0){
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                // Log.d("ChaKanShiShiBaoGaoActiv", "开始下载");
-                                webView.loadUrl("http://14.23.169.42:8090/upload/realTimePlanReport/"+fanHuiBean.getDtoDesc());
 
-//                                AndPermission.with(ChaKanShiShiBaoGaoActivity.this)
-//                                        .requestCode(300)
-//                                        .permission(Permission.STORAGE,Permission.CAMERA)
-//                                        .callback(listener)
-//                                        .start();
-
-                            }
-                        });
                     }else {
                         showMSG("获取数据失败",4);
                     }
-
-
 
 
                 }catch (Exception e){
@@ -483,20 +468,8 @@ public class ChaKanShiShiBaoGaoActivity extends Activity  {
                     Gson gson=new Gson();
                     fanHuiBean=gson.fromJson(jsonObject,FanHuiBean.class);
                     if (fanHuiBean.getDtoResult()==0){
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                // Log.d("ChaKanShiShiBaoGaoActiv", "开始下载");
-                                webView.loadUrl("http://14.23.169.42:8090/upload/realTimePlanReport/"+fanHuiBean.getDtoDesc());
 
-//                                AndPermission.with(ChaKanShiShiBaoGaoActivity.this)
-//                                        .requestCode(300)
-//                                        .permission(Permission.STORAGE,Permission.CAMERA)
-//                                        .callback(listener)
-//                                        .start();
 
-                            }
-                        });
                     }else {
                         showMSG("获取数据失败",4);
                     }

@@ -47,6 +47,7 @@ import com.examples.weibao.allbeans.DevicesBeanDao;
 import com.examples.weibao.allbeans.ItemsBean;
 import com.examples.weibao.allbeans.ItemsBeanDao;
 import com.examples.weibao.beans.FanHuiBean;
+import com.examples.weibao.cookies.CookiesManager;
 import com.examples.weibao.dialogs.TiJIaoDialog;
 import com.examples.weibao.intface.ClickIntface;
 import com.examples.weibao.utils.DateUtils;
@@ -68,6 +69,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -235,7 +238,7 @@ public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
         }else {
             tijiao.setText("保存到本地");
         }
-        mingcheng.setText(dengLuBean.getCompany());
+
         if (jilu==1){
             tijiao.setVisibility(View.GONE);
             chakan.setVisibility(View.GONE);
@@ -270,7 +273,7 @@ public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
             case R.id.shebei_rl:
 
                 if (p1!=-1) {
-                    devicesBeanList = devicesBeanDao.queryBuilder().where(DevicesBeanDao.Properties.ItemId.eq(itemsBeanList.get(p1))).list();
+                    devicesBeanList = devicesBeanDao.queryBuilder().where(DevicesBeanDao.Properties.ItemId.eq(itemsBeanList.get(p1).getId())).list();
                     if (devicesBeanList != null && devicesBeanList.size()>0) {
 
                     View contentView = LayoutInflater.from(BaoZhangDengJiActivity.this).inflate(R.layout.xiangmu_po_item, null);
@@ -421,7 +424,7 @@ public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
         JSONArray jsonArray=null;
         try {
             JSONObject tijiao = new JSONObject();
-            tijiao.put("status",0);
+            tijiao.put("status",1);
             tijiao.put("id",0);
             tijiao.put("accountId",dengLuBean.getUserId());
             tijiao.put("address",dizhi.getText().toString().trim());
@@ -432,14 +435,14 @@ public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
             tijiao.put("remark",guzhangEt.getText().toString().trim());
             tijiao.put("contactTel",dianhua.getText().toString());
             tijiao.put("faultImage",dengJiBean.getFaultImage());
-            Log.d("BaoZhangDengJiActivity", dengJiBean.getFaultImage());
+
 
             jsonArray=new JSONArray();
             jsonArray.put(tijiao);
 
             jsonObject.put("cmd","100");
             jsonObject.put("faults",jsonArray);
-           // Log.d("BaoZhangDengJiActivity", jsonObject.toString());
+            Log.d("BaoZhangDengJiActivity", jsonObject.toString());
          //   jsonObject.put("password",jiami);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -607,8 +610,6 @@ public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
                                 }
                             }
                         }).show();
-
-
             }
         }
 
@@ -777,6 +778,7 @@ public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
         }
     }
 
+    public static final int TIMEOUT = 1000 * 180;
     private void link_P1(List<String> stringList, final BaoZhangDengJiBean dengJiBean) {
         showDialog();
         String nonce=Utils.getNonce();
@@ -784,18 +786,53 @@ public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
 
         //final MediaType JSON=MediaType.parse("application/json; charset=utf-8");
         //http://192.168.2.4:8080/sign?cmd=getUnSignList&subjectId=jfgsdf
-        OkHttpClient okHttpClient= MyAppLaction.getOkHttpClient();
+        OkHttpClient okHttpClient= new OkHttpClient.Builder()
+                .writeTimeout(TIMEOUT, TimeUnit.MILLISECONDS)
+                .connectTimeout(TIMEOUT, TimeUnit.MILLISECONDS)
+                .readTimeout(TIMEOUT, TimeUnit.MILLISECONDS)
+                .cookieJar(new CookiesManager())
+                .retryOnConnectionFailure(true)
+                .build();
         MultipartBody mBody;
         MultipartBody.Builder builder=new MultipartBody.Builder().setType(MultipartBody.FORM);
         int ss=stringList.size()-1;
         for (int i=0;i<ss;i++){
             File file1 = new File(stringList.get(i));
             RequestBody fileBody1 = RequestBody.create(MediaType.parse("application/octet-stream") , file1);
-            builder. addFormDataPart("file" , stringList.get(i) , fileBody1);
-          //  Log.d("BaoZhangDengJiActivity", stringList.get(i)+">>>>");
+            builder. addFormDataPart("file" , stringList.get(i).substring(stringList.get(i).lastIndexOf("/")+1,stringList.get(i).length()), fileBody1);
+          //  Log.d("BaoZhangDengJiActivity", stringList.get(i).substring(stringList.get(i).lastIndexOf("/")+1,stringList.get(i).length())+">>>>");
         }
-        mBody=builder.build();
+        JSONObject tijiao = null; 
+       // JSONArray jsonArray=null;
+        try {
+             tijiao = new JSONObject();
+            tijiao.put("status",1);
+            tijiao.put("id",0);
+            tijiao.put("accountId",dengLuBean.getUserId());
+            tijiao.put("address",dizhi.getText().toString().trim());
+            tijiao.put("companyId",dengLuBean.getCompanyId());
+            tijiao.put("deviceId",shebeiID);
+            tijiao.put("deviceNumber",bianhao);
+            tijiao.put("faultTime",System.currentTimeMillis());
+            tijiao.put("remark",guzhangEt.getText().toString().trim());
+            tijiao.put("contactTel",dianhua.getText().toString());
+            tijiao.put("faultImage",dengJiBean.getFaultImage());
 
+           // jsonArray=new JSONArray();
+           // jsonArray.put(tijiao);
+
+           // jsonObject.put("cmd","100");
+           // jsonObject.put("faults",jsonArray);
+          //  Log.d("BaoZhangDengJiActivity", jsonObject.toString());
+            //   jsonObject.put("password",jiami);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        builder.addFormDataPart("cmd","100");
+        builder.addFormDataPart("fault",tijiao.toString());
+        mBody=builder.build();
+        Log.d("BaoZhangDengJiActivity", tijiao.toString());
 
 //         /* 第一个要上传的file */
 //       File file1 = new File(filename1);
@@ -818,7 +855,7 @@ public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
                 .header("sign", Utils.encode("100"+nonce+timestamp
                         +dengLuBean.getUserId()+Utils.signaturePassword))
                 .post(mBody)
-                .url(dengLuBean.getZhuji() + "uploadFaultImages.app?cmd=100");
+                .url(dengLuBean.getZhuji() + "uploadFault.app");
 
         // step 3：创建 Call 对象
         Call call = okHttpClient.newCall(requestBuilder.build());
@@ -834,24 +871,31 @@ public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+                dismissDialog();
                 Log.d("AllConnects", "请求识别成功"+call.request().toString());
                 //获得返回体
                 try {
 
                     ResponseBody body = response.body();
                     String ss=body.string();
-                    link_save(dengJiBean);
+
+
+                  //  link_save(dengJiBean);
                        Log.d("AllConnects", "aa   "+ss);
 
-//                    JsonObject jsonObject= GsonUtil.parse(ss).getAsJsonObject();
-//                    Gson gson=new Gson();
-//                    FanHuiBean zhaoPianBean=gson.fromJson(jsonObject,FanHuiBean.class);
-//                    if (zhaoPianBean.getDtoResult()==0){
-//
-//                    }
+                    JsonObject jsonObject= GsonUtil.parse(ss).getAsJsonObject();
+                    Gson gson=new Gson();
+                    FanHuiBean zhaoPianBean=gson.fromJson(jsonObject,FanHuiBean.class);
+                    if (zhaoPianBean.getDtoResult()==0){
+                        showMSG("提交成功",4);
+                        finish();
+                    }else if (zhaoPianBean.getDtoResult()==-33){
+                        showMSG("登录过期,请重新登录",4);
+                    }
 
                 }catch (Exception e){
-                 showMSG("上传图片出错",4);
+                    dismissDialog();
+                    showMSG("上传图片出错",4);
                     Log.d("WebsocketPushMsg", e.getMessage());
                 }
             }

@@ -57,11 +57,13 @@ public class BaoZhangChaKanActivity extends Activity {
     private Button bt1,bt2;
     private RollPagerView rollPagerView=null;
     private  List<String> photoPathList=new ArrayList<>();
+    private int status=-2;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        status=getIntent().getIntExtra("status",-2);
         shebeiID=getIntent().getIntExtra("shebeiID",0);
         baozhangID=getIntent().getLongExtra("baozhangID",0);
         faultsBeanDao= MyAppLaction.myAppLaction.getDaoSession().getFaultsBeanDao();
@@ -90,18 +92,19 @@ public class BaoZhangChaKanActivity extends Activity {
         initTuPian();
 
 
-        if (devicesBean!=null){
-            switch (devicesBean.getStatus()){
+        if (dengLuBean!=null){
+            switch (dengLuBean.getStatus()){
                 case 0:
                     bt1.setVisibility(View.GONE);
                     view.setVisibility(View.GONE);
                     break;
                 case 1:
-
-
+                    bt1.setText("审核通过");
+                    bt2.setText("审核不通过");
                     break;
                 case 2:
-
+                    bt1.setText("确认审核通过");
+                    bt2.setText("确认审核不通过");
                     break;
 
             }
@@ -117,12 +120,12 @@ public class BaoZhangChaKanActivity extends Activity {
             if (photoPathList.size()>0){
                 photoPathList.clear();
             }
-//            for (String value : s) {
-//                photoPathList.add(FileUtil.SDPATH + File.separator + FileUtil.PATH + File.separator + value);
-//            }
-            photoPathList.add(FileUtil.SDPATH + File.separator + FileUtil.PATH + File.separator +"fdgg.jpg");
-            photoPathList.add(FileUtil.SDPATH + File.separator + FileUtil.PATH + File.separator +"fdgg.jpg");
-            photoPathList.add(FileUtil.SDPATH + File.separator + FileUtil.PATH + File.separator +"fdgg.jpg");
+            for (String value : s) {
+                photoPathList.add(FileUtil.SDPATH + File.separator + FileUtil.PATH + File.separator + value);
+            }
+//            photoPathList.add(FileUtil.SDPATH + File.separator + FileUtil.PATH + File.separator +"fdgg.jpg");
+//            photoPathList.add(FileUtil.SDPATH + File.separator + FileUtil.PATH + File.separator +"fdgg.jpg");
+//            photoPathList.add(FileUtil.SDPATH + File.separator + FileUtil.PATH + File.separator +"fdgg.jpg");
         }
 
         rollPagerView.setAdapter(new TestLoopAdapter(rollPagerView));
@@ -226,7 +229,12 @@ public class BaoZhangChaKanActivity extends Activity {
             guzhangshijian.setText("故障发现时间: "+ DateUtils.time(faultsBean.getFaultTime()+""));
             lianxidianhua.setText("联系电话:"+faultsBean.getContactTel());
             baozhangtoubu_tv.setText(faultsBean.getRemark());
-            paichashijian.setText(DateUtils.time(faultsBean.getPlanCheckTime()+""));
+            if (faultsBean.getPlanCheckTime()==0){
+                paichashijian.setText("暂无");
+            }else {
+                paichashijian.setText(DateUtils.time(faultsBean.getPlanCheckTime()+""));
+            }
+
             huifuren.setText(faultsBean.getReplyUsername());
            chuliren.setText(faultsBean.getProcessUsername());
 
@@ -234,8 +242,33 @@ public class BaoZhangChaKanActivity extends Activity {
 
         if (devicesBean != null) {
             shebei.setText(devicesBean.getName());
+        }
+        switch (status){
+            case 1:
+
+
+                break;
+            case 2:
+
+                break;
+            case 3:
+
+                break;
+            case 4:
+
+                break;
+            case 5:
+
+                break;
+            case 6:
+
+                break;
+            case 7:
+
+                break;
 
         }
+
         }
 
 

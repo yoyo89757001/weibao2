@@ -522,12 +522,9 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
                     //保存时间
                     Log.d("HomePageActivity", "保存时间" + time);
 
-                    String ssss="dsdsds;";
-                    String s[]=ssss.split(";");
-                    Log.d("HomePageActivity", "s.length:" + s.length);
 
-                    //   dengLuBean.setQqTime(time);
-                    //   dengLuBeanDao.update(dengLuBean);
+                       dengLuBean.setQqTime(time);
+                       dengLuBeanDao.update(dengLuBean);
                     //  Log.d("HomePageActivity", dengLuBeanDao.load(123456L).getQqTime());
 
                     final List<FaultsBean> faultsBeanList = faultsBeanDao.loadAll();
@@ -544,8 +541,8 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
                                     //下载图片
                                     if (faultsBeanList.get(ii).getFaultImage()!=null){
 
-                                      // String ss[] = faultsBeanList.get(ii).getFaultImage().split(";");
-                                        String ss[] = "dsfds.jpg;fdgg.jpg;hghghg.jpg;".split(";");
+                                       String ss[] = faultsBeanList.get(ii).getFaultImage().split(";");
+                                     //   String ss[] = "dsfds.jpg;fdgg.jpg;hghghg.jpg;".split(";");
                                        int ds=ss.length;
 
                                        for (int d=0;d<ds;d++){
@@ -553,7 +550,7 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
                                            FileUtil.isExists(FileUtil.PATH,fn);
 
                                            Intent intent33 = new Intent(HomePageActivity.this, DownloadService.class);
-                                           intent33.putExtra("url", "https://image.baidu.com/search/down?tn=download&word=download&ie=utf8&fr=detail&url=https%3A%2F%2Ftimgsa.baidu.com%2Ftimg%3Fimage%26quality%3D80%26size%3Db9999_10000%26sec%3D1511844509261%26di%3D6a8899eecdb0e6e0575c5460c4d93a92%26imgtype%3D0%26src%3Dhttp%253A%252F%252Fpic.962.net%252Fup%252F2014-8%252F2014081214542360470.jpg&thumburl=https%3A%2F%2Fss1.bdstatic.com%2F70cFvXSh_Q1YnxGkpoWK1HF6hhy%2Fit%2Fu%3D3106156002%2C3254559731%26fm%3D27%26gp%3D0.jpg");
+                                           intent33.putExtra("url", "http://14.23.169.42:8090/faultImages/"+fn);
                                            intent33.putExtra("receiver", new DownloadReceiver(new Handler()));
                                            intent33.putExtra("faultsId",faultsBeanList.get(ii).getId());
                                            intent33.putExtra("urlName",FileUtil.SDPATH+ File.separator+FileUtil.PATH+File.separator+fn);
@@ -585,20 +582,20 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
 
     private class DownloadReceiver extends ResultReceiver {
 
+        @SuppressLint("RestrictedApi")
         private DownloadReceiver(Handler handler) {
             super(handler);
         }
 
+        @SuppressLint("RestrictedApi")
         @Override
         protected void onReceiveResult(int resultCode, Bundle resultData) {
             super.onReceiveResult(resultCode, resultData);
             if (resultCode == DownloadService.UPDATE_PROGRESS) {
              //  String  ididid=resultData.getString("ididid2");
                long faultsId=resultData.getLong("faultsId");
-                Log.d("DownloadReceiver", faultsId+"");
                 int progress = resultData.getInt("progress");
               if (progress==100){
-                  Log.d("DownloadReceiver", "下载完成");
                   FaultsBean f=faultsBeanDao.load(faultsId);
                   f.setIsXiazai(true);
                   faultsBeanDao.update(f);
