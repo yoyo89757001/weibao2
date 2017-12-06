@@ -53,8 +53,6 @@ public class BaoZhangChuLiActivity extends Activity {
     private List<FaultsBean> faultsBeanList5=new ArrayList<>();
     private List<FaultsBean> faultsBeanList6=new ArrayList<>();
     private List<FaultsBean> faultsBeanList7=new ArrayList<>();
-    private DevicesBeanDao devicesBeanDao=null;
-    private List<DevicesBean> devicesBeanList=null;
     private PopupWindow popupWindow=null;
     private List<XuanZeBean> stringList=new ArrayList<>();
     private int p4=-1;

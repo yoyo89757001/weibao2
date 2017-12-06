@@ -96,7 +96,7 @@ public class MyAppLaction extends Application {
             baoCunBean.setZhuji("http://14.23.169.42:8090/api/");
             mDaoSession.getDengLuBeanDao().insert(baoCunBean);
         }else {
-
+           mDaoSession.clear();
         }
 
     }

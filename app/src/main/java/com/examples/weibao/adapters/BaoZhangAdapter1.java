@@ -4,7 +4,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.examples.weibao.MyAppLaction;
@@ -14,7 +13,6 @@ import com.examples.weibao.allbeans.DevicesBeanDao;
 import com.examples.weibao.allbeans.FaultsBean;
 import com.examples.weibao.intface.ClickIntface;
 import com.examples.weibao.utils.DateUtils;
-import com.examples.weibao.views.MYListView;
 
 import java.util.List;
 
@@ -48,11 +46,12 @@ public class BaoZhangAdapter1 extends RecyclerView.Adapter<BaoZhangAdapter1.View
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
         viewHolder.weizhi.setText("位置:"+datas.get(position).getAddress());
+      //  Log.d("BaoZhangAdapter1", "datas.get(position).getFaultTime():" + datas.get(position).getFaultTime());
+        viewHolder.shijian.setText("报障时间:"+DateUtils.time(datas.get(position).getFaultTime()+""));
         devicesBean=devicesBeanDao.load((long) datas.get(position).getDeviceId());
         if (devicesBean!=null){
             viewHolder.shebei.setText("设备:"+devicesBean.getName());
             viewHolder.bianhao.setText("编号:"+devicesBean.getDeviceNum());
-            viewHolder.shijian.setText("报障时间:"+DateUtils.time(devicesBean.getFailureTime()+""));
         }
         switch (datas.get(position).getStatus()){
             case 0:

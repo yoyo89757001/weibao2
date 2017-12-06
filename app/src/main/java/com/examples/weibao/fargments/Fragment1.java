@@ -562,6 +562,7 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
                     int faultsSize=faults.size();
                     for (int i=0;i<faultsSize;i++){
                         FaultsBean faultsBean=gson.fromJson(faults.get(i),FaultsBean.class);
+                        Log.d("Fragment1", "faultsBean.getFaultTime():" + faultsBean.getFaultTime());
                         int i7=faultsBean.getDtoResult();
                         if (faultsBeanDao.load(faultsBean.getId())==null && (i7==1 || i7==2)){
                             faultsBeanDao.insert(faultsBean);
@@ -746,7 +747,7 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
 //            e.printStackTrace();
 //        }
         RequestBody body = RequestBody.create(JSON, jsonObject.toString());
-        Log.d("Fragment1", jsonObject.toString());
+       // Log.d("Fragment1", jsonObject.toString());
         Request.Builder requestBuilder = new Request.Builder()
                 .header("nonce", nonce)
                 .header("timestamp", timestamp)

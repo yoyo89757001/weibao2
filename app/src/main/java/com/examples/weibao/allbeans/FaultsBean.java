@@ -56,17 +56,18 @@ public class FaultsBean {
     private long replyTime;
     private String replyUsername;
     private String processUsername;
+    private String processContent;
     private int status;
     private String faultImage;
     private boolean isXiazai;
-    @Generated(hash = 1037954456)
+    @Generated(hash = 490351224)
     public FaultsBean(int accountId, String address, int companyId,
             String contactTel, int deviceId, String deviceNumber, int dtoResult,
             long faultTime, @NotNull Long id, long modifyTime, int pageNum,
             int pageSize, long planCheckTime, int processBy, String remark,
             int replyBy, String replyContent, long replyTime, String replyUsername,
-            String processUsername, int status, String faultImage,
-            boolean isXiazai) {
+            String processUsername, String processContent, int status,
+            String faultImage, boolean isXiazai) {
         this.accountId = accountId;
         this.address = address;
         this.companyId = companyId;
@@ -87,6 +88,7 @@ public class FaultsBean {
         this.replyTime = replyTime;
         this.replyUsername = replyUsername;
         this.processUsername = processUsername;
+        this.processContent = processContent;
         this.status = status;
         this.faultImage = faultImage;
         this.isXiazai = isXiazai;
@@ -214,6 +216,12 @@ public class FaultsBean {
     public void setProcessUsername(String processUsername) {
         this.processUsername = processUsername;
     }
+    public String getProcessContent() {
+        return this.processContent;
+    }
+    public void setProcessContent(String processContent) {
+        this.processContent = processContent;
+    }
     public int getStatus() {
         return this.status;
     }
@@ -232,4 +240,5 @@ public class FaultsBean {
     public void setIsXiazai(boolean isXiazai) {
         this.isXiazai = isXiazai;
     }
+
 }

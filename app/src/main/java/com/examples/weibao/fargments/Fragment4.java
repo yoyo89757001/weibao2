@@ -15,6 +15,13 @@ import com.examples.weibao.MyAppLaction;
 import com.examples.weibao.R;
 import com.examples.weibao.allbeans.DengLuBean;
 import com.examples.weibao.allbeans.DengLuBeanDao;
+import com.examples.weibao.allbeans.DetectionsBeanDao;
+import com.examples.weibao.allbeans.DevicesBeanDao;
+import com.examples.weibao.allbeans.FaultsBeanDao;
+import com.examples.weibao.allbeans.ItemsBeanDao;
+import com.examples.weibao.allbeans.MenurefsBeanDao;
+import com.examples.weibao.allbeans.MenusBeanDao;
+import com.examples.weibao.allbeans.PlansBeanDao;
 import com.examples.weibao.dialogs.QueRenDialog;
 import com.examples.weibao.ui.MainActivity;
 import com.examples.weibao.utils.GsonUtil;
@@ -43,6 +50,18 @@ public class Fragment4 extends Fragment {
     private DengLuBeanDao baoCunBeanDao=null;
     private DengLuBean baoCunBean=null;
     private TextView danwei,name,xingbie,shouji,guhua;
+    private ItemsBeanDao itemsBeanDao=null;
+    // private List<DevicesBean> devicesBeanList=null;
+    private DevicesBeanDao devicesBeanDao=null;
+    // private List<DetectionsBean> detectionsBeanList=null;
+    private DetectionsBeanDao detectionsBeanDao=null;
+    // private List<MenusBean> menusBeanList=null;
+    private MenusBeanDao menusBeanDao=null;
+    // private List<PlansBean> plansBeanList=null;
+    private PlansBeanDao plansBeanDao=null;
+    private MenurefsBeanDao menurefsBeanDao=null;
+    private FaultsBeanDao faultsBeanDao=null;
+
 
     public Fragment4() {
         // Required empty public constructor
@@ -57,9 +76,14 @@ public class Fragment4 extends Fragment {
         baoCunBeanDao= MyAppLaction.myAppLaction.getDaoSession().getDengLuBeanDao();
         if (baoCunBeanDao!=null){
             baoCunBean=baoCunBeanDao.load(123456L);
-//            if (baoCunBean!=null)
-//                textView.setText(baoCunBean.getAccount());
         }
+            itemsBeanDao=MyAppLaction.myAppLaction.getDaoSession().getItemsBeanDao();
+            devicesBeanDao=MyAppLaction.myAppLaction.getDaoSession().getDevicesBeanDao();
+            detectionsBeanDao=MyAppLaction.myAppLaction.getDaoSession().getDetectionsBeanDao();
+            menusBeanDao=MyAppLaction.myAppLaction.getDaoSession().getMenusBeanDao();
+            plansBeanDao=MyAppLaction.myAppLaction.getDaoSession().getPlansBeanDao();
+            menurefsBeanDao=MyAppLaction.myAppLaction.getDaoSession().getMenurefsBeanDao();
+            faultsBeanDao=MyAppLaction.myAppLaction.getDaoSession().getFaultsBeanDao();
         RelativeLayout r3= (RelativeLayout) view.findViewById(R.id.r3);
         r3.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,9 +97,18 @@ public class Fragment4 extends Fragment {
                         baoCunBeanDao.deleteByKey(123456L);
                         getActivity().sendBroadcast(new Intent("guanbiyemian"));
                         dialog2.dismiss();
-                        link();
+                        baoCunBean.setQqTime(null);
                         baoCunBean.setAccount("");
                         baoCunBeanDao.update(baoCunBean);
+                        itemsBeanDao.deleteAll();
+                        faultsBeanDao.deleteAll();
+                        detectionsBeanDao.deleteAll();
+                        devicesBeanDao.deleteAll();
+                        plansBeanDao.deleteAll();
+                        menurefsBeanDao.deleteAll();
+                        menusBeanDao.deleteAll();
+
+                        link();
                         startActivity(new Intent(getActivity(),MainActivity.class));
                     }
                 });

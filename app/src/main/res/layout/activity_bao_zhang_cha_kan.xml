@@ -69,7 +69,7 @@
                 android:layout_marginTop="2dp"
                 android:textColor="@color/textcolor"
                 android:textSize="16sp"
-                android:text="公司："
+                android:text="项目："
                 android:id="@+id/gongsi"
                 android:maxLines="2"
                 android:ellipsize="end"
@@ -146,7 +146,6 @@
                 android:textColor="@color/textcolor"
                 android:textSize="16sp"
                 android:text="剩余时间"
-                android:visibility="gone"
                 android:id="@+id/shenyushijian"
                 android:maxLines="2"
                 android:ellipsize="end"
@@ -156,7 +155,7 @@
                 android:layout_width="match_parent"
                 android:id="@+id/lunbo"
                 android:padding="10dp"
-                android:layout_height="260dp"
+                android:layout_height="280dp"
                 app:rollviewpager_play_delay="5000"/>
 
             <View
@@ -184,7 +183,7 @@
                 android:textSize="@dimen/sp_16"
                 android:textColor="@color/textcolor"
                 android:hint="请输入回复内容"
-                android:background="@null"
+                android:background="@drawable/zhongkong"
                 android:gravity="top"
                 android:id="@+id/neirong_et"
                 android:textColorHint="@color/textcolor"
@@ -192,8 +191,10 @@
                 android:layout_marginLeft="@dimen/sp_16"
                 android:layout_marginRight="@dimen/sp_16"
                 android:layout_marginBottom="@dimen/dp_10"
+                android:padding="8dp"
+                android:minHeight="80dp"
                 android:layout_width="match_parent"
-                android:layout_height="80dp" />
+                android:layout_height="wrap_content" />
 
             <View
                 android:background="@color/view_bg"
@@ -324,16 +325,18 @@
                     android:textSize="@dimen/sp_16"
                     android:textColor="@color/textcolor"
                     android:hint="请输入处理结果内容"
-                    android:background="@null"
+                    android:background="@drawable/zhongkong"
                     android:gravity="top"
                     android:id="@+id/chulineirong"
                     android:textColorHint="@color/textcolor"
                     android:layout_marginTop="8dp"
                     android:layout_marginLeft="@dimen/sp_16"
                     android:layout_marginRight="@dimen/sp_16"
+                    android:padding="8dp"
+                    android:minHeight="80dp"
                     android:layout_marginBottom="@dimen/dp_10"
                     android:layout_width="match_parent"
-                    android:layout_height="80dp" />
+                    android:layout_height="wrap_content" />
 
                 <View
                     android:background="@color/view_bg"
