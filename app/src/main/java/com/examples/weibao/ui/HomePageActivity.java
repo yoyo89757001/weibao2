@@ -3,25 +3,18 @@ package com.examples.weibao.ui;
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-
-import android.provider.MediaStore;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.content.FileProvider;
 import android.support.v4.os.ResultReceiver;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
@@ -110,7 +103,7 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
     private Call call=null;
     private DengLuBean dengLuBean=null;
     private DengLuBeanDao dengLuBeanDao=null;
-    private int maxCount=0;
+   // private int maxCount=0;
     //定义一个过滤器；
     private IntentFilter intentFilter;
     //定义一个广播监听器；
@@ -531,7 +524,7 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
 
                     if (faultsBeanList != null) {
                        final int  fsize = faultsBeanList.size();
-                        Log.d("HomePageActivity", "faults:" + fsize);
+                       // Log.d("HomePageActivity", "faults:" + fsize);
                         runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -599,7 +592,7 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
                   FaultsBean f=faultsBeanDao.load(faultsId);
                   f.setIsXiazai(true);
                   faultsBeanDao.update(f);
-
+                  Log.d("DownloadReceiver", "下载成功");
               }
 
             }

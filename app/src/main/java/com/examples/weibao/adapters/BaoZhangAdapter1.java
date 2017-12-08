@@ -55,11 +55,11 @@ public class BaoZhangAdapter1 extends RecyclerView.Adapter<BaoZhangAdapter1.View
         }
         switch (datas.get(position).getStatus()){
             case 0:
-                viewHolder.zhuangtai.setText("待提交");
+                viewHolder.zhuangtai.setText("待回复");
                 viewHolder.zhuangtai.setBackgroundResource(R.drawable.ju);
                 break;
             case 1:
-                viewHolder.zhuangtai.setText("待回复");
+                viewHolder.zhuangtai.setText("回复待审核");
                 viewHolder.zhuangtai.setBackgroundResource(R.drawable.ju);
                 break;
             case 2:

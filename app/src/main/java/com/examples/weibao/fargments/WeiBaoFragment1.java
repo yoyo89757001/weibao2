@@ -61,8 +61,6 @@ public class WeiBaoFragment1 extends Fragment {
     private DengLuBeanDao dengLuBeanDao=null;
 
 
-
-
     public WeiBaoFragment1() {
         stringList=new ArrayList<>();
     }
@@ -73,9 +71,6 @@ public class WeiBaoFragment1 extends Fragment {
                              Bundle savedInstanceState) {
         baoCunBeanDao=MyAppLaction.myAppLaction.getDaoSession().getDengLuBeanDao();
         baoCunBean=baoCunBeanDao.load(123456L);
-
-
-
 
        View view=inflater.inflate(R.layout.fragment_wei_bao_fragment1, container, false);
 
@@ -205,8 +200,9 @@ public class WeiBaoFragment1 extends Fragment {
                     try {
 
                         ResponseBody body = response.body();
-                        // Log.d("AllConnects", "识别结果返回"+response.body().string());
-                        ss=body.string();
+                       //  Log.d("AllConnects", "识别结果返回"+response.body().string());
+                        ss=body.string().trim();
+
                         Log.d("Fragment1", ss);
                         JsonObject jsonObject= GsonUtil.parse(ss).getAsJsonObject();
                         Gson gson=new Gson();

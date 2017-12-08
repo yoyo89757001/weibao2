@@ -46,6 +46,8 @@ import com.examples.weibao.allbeans.DevicesBean;
 import com.examples.weibao.allbeans.DevicesBeanDao;
 import com.examples.weibao.allbeans.ItemsBean;
 import com.examples.weibao.allbeans.ItemsBeanDao;
+import com.examples.weibao.allbeans.PlansBean;
+import com.examples.weibao.allbeans.PlansBeanDao;
 import com.examples.weibao.beans.FanHuiBean;
 import com.examples.weibao.cookies.CookiesManager;
 import com.examples.weibao.dialogs.TiJIaoDialog;
@@ -62,7 +64,6 @@ import com.sdsmdg.tastytoast.TastyToast;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.Permission;
 import com.yanzhenjie.permission.PermissionListener;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.File;
@@ -70,7 +71,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -83,6 +83,8 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import top.zibin.luban.Luban;
+import top.zibin.luban.OnCompressListener;
 
 public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
     @BindView(R.id.mingcheng)
@@ -132,6 +134,9 @@ public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
     private PopupWindow popupWindow=null;
     private List<ItemsBean> itemsBeanList=new ArrayList<>();
     private int p1=-1;
+    private int p2=-1;
+    private PlansBeanDao plansBeanDao=null;
+    private PlansBean plansBean=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,10 +146,11 @@ public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
 
         baoZhangDengJiBeanDao= MyAppLaction.myAppLaction.getDaoSession().getBaoZhangDengJiBeanDao();
         if (idid!=0)
-       baoZhangDengJiBean= baoZhangDengJiBeanDao.load(idid);
+        baoZhangDengJiBean= baoZhangDengJiBeanDao.load(idid);
         dengLuBeanDao=MyAppLaction.myAppLaction.getDaoSession().getDengLuBeanDao();
         dengLuBean=dengLuBeanDao.load(123456L);
         itemsBeanDao=MyAppLaction.myAppLaction.getDaoSession().getItemsBeanDao();
+        plansBeanDao=MyAppLaction.myAppLaction.getDaoSession().getPlansBeanDao();
         List<ItemsBean>  ii=itemsBeanDao.loadAll();
         if (ii!=null){
             itemsBeanList.addAll(ii);
@@ -271,8 +277,10 @@ public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.shebei_rl:
-
+                try {
                 if (p1!=-1) {
+
+                    plansBean=plansBeanDao.queryBuilder().where(PlansBeanDao.Properties.ItemId.eq(itemsBeanList.get(p1).getId())).unique();
                     devicesBeanList = devicesBeanDao.queryBuilder().where(DevicesBeanDao.Properties.ItemId.eq(itemsBeanList.get(p1).getId())).list();
                     if (devicesBeanList != null && devicesBeanList.size()>0) {
 
@@ -283,6 +291,7 @@ public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            p2=position;
                             shebei.setText(devicesBeanList.get(position).getDeviceNum());
                             shebeiID = devicesBeanList.get(position).getId();
                             bianhao = devicesBeanList.get(position).getDeviceNum();
@@ -305,6 +314,9 @@ public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
                 }else {
                     showMSG("请先选择项目",4);
                 }
+                }catch (Exception e){
+            Log.d("BaoZhangDengJiActivity", e.getMessage());
+        }
                 break;
             case R.id.shijian_rl:
 
@@ -327,7 +339,7 @@ public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
                 String s7=dianhua.getText().toString().trim();
 
 
-                if (!s1.equals("") && !s2.equals("") && !s3.equals("") && !s4.equals("") && !s1.equals("") && !s5.equals("") && !s6.equals("") && !s7.equals("")){
+                if (!s1.equals("") && !s2.equals("") && !s3.equals("") && !s4.equals("") && !s1.equals("") && !s5.equals("") && !s6.equals("") && !s7.equals("") && p1!=-1 && p2!=-1){
                     //信息全了
                     BaoZhangDengJiBean dengJiBean=new BaoZhangDengJiBean();
                     dengJiBean.setId(ccc);
@@ -441,8 +453,31 @@ public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
         if (resultCode == Activity.RESULT_OK && requestCode == 333) {
             try {
 
-                stringList.add(0,mSavePhotoFile.getAbsolutePath());
-                zhaoPianAdapter.notifyDataSetChanged();
+                Luban.with(this)
+                        .load(mSavePhotoFile)   // 传人要压缩的图片列表
+                        .ignoreBy(100)   // 忽略不压缩图片的大小
+                        .setTargetDir(FileUtil.SDPATH + File.separator + FileUtil.PATH + File.separator)  // 设置压缩后文件存储位置
+                        .setCompressListener(new OnCompressListener() { //设置回调
+                            @Override
+                            public void onStart() {
+                                Log.d("BaoZhangDengJiActivity", "开始压缩");
+                            }
+
+                            @Override
+                            public void onSuccess(File file) {
+                                Log.d("BaoZhangDengJiActivity", "删除:" + mSavePhotoFile.delete());
+                                Log.d("BaoZhangDengJiActivity", "file.length():" + file.length()+"  "+file.getAbsolutePath());
+                                stringList.add(0,file.getAbsolutePath());
+                                zhaoPianAdapter.notifyDataSetChanged();
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                               showMSG("压缩图片出现错误",4);
+                            }
+                        }).launch();    //启动压缩
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -656,7 +691,7 @@ public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
             imagePath = getImagePath(uri, null);
         }
         displayImage(imagePath); // 根据图片路径显示图片
-        System.err.println(imagePath);
+       // System.err.println(imagePath);
     }
 
     private String getImagePath(Uri uri, String selection) {
@@ -676,10 +711,36 @@ public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
 
     private void displayImage(String imagePath) {
         if (imagePath != null) {
-          //  Log.d("BaoZhangDengJiActivity", "进来了2");
-           // Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
-           stringList.add(0,imagePath);
-           zhaoPianAdapter.notifyDataSetChanged();
+            try {
+
+                Luban.with(this)
+                        .load(imagePath)   // 传人要压缩的图片列表
+                        .ignoreBy(100)   // 忽略不压缩图片的大小
+                        .setTargetDir(FileUtil.SDPATH + File.separator + FileUtil.PATH + File.separator)  // 设置压缩后文件存储位置
+                        .setCompressListener(new OnCompressListener() { //设置回调
+                            @Override
+                            public void onStart() {
+                                Log.d("BaoZhangDengJiActivity", "相册图片开始压缩");
+                            }
+
+                            @Override
+                            public void onSuccess(File file) {
+                                Log.d("BaoZhangDengJiActivity", "file.length():" + file.length()+"  "+file.getAbsolutePath());
+                                stringList.add(0,file.getAbsolutePath());
+                                zhaoPianAdapter.notifyDataSetChanged();
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                                showMSG("压缩图片出现错误",4);
+                            }
+                        }).launch();    //启动压缩
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         } else {
             showMSG("没有得到图片",4);
         }
@@ -713,12 +774,13 @@ public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
        // JSONArray jsonArray=null;
         try {
              tijiao = new JSONObject();
-            tijiao.put("status",1);
+            tijiao.put("status",0);
             tijiao.put("id",0);
             tijiao.put("accountId",dengLuBean.getUserId());
             tijiao.put("address",dizhi.getText().toString().trim());
             tijiao.put("companyId",dengLuBean.getCompanyId());
             tijiao.put("deviceId",shebeiID);
+            tijiao.put("planId",itemsBeanList.get(p1).getId());
             tijiao.put("deviceNumber",bianhao);
             tijiao.put("faultTime",System.currentTimeMillis());
             tijiao.put("remark",guzhangEt.getText().toString().trim());
@@ -739,7 +801,7 @@ public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
         builder.addFormDataPart("cmd","100");
         builder.addFormDataPart("fault",tijiao.toString());
         mBody=builder.build();
-        Log.d("BaoZhangDengJiActivity", tijiao.toString());
+     //   Log.d("BaoZhangDengJiActivity", tijiao.toString());
 
 //         /* 第一个要上传的file */
 //       File file1 = new File(filename1);

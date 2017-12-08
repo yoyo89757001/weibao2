@@ -47,7 +47,7 @@ public class SaoYiSaoTanChuActivity extends Activity {
             if (devicesBean!=null){
                 itemsBean=itemsBeanDao.load((long) devicesBean.getItemId());
                 menusBean=menusBeanDao.load(Long.parseLong(devicesBean.getWeibaoSubSystemId()));
-                Log.d("SaoYiSaoTanChuActivity", menusBean.getName());
+//                Log.d("SaoYiSaoTanChuActivity", menusBean.getName());
             }
 
         }

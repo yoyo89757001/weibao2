@@ -389,7 +389,7 @@ public class DateUtils {
             date = sdr.parse(time);
             long l = date.getTime();
             String stf = String.valueOf(l);
-            times = stf.substring(0, 10);
+            times = stf;
         } catch (Exception e) {
             e.printStackTrace();
         }

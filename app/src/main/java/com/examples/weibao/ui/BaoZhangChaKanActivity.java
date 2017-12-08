@@ -104,6 +104,7 @@ public class BaoZhangChaKanActivity extends Activity {
         itemsBeanDao=MyAppLaction.myAppLaction.getDaoSession().getItemsBeanDao();
         devicesBean=devicesBeanDao.load((long) shebeiID);
         faultsBean=faultsBeanDao.load(baozhangID);
+        if (devicesBean!=null)
         itemsBean=itemsBeanDao.load((long) devicesBean.getItemId());
 
         setContentView(R.layout.activity_bao_zhang_cha_kan);
@@ -220,7 +221,16 @@ public class BaoZhangChaKanActivity extends Activity {
 
 
                         break;
+                    case 1:
+                        //主管
+                        link_huifu_shenhe(2);
 
+                        break;
+                    case 2:
+                        //甲方
+
+
+                        break;
                 }
 
             }
@@ -231,8 +241,28 @@ public class BaoZhangChaKanActivity extends Activity {
             public void onClick(View v) {
                 switch (dengLuBean.getStatus()){
                     case 0:
+                        if (!huifuneirong.getText().toString().trim().equals("")){
+                            if (!paichashijian.getText().toString().trim().equals("暂无")){
+                                link_save();
+                            }else {
+                                showMSG("请选择上门排查时间",4);
+                            }
 
-                        link_save();
+                        }else {
+                            showMSG("请填写回复内容",4);
+                        }
+
+                        break;
+
+                    case 1:
+                        //主管
+                        link_huifu_shenhe(3);
+
+                        break;
+                    case 2:
+                        //甲方
+
+
                         break;
 
                 }
@@ -278,15 +308,23 @@ public class BaoZhangChaKanActivity extends Activity {
                 shengyushijian.setText("剩余时间:"+DateUtils.getTimeDifference(System.currentTimeMillis()+"",faultsBean.getFaultTime()+""));
             }else {
                 paichashijian.setText(DateUtils.time(faultsBean.getPlanCheckTime()+""));
-                shengyushijian.setText("剩余时间:"+DateUtils.getTimeDifference2(faultsBean.getPlanCheckTime()+"",System.currentTimeMillis()+"")+"天");
+                shengyushijian.setText("剩余时间:"+DateUtils.getTimeDifference2(System.currentTimeMillis()+"",faultsBean.getPlanCheckTime()+""));
             }
 
             if (faultsBean.getReplyContent()!=null)
             huifuneirong.setText(faultsBean.getReplyContent());
             if (faultsBean.getProcessContent()!=null)
             chulineirong.setText(faultsBean.getProcessContent());
-            huifuren.setText(faultsBean.getReplyUsername());
-           chuliren.setText(faultsBean.getProcessUsername());
+            if (faultsBean.getReplyUsername()!=null && !faultsBean.getReplyUsername().equals("")){
+                huifuren.setText(faultsBean.getReplyUsername());
+            }else {
+                huifuren.setText("暂无");
+            }
+            if (faultsBean.getProcessUsername()!=null && !faultsBean.getProcessUsername().equals("")){
+                chuliren.setText(faultsBean.getProcessUsername());
+            }else {
+                chuliren.setText("暂无");
+            }
 
         }
 
@@ -299,17 +337,141 @@ public class BaoZhangChaKanActivity extends Activity {
         if (dengLuBean!=null){
             switch (dengLuBean.getStatus()){
                 case 0:
+                    //工程师
                     bt1.setVisibility(View.GONE);
                     view.setVisibility(View.GONE);
+                    switch (status){
+                        case 0:
+                            //待回复
+                            chulineirong.setEnabled(false);
+                            chulineirong.setHint("");
+
+
+                            break;
+                        case 1:
+                            //回复待审核
+                            huifuneirong.setEnabled(false);
+                            paicha_rl.setEnabled(false);
+                            chulineirong.setEnabled(false);
+                            chulineirong.setHint("");
+                            bt2.setVisibility(View.GONE);
+                            //  link_huifu_shenhe();
+
+                            break;
+                        case 2:
+                            //回复审核通过 通过后就是待处理了
+
+                            huifuneirong.setEnabled(false);
+                            paicha_rl.setEnabled(false);
+
+
+                            break;
+                        case 3:
+                            //回复审核不通过
+
+                            chulineirong.setEnabled(false);
+                            chulineirong.setHint("");
+
+                            break;
+                        case 4:
+                            //处理待审核
+                            huifuneirong.setEnabled(false);
+                            paicha_rl.setEnabled(false);
+                            chulineirong.setEnabled(false);
+                            chulineirong.setHint("");
+                            bt2.setVisibility(View.GONE);
+
+                            break;
+                        case 5:
+                            //处理审核通过
+                            huifuneirong.setEnabled(false);
+                            paicha_rl.setEnabled(false);
+                            chulineirong.setEnabled(false);
+                            chulineirong.setHint("");
+                            bt2.setVisibility(View.GONE);
+
+                            break;
+                        case 6:
+                            //处理审核不通过  //继续处理
+                            huifuneirong.setEnabled(false);
+                            paicha_rl.setEnabled(false);
+
+                            break;
+                        case 7:
+                            //7已完成处理
+                            huifuneirong.setEnabled(false);
+                            paicha_rl.setEnabled(false);
+                            chulineirong.setEnabled(false);
+                            chulineirong.setHint("");
+                            bt2.setVisibility(View.GONE);
+
+                            break;
+
+                    }
 
                     break;
                 case 1:
+                    //主管
                     bt1.setText("审核通过");
                     bt2.setText("审核不通过");
                     chulineirong.setEnabled(false);
                     huifuneirong.setEnabled(false);
                     paicha_rl.setEnabled(false);
+                    switch (status){
+                        case 0:
+                            //待回复
+                            bt1.setVisibility(View.GONE);
+                            bt2.setVisibility(View.GONE);
+                            view.setVisibility(View.GONE);
 
+
+                            break;
+                        case 1:
+                            //回复待审核
+
+                            //  link_huifu_shenhe();
+
+                            break;
+                        case 2:
+                            //回复审核通过
+
+                            bt1.setVisibility(View.GONE);
+                            bt2.setVisibility(View.GONE);
+                            view.setVisibility(View.GONE);
+
+
+                            break;
+                        case 3:
+                            //回复审核不通过
+
+
+                            break;
+                        case 4:
+                            //处理待审核
+
+
+                            break;
+                        case 5:
+                            //处理审核通过
+                            bt1.setVisibility(View.GONE);
+                            bt2.setVisibility(View.GONE);
+                            view.setVisibility(View.GONE);
+
+                            break;
+                        case 6:
+                            //处理审核不通过
+
+
+                            break;
+                        case 7:
+                            //7已完成处理
+                            bt1.setVisibility(View.GONE);
+                            bt2.setVisibility(View.GONE);
+                            view.setVisibility(View.GONE);
+
+                            break;
+
+                    }
                     break;
                 case 2:
                     bt1.setText("确认审核通过");
@@ -317,43 +479,66 @@ public class BaoZhangChaKanActivity extends Activity {
                     chulineirong.setEnabled(false);
                     huifuneirong.setEnabled(false);
                     paicha_rl.setEnabled(false);
+                    switch (status){
+                        case 0:
+                            //待回复
+                            bt1.setVisibility(View.GONE);
+                            bt2.setVisibility(View.GONE);
+                            view.setVisibility(View.GONE);
 
+
+                            break;
+                        case 1:
+                            //回复待审核
+
+                            //  link_huifu_shenhe();
+
+                            break;
+                        case 2:
+                            //回复审核通过
+
+                            bt1.setVisibility(View.GONE);
+                            bt2.setVisibility(View.GONE);
+                            view.setVisibility(View.GONE);
+
+
+                            break;
+                        case 3:
+                            //回复审核不通过
+
+                            break;
+                        case 4:
+                            //处理待审核
+
+
+                            break;
+                        case 5:
+                            //处理审核通过
+
+                            bt1.setVisibility(View.GONE);
+                            bt2.setVisibility(View.GONE);
+                            view.setVisibility(View.GONE);
+                            break;
+                        case 6:
+                            //处理审核不通过
+
+
+                            break;
+                        case 7:
+                            //7已完成处理
+
+                            bt1.setVisibility(View.GONE);
+                            bt2.setVisibility(View.GONE);
+                            view.setVisibility(View.GONE);
+                            break;
+
+                    }
                     break;
 
             }
-        }
 
 
-        switch (status){
-            case 1:
-            //待回复
-                chulineirong.setEnabled(false);
-                chulineirong.setHint("");
-                huifuren.setText(dengLuBean.getName() );
-
-                break;
-            case 2:
-            //
-
-
-                break;
-            case 3:
-
-                break;
-            case 4:
-
-                break;
-            case 5:
-
-                break;
-            case 6:
-
-                break;
-            case 7:
-
-                break;
-
-        }
+    }
 
         }
 
@@ -469,6 +654,96 @@ public class BaoZhangChaKanActivity extends Activity {
         });
 
     }
+
+
+    private void link_huifu_shenhe(int ooo) {
+        showDialog();
+        final MediaType JSON=MediaType.parse("application/json; charset=utf-8");
+        OkHttpClient okHttpClient= MyAppLaction.getOkHttpClient();
+        MultipartBody mBody;
+        MultipartBody.Builder builder=new MultipartBody.Builder().setType(MultipartBody.FORM);
+        //  String jiami=Utils.jiami(mima).toUpperCase();
+        String nonce= Utils.getNonce();
+        String timestamp=Utils.getTimestamp();
+
+//    /* form的分割线,自己定义 */
+//        String boundary = "xx--------------------------------------------------------------xx";
+        JSONObject jsonObject = new JSONObject();
+        JSONArray jsonArray=new JSONArray();
+        JSONObject tijiao=null;
+        try {
+            tijiao = new JSONObject();
+            tijiao.put("status",ooo);
+            tijiao.put("id",faultsBean.getId());
+
+            jsonArray.put(tijiao);
+
+
+            Log.d("BaoZhangDengJiActivity", tijiao.toString());
+            //   jsonObject.put("password",jiami);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        builder.addFormDataPart("cmd","102");
+        builder.addFormDataPart("fault",jsonArray.toString());
+        mBody=builder.build();
+
+
+        Request.Builder requestBuilder = new Request.Builder()
+                .header("nonce", nonce)
+                .header("timestamp", timestamp)
+                .header("userId", dengLuBean.getUserId()+"")
+                .header("sign", Utils.encode("102"+nonce+timestamp
+                        +dengLuBean.getUserId()+Utils.signaturePassword))
+                .post(mBody)
+                .url(dengLuBean.getZhuji() + "uploadFault.app");
+
+        // step 3：创建 Call 对象
+        Call  call = okHttpClient.newCall(requestBuilder.build());
+
+        //step 4: 开始异步请求
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d("AllConnects", "请求识别失败"+e.getMessage());
+                dismissDialog();
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                dismissDialog();
+                Log.d("AllConnects", "请求识别成功"+call.request().toString());
+                //获得返回体
+                try {
+
+                    ResponseBody body = response.body();
+                    String ss=body.string().trim();
+                    Log.d("InFoActivity", "ss" + ss);
+                    JsonObject jsonObject= GsonUtil.parse(ss).getAsJsonObject();
+                    Gson gson=new Gson();
+                    FanHuiBean zhaoPianBean=gson.fromJson(jsonObject,FanHuiBean.class);
+                    if (zhaoPianBean.getDtoResult()==0){
+
+                        showMSG("审核成功",4);
+
+                    }else if (zhaoPianBean.getDtoResult()==-33){
+                        showMSG("账号登陆失效,请重新登陆",4);
+                    }else {
+                        showMSG(zhaoPianBean.getDtoDesc(),4);
+                    }
+                }catch (Exception e){
+
+                    dismissDialog();
+                    showMSG("获取数据失败",3);
+                    Log.d("WebsocketPushMsg", e.getMessage());
+                }
+            }
+        });
+
+    }
+
 
     private void showDialog(){
         runOnUiThread(new Runnable() {

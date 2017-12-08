@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -24,8 +25,6 @@ import com.examples.weibao.adapters.BaoZhangAdapter1;
 import com.examples.weibao.adapters.PopupWindowAdapter5;
 import com.examples.weibao.allbeans.DengLuBean;
 import com.examples.weibao.allbeans.DengLuBeanDao;
-import com.examples.weibao.allbeans.DevicesBean;
-import com.examples.weibao.allbeans.DevicesBeanDao;
 import com.examples.weibao.allbeans.FaultsBean;
 import com.examples.weibao.allbeans.FaultsBeanDao;
 import com.examples.weibao.beans.XuanZeBean;
@@ -46,6 +45,7 @@ public class BaoZhangChuLiActivity extends Activity {
     private DengLuBeanDao dengLuBeanDao=null;
     private DengLuBean dengLuBean=null;
     private FaultsBeanDao faultsBeanDao=null;
+    private List<FaultsBean> faultsBeanList0=new ArrayList<>();
     private List<FaultsBean> faultsBeanList1=new ArrayList<>();
     private List<FaultsBean> faultsBeanList2=new ArrayList<>();
     private List<FaultsBean> faultsBeanList3=new ArrayList<>();
@@ -60,6 +60,7 @@ public class BaoZhangChuLiActivity extends Activity {
     private RelativeLayout ee;
     private List<FaultsBean> faultsBeanList=new ArrayList<>();
     private  List<FaultsBean> f=null;
+    private int  pp=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +78,8 @@ public class BaoZhangChuLiActivity extends Activity {
         dengLuBean=dengLuBeanDao.load(123456L);
 
         stringList.add(new XuanZeBean("全部",-1));
-        stringList.add(new XuanZeBean("待回复",1));
+        stringList.add(new XuanZeBean("待回复",0));
+        stringList.add(new XuanZeBean("回复待审核",1));
         stringList.add(new XuanZeBean("回复审核通过",2));
         stringList.add(new XuanZeBean("回复审核不通过",3));
         stringList.add(new XuanZeBean("处理待审核",4));
@@ -110,13 +112,13 @@ public class BaoZhangChuLiActivity extends Activity {
             public void onClick(View v) {
 
                 View contentView4 = LayoutInflater.from(BaoZhangChuLiActivity.this).inflate(R.layout.xiangmu_po_item, null);
-                popupWindow=new PopupWindow(contentView4,300, 500);
+                popupWindow=new PopupWindow(contentView4,400, 500);
                 ListView listView4= (ListView) contentView4.findViewById(R.id.dddddd);
                 PopupWindowAdapter5 adapter4=new PopupWindowAdapter5(BaoZhangChuLiActivity.this,stringList);
                 listView4.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        p4=position;
+                        p4=stringList.get(position).getP();
                         xx.setText(stringList.get(position).getS());
                        if (faultsBeanList.size()>0){
                            faultsBeanList.clear();
@@ -126,8 +128,14 @@ public class BaoZhangChuLiActivity extends Activity {
                                 faultsBeanList.addAll(f);
                                 adapter1.notifyDataSetChanged();
                                 break;
+                            case 0:
+                                faultsBeanList.addAll(faultsBeanList0);
+                                adapter1.notifyDataSetChanged();
+                                break;
                             case 1:
+                                Log.d("BaoZhangChuLiActivity", "faultsBeanList1:" + faultsBeanList1.size());
                                 faultsBeanList.addAll(faultsBeanList1);
+                                Log.d("BaoZhangChuLiActivity", "faultsBeanList:" + faultsBeanList.size());
                                 adapter1.notifyDataSetChanged();
                                 break;
                             case 2:
@@ -176,14 +184,45 @@ public class BaoZhangChuLiActivity extends Activity {
 
         lRecyclerView= (LRecyclerView)findViewById(R.id.lrecyclerview);
 
+
+        Button baozhangdengji= (Button) findViewById(R.id.dengji);
+        baozhangdengji.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(BaoZhangChuLiActivity.this,BaoZhangDengJiActivity.class));
+            }
+        });
+    }
+
+    @Override
+    protected void onPause() {
+      pp= lRecyclerView.getChildAdapterPosition(lRecyclerView.getChildAt(0));
+
+        super.onPause();
+
+
+    }
+
+    private void init() {
+
+
+    }
+
+    @Override
+    protected void onResume() {
+
         new Thread(new Runnable() {
             @Override
             public void run() {
-                 f=faultsBeanDao.loadAll();
+                clecnList();
+                f=faultsBeanDao.loadAll();
                 if (f!=null){
                     int s=f.size();
                     for (int i=0;i<s;i++){
                         switch (f.get(i).getStatus()){
+                            case 0:
+                                faultsBeanList0.add(f.get(i));
+                                break;
                             case 1:
                                 faultsBeanList1.add(f.get(i));
                                 break;
@@ -207,7 +246,37 @@ public class BaoZhangChuLiActivity extends Activity {
                                 break;
                         }
                     }
-                    faultsBeanList.addAll(f);
+                    switch (p4){
+                        case -1:
+                            faultsBeanList.addAll(f);
+                            break;
+                        case 0:
+                            faultsBeanList.addAll(faultsBeanList0);
+                            break;
+                        case 1:
+                            faultsBeanList.addAll(faultsBeanList1);
+                            break;
+                        case 2:
+                            faultsBeanList.addAll(faultsBeanList2);
+                            break;
+                        case 3:
+                            faultsBeanList.addAll(faultsBeanList3);
+                            break;
+                        case 4:
+                            faultsBeanList.addAll(faultsBeanList4);
+                            break;
+                        case 5:
+                            faultsBeanList.addAll(faultsBeanList5);
+                            break;
+                        case 6:
+                            faultsBeanList.addAll(faultsBeanList6);
+                            break;
+                        case 7:
+                            faultsBeanList.addAll(faultsBeanList7);
+                            break;
+                    }
+
+
                     //循环完了
                     runOnUiThread(new Runnable() {
                         @Override
@@ -220,7 +289,6 @@ public class BaoZhangChuLiActivity extends Activity {
                             lRecyclerView.setAdapter(lRecyclerViewAdapter);
                             lRecyclerView.setPullRefreshEnabled(false);
                             lRecyclerView.setLoadMoreEnabled(false);
-
                             DividerDecoration divider = new DividerDecoration.Builder(BaoZhangChuLiActivity.this)
                                     .setHeight(R.dimen.default_divider_height)
                                     .setPadding(R.dimen.default_divider_padding)
@@ -237,8 +305,15 @@ public class BaoZhangChuLiActivity extends Activity {
                                                     .putExtra("shebeiID",f.get(position).getDeviceId())
                                                     .putExtra("baozhangID",f.get(position).getId()));
                                             break;
+                                        case 0:
+                                            startActivity(new Intent(BaoZhangChuLiActivity.this, BaoZhangChaKanActivity.class)
+                                                    .putExtra("status",faultsBeanList0.get(position).getStatus())
+                                                    .putExtra("shebeiID",faultsBeanList0.get(position).getDeviceId())
+                                                    .putExtra("baozhangID",faultsBeanList0.get(position).getId()));
+                                            break;
                                         case 1:
                                             startActivity(new Intent(BaoZhangChuLiActivity.this, BaoZhangChaKanActivity.class)
+                                                    .putExtra("status",faultsBeanList1.get(position).getStatus())
                                                     .putExtra("shebeiID",faultsBeanList1.get(position).getDeviceId())
                                                     .putExtra("baozhangID",faultsBeanList1.get(position).getId()));
                                             break;
@@ -286,14 +361,8 @@ public class BaoZhangChuLiActivity extends Activity {
                                 }
                             });
 
+                            linearLayoutManager.scrollToPositionWithOffset(pp+1,0);
 
-                            Button baozhangdengji= (Button) findViewById(R.id.dengji);
-                            baozhangdengji.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    startActivity(new Intent(BaoZhangChuLiActivity.this,BaoZhangDengJiActivity.class));
-                                }
-                            });
                         }
                     });
 
@@ -302,14 +371,38 @@ public class BaoZhangChuLiActivity extends Activity {
             }
         }).start();
 
+        super.onResume();
 
     }
 
-
-    private void init() {
-
-
+    private void clecnList(){
+        if (faultsBeanList.size()>0){
+            faultsBeanList.clear();
+        }
+        if (faultsBeanList0.size()>0){
+            faultsBeanList0.clear();
+        }
+        if (faultsBeanList1.size()>0){
+            faultsBeanList1.clear();
+        }
+        if (faultsBeanList2.size()>0){
+            faultsBeanList2.clear();
+        }
+        if (faultsBeanList3.size()>0){
+            faultsBeanList3.clear();
+        }
+        if (faultsBeanList4.size()>0){
+            faultsBeanList4.clear();
+        }
+        if (faultsBeanList5.size()>0){
+            faultsBeanList5.clear();
+        }
+        if (faultsBeanList6.size()>0){
+            faultsBeanList6.clear();
+        }
+        if (faultsBeanList7.size()>0){
+            faultsBeanList7.clear();
+        }
     }
-
 
 }

@@ -316,8 +316,8 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
           //  jsonObject.put("itemId","0");
             jsonObject.put("stime",dengLuBean.getQqTime());
             jsonObject.put("etime", time);
-            Log.d("HomePageActivity", dengLuBean.getQqTime());
-            Log.d("HomePageActivity", time);
+//            Log.d("HomePageActivity", dengLuBean.getQqTime());
+        //    Log.d("HomePageActivity", time);
         } catch (JSONException e) {
             e.printStackTrace();
         }

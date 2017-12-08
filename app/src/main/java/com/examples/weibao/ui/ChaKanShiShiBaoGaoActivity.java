@@ -176,7 +176,6 @@ public class ChaKanShiShiBaoGaoActivity extends Activity  {
         webSettings.setJavaScriptEnabled(true);
         // 若加载的 html 里有JS 在执行动画等操作，会造成资源浪费（CPU、电量）
         // 在 onStop 和 onResume 里分别把 setJavaScriptEnabled() 给设置成 false 和 true 即可
-
         //支持插件
       // webSettings.setPluginsEnabled(true);
 
@@ -257,9 +256,9 @@ public class ChaKanShiShiBaoGaoActivity extends Activity  {
 //        String boundary = "xx--------------------------------------------------------------xx";
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("cmd","100");
-            jsonObject.put("planId",planId);
-            jsonObject.put("baogaoModel","1");
+            jsonObject.put("cmd",100);
+            jsonObject.put("planId",(int)planId);
+            jsonObject.put("baogaoModel",1);
          //   jsonObject.put("baogaoModel","1");
 
         } catch (JSONException e) {
@@ -274,7 +273,7 @@ public class ChaKanShiShiBaoGaoActivity extends Activity  {
                 .header("sign", Utils.encode("100"+planId+"1"+nonce+timestamp
                         +dengLuBean.getUserId()+Utils.signaturePassword))
                 .post(body)
-                .url(dengLuBean.getZhuji() + "exportReport.app");
+                .url(dengLuBean.getZhuji() + "exportRealTimeReport.app");
 
         // step 3：创建 Call 对象
         call = okHttpClient.newCall(requestBuilder.build());
@@ -387,7 +386,7 @@ public class ChaKanShiShiBaoGaoActivity extends Activity  {
 
                     ResponseBody body = response.body();
                     final String ss=body.string().trim();
-                    Log.d("ChaKanShiShiBaoGaoActiv", ss+"lllll");
+                    Log.d("ChaKanShiShiBaoGaoActiv", ss+"");
 
                     JsonObject jsonObject= GsonUtil.parse(ss).getAsJsonObject();
                     Gson gson=new Gson();
@@ -473,8 +472,6 @@ public class ChaKanShiShiBaoGaoActivity extends Activity  {
                     }else {
                         showMSG("获取数据失败",4);
                     }
-
-
 
 
                 }catch (Exception e){
@@ -701,6 +698,7 @@ public class ChaKanShiShiBaoGaoActivity extends Activity  {
      //   deleteDir(PATH_DOC);
       //  deleteDir(PATH_IMAGE);
      //   deleteDir(PATH_HTML);
+      //  unregisterReceiver();
         super.onDestroy();
     }
 
