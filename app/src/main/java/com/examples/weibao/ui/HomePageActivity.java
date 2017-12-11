@@ -242,7 +242,7 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
           //  jsonObject.put("itemId","0");
             jsonObject.put("stime",dengLuBean.getQqTime());
             jsonObject.put("etime", time);
-//            Log.d("HomePageActivity", dengLuBean.getQqTime());
+         //   Log.d("HomePageActivity", dengLuBean.getQqTime());
          //   Log.d("HomePageActivity", time);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -287,7 +287,7 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
                     JianChaBean zhaoPianBean=gson.fromJson(jsonObject,JianChaBean.class);
                     if (zhaoPianBean.getTotal()>0){
                         //有更新
-                       link_xz();
+                       link_xz(zhaoPianBean.getCtime());
 
                     }else {
                         showMSG("暂无数据更新",4);
@@ -317,7 +317,7 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
     }
 
 
-    private void link_xz() {
+    private void link_xz(final String ctime) {
        // showDialog();
         final MediaType JSON=MediaType.parse("application/json; charset=utf-8");
         OkHttpClient okHttpClient= MyAppLaction.getOkHttpClient();
@@ -334,7 +334,7 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
             jsonObject.put("cmd","100");
            // jsonObject.put("itemId",integer.toString());
             jsonObject.put("stime",dengLuBean.getQqTime());
-            jsonObject.put("etime", time);
+            jsonObject.put("etime", ctime);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -395,6 +395,11 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
                     JsonArray plans = jsonObject.get("plans").getAsJsonArray();
                     JsonArray menurefs = jsonObject.get("menurefs").getAsJsonArray();
                     JsonArray faults = jsonObject.get("faults").getAsJsonArray();
+
+                    //保存时间
+                    Log.d("HomePageActivity", "保存时间" + time);
+                    dengLuBean.setQqTime(ctime);
+                    dengLuBeanDao.update(dengLuBean);
 
                     int itemSize = items.size();
                     for (int i = 0; i < itemSize; i++) {
@@ -512,12 +517,7 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
                             //  Log.d("HomePageActivity", "删除menurefsBean");
                         }
                     }
-                    //保存时间
-                    Log.d("HomePageActivity", "保存时间" + time);
 
-
-                       dengLuBean.setQqTime(time);
-                       dengLuBeanDao.update(dengLuBean);
                     //  Log.d("HomePageActivity", dengLuBeanDao.load(123456L).getQqTime());
 
                     final List<FaultsBean> faultsBeanList = faultsBeanDao.loadAll();

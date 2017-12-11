@@ -223,7 +223,12 @@ public class BaoZhangChaKanActivity extends Activity {
                         break;
                     case 1:
                         //主管
-                        link_huifu_shenhe(2);
+                        if (status==1){
+                            link_huifu_shenhe(2);
+
+                        }else if (status==4){
+                            link_chuli_shenhe(5);
+                        }
 
                         break;
                     case 2:
@@ -241,22 +246,35 @@ public class BaoZhangChaKanActivity extends Activity {
             public void onClick(View v) {
                 switch (dengLuBean.getStatus()){
                     case 0:
-                        if (!huifuneirong.getText().toString().trim().equals("")){
-                            if (!paichashijian.getText().toString().trim().equals("暂无")){
-                                link_save();
+                        if (status==0) {
+                            if (!huifuneirong.getText().toString().trim().equals("")) {
+                                if (!paichashijian.getText().toString().trim().equals("暂无")) {
+                                    link_save();
+                                } else {
+                                    showMSG("请选择上门排查时间", 4);
+                                }
+
+                            } else {
+                                showMSG("请填写回复内容", 4);
+                            }
+                        }else if (status==2){
+                            if (!chulineirong.getText().toString().trim().equals("")){
+                                link_tijiaochuli();
                             }else {
-                                showMSG("请选择上门排查时间",4);
+                                showMSG("你没有填写处理内容", 4);
                             }
 
-                        }else {
-                            showMSG("请填写回复内容",4);
                         }
-
                         break;
 
                     case 1:
                         //主管
-                        link_huifu_shenhe(3);
+                        if (status==1){
+                            link_huifu_shenhe(3);
+
+                        }else if (status==4){
+                            link_chuli_shenhe(6);
+                        }
 
                         break;
                     case 2:
@@ -677,7 +695,182 @@ public class BaoZhangChaKanActivity extends Activity {
             tijiao.put("id",faultsBean.getId());
 
             jsonArray.put(tijiao);
+            jsonObject.put("cmd","102");
+            jsonObject.put("faults",jsonArray);
 
+          //  Log.d("BaoZhangDengJiActivity", tijiao.toString());
+            //   jsonObject.put("password",jiami);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        RequestBody body = RequestBody.create(JSON, jsonObject.toString());
+
+        Log.d("BaoZhangChaKanActivity", jsonObject.toString());
+
+        Request.Builder requestBuilder = new Request.Builder()
+                .header("nonce", nonce)
+                .header("timestamp", timestamp)
+                .header("userId", dengLuBean.getUserId()+"")
+                .header("sign", Utils.encode("102"+nonce+timestamp
+                        +dengLuBean.getUserId()+Utils.signaturePassword))
+                .post(body)
+                .url(dengLuBean.getZhuji() + "auditFault.app");
+
+        // step 3：创建 Call 对象
+        Call  call = okHttpClient.newCall(requestBuilder.build());
+
+        //step 4: 开始异步请求
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d("AllConnects", "请求识别失败"+e.getMessage());
+                dismissDialog();
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                dismissDialog();
+                Log.d("AllConnects", "请求识别成功"+call.request().toString());
+                //获得返回体
+                try {
+
+                    ResponseBody body = response.body();
+                    String ss=body.string().trim();
+                    Log.d("InFoActivity", "ss" + ss);
+                    JsonObject jsonObject= GsonUtil.parse(ss).getAsJsonObject();
+                    Gson gson=new Gson();
+                    FanHuiBean zhaoPianBean=gson.fromJson(jsonObject,FanHuiBean.class);
+                    if (zhaoPianBean.getDtoResult()==0){
+
+                        showMSG("审核成功",4);
+
+                    }else if (zhaoPianBean.getDtoResult()==-33){
+                        showMSG("账号登陆失效,请重新登陆",4);
+                    }else {
+                        showMSG(zhaoPianBean.getDtoDesc(),4);
+                    }
+                }catch (Exception e){
+
+                    dismissDialog();
+                    showMSG("获取数据失败",3);
+                    Log.d("WebsocketPushMsg", e.getMessage());
+                }
+            }
+        });
+
+    }
+
+    private void link_chuli_shenhe(int ooo) {
+        showDialog();
+        final MediaType JSON=MediaType.parse("application/json; charset=utf-8");
+        OkHttpClient okHttpClient= MyAppLaction.getOkHttpClient();
+        MultipartBody mBody;
+        MultipartBody.Builder builder=new MultipartBody.Builder().setType(MultipartBody.FORM);
+        //  String jiami=Utils.jiami(mima).toUpperCase();
+        String nonce= Utils.getNonce();
+        String timestamp=Utils.getTimestamp();
+
+//    /* form的分割线,自己定义 */
+//        String boundary = "xx--------------------------------------------------------------xx";
+        JSONObject jsonObject = new JSONObject();
+        JSONArray jsonArray=new JSONArray();
+        JSONObject tijiao=null;
+        try {
+            tijiao = new JSONObject();
+            tijiao.put("status",ooo);
+            tijiao.put("id",faultsBean.getId());
+
+            jsonArray.put(tijiao);
+            jsonObject.put("cmd","102");
+            jsonObject.put("faults",jsonArray);
+
+            //  Log.d("BaoZhangDengJiActivity", tijiao.toString());
+            //   jsonObject.put("password",jiami);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        RequestBody body = RequestBody.create(JSON, jsonObject.toString());
+
+        Log.d("BaoZhangChaKanActivity", jsonObject.toString());
+
+        Request.Builder requestBuilder = new Request.Builder()
+                .header("nonce", nonce)
+                .header("timestamp", timestamp)
+                .header("userId", dengLuBean.getUserId()+"")
+                .header("sign", Utils.encode("102"+nonce+timestamp
+                        +dengLuBean.getUserId()+Utils.signaturePassword))
+                .post(body)
+                .url(dengLuBean.getZhuji() + "auditFault.app");
+
+        // step 3：创建 Call 对象
+        Call  call = okHttpClient.newCall(requestBuilder.build());
+
+        //step 4: 开始异步请求
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d("AllConnects", "请求识别失败"+e.getMessage());
+                dismissDialog();
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                dismissDialog();
+                Log.d("AllConnects", "请求识别成功"+call.request().toString());
+                //获得返回体
+                try {
+
+                    ResponseBody body = response.body();
+                    String ss=body.string().trim();
+                    Log.d("InFoActivity", "ss" + ss);
+                    JsonObject jsonObject= GsonUtil.parse(ss).getAsJsonObject();
+                    Gson gson=new Gson();
+                    FanHuiBean zhaoPianBean=gson.fromJson(jsonObject,FanHuiBean.class);
+                    if (zhaoPianBean.getDtoResult()==0){
+
+                        showMSG("审核成功",4);
+
+                    }else if (zhaoPianBean.getDtoResult()==-33){
+                        showMSG("账号登陆失效,请重新登陆",4);
+                    }else {
+                        showMSG(zhaoPianBean.getDtoDesc(),4);
+                    }
+                }catch (Exception e){
+
+                    dismissDialog();
+                    showMSG("获取数据失败",3);
+                    Log.d("WebsocketPushMsg", e.getMessage());
+                }
+            }
+        });
+
+    }
+
+
+    private void link_tijiaochuli() {
+        showDialog();
+        final MediaType JSON=MediaType.parse("application/json; charset=utf-8");
+        OkHttpClient okHttpClient= MyAppLaction.getOkHttpClient();
+        MultipartBody mBody;
+        MultipartBody.Builder builder=new MultipartBody.Builder().setType(MultipartBody.FORM);
+        //  String jiami=Utils.jiami(mima).toUpperCase();
+        String nonce= Utils.getNonce();
+        String timestamp=Utils.getTimestamp();
+
+//    /* form的分割线,自己定义 */
+//        String boundary = "xx--------------------------------------------------------------xx";
+        JSONObject tijiao =null;
+        try {
+            tijiao = new JSONObject();
+            tijiao.put("status",4);
+            tijiao.put("id",faultsBean.getId());
+            tijiao.put("processBy",dengLuBean.getUserId());
+            tijiao.put("processContent",chulineirong.getText().toString().trim());
+            tijiao.put("processUser",dengLuBean.getName());
+            tijiao.put("processTime",System.currentTimeMillis());
+           // tijiao.put("planCheckTime",DateUtils.getTimes(paichashijian.getText().toString().trim()));
 
             Log.d("BaoZhangDengJiActivity", tijiao.toString());
             //   jsonObject.put("password",jiami);
@@ -686,7 +879,7 @@ public class BaoZhangChaKanActivity extends Activity {
         }
 
         builder.addFormDataPart("cmd","102");
-        builder.addFormDataPart("fault",jsonArray.toString());
+        builder.addFormDataPart("fault",tijiao.toString());
         mBody=builder.build();
 
 
@@ -726,8 +919,7 @@ public class BaoZhangChaKanActivity extends Activity {
                     FanHuiBean zhaoPianBean=gson.fromJson(jsonObject,FanHuiBean.class);
                     if (zhaoPianBean.getDtoResult()==0){
 
-                        showMSG("审核成功",4);
-
+                        showMSG("保存成功",4);
                     }else if (zhaoPianBean.getDtoResult()==-33){
                         showMSG("账号登陆失效,请重新登陆",4);
                     }else {

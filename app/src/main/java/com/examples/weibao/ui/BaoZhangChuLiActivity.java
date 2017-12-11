@@ -112,7 +112,7 @@ public class BaoZhangChuLiActivity extends Activity {
             public void onClick(View v) {
 
                 View contentView4 = LayoutInflater.from(BaoZhangChuLiActivity.this).inflate(R.layout.xiangmu_po_item, null);
-                popupWindow=new PopupWindow(contentView4,400, 500);
+                popupWindow=new PopupWindow(contentView4,400, 600);
                 ListView listView4= (ListView) contentView4.findViewById(R.id.dddddd);
                 PopupWindowAdapter5 adapter4=new PopupWindowAdapter5(BaoZhangChuLiActivity.this,stringList);
                 listView4.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -133,9 +133,9 @@ public class BaoZhangChuLiActivity extends Activity {
                                 adapter1.notifyDataSetChanged();
                                 break;
                             case 1:
-                                Log.d("BaoZhangChuLiActivity", "faultsBeanList1:" + faultsBeanList1.size());
+                              //  Log.d("BaoZhangChuLiActivity", "faultsBeanList1:" + faultsBeanList1.size());
                                 faultsBeanList.addAll(faultsBeanList1);
-                                Log.d("BaoZhangChuLiActivity", "faultsBeanList:" + faultsBeanList.size());
+                                //Log.d("BaoZhangChuLiActivity", "faultsBeanList:" + faultsBeanList.size());
                                 adapter1.notifyDataSetChanged();
                                 break;
                             case 2:

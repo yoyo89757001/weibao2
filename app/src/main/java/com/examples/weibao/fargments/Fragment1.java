@@ -316,8 +316,8 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
           //  jsonObject.put("itemId","0");
             jsonObject.put("stime",dengLuBean.getQqTime());
             jsonObject.put("etime", time);
-//            Log.d("HomePageActivity", dengLuBean.getQqTime());
-        //    Log.d("HomePageActivity", time);
+            Log.d("HomePageActivity","开始"+ dengLuBean.getQqTime());
+            Log.d("HomePageActivity","结束"+ time);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -362,7 +362,7 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
                     Gson gson=new Gson();
                     JianChaBean zhaoPianBean=gson.fromJson(jsonObject,JianChaBean.class);
                     if (zhaoPianBean.getTotal()!=0){
-                        link_xz();
+                        link_xz(zhaoPianBean.getCtime());
 
                     }else {
                         showMSG("暂无数据更新",4);
@@ -392,7 +392,7 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
     }
 
 
-    private void link_xz() {
+    private void link_xz(final String ctime) {
         // showDialog();
         final MediaType JSON=MediaType.parse("application/json; charset=utf-8");
         OkHttpClient okHttpClient= MyAppLaction.getOkHttpClient();
@@ -407,8 +407,9 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
             jsonObject.put("cmd","100");
            // jsonObject.put("itemId",integer.toString());
             jsonObject.put("stime",dengLuBean.getQqTime());
-            jsonObject.put("etime", time);
-
+            jsonObject.put("etime", ctime);
+            Log.d("HomePageActivity", "下载开始时间"+dengLuBean.getQqTime());
+            Log.d("HomePageActivity", "下载结束时间"+ctime);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -418,7 +419,7 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
                 .header("nonce", nonce)
                 .header("timestamp", timestamp)
                 .header("userId", dengLuBean.getUserId()+"")
-                .header("sign", Utils.encode("100"+dengLuBean.getQqTime()+time+nonce+timestamp
+                .header("sign", Utils.encode("100"+dengLuBean.getQqTime()+ctime+nonce+timestamp
                         +dengLuBean.getUserId()+Utils.signaturePassword))
                 .post(body)
                 .url(dengLuBean.getZhuji() + "downloadData.app");
@@ -446,8 +447,16 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
 
                     ResponseBody body = response.body();
                     String ss=body.string().trim();
-                   // Log.d("InFoActivity", "ss" + ss.substring(0,2000));
-                   // Log.d("InFoActivity", "ss" + ss.substring(2000,ss.length()));
+                    int i9 = 0;
+                    while (true) {
+                        if (i9 + 4000 >= ss.length()) {
+                            Log.d("HomePageActivity", ss.substring(i9, ss.length()));
+                            break;
+                        } else {
+                            Log.d("HomePageActivity", ss.substring(i9, i9 += 4000));
+                        }
+
+                    }
 
                     JsonObject jsonObject= GsonUtil.parse(ss).getAsJsonObject();
                     Gson gson=new Gson();
@@ -458,6 +467,11 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
                     JsonArray plans= jsonObject.get("plans").getAsJsonArray();
                     JsonArray menurefs= jsonObject.get("menurefs").getAsJsonArray();
                     JsonArray faults= jsonObject.get("faults").getAsJsonArray();
+
+                    //保存时间
+                    Log.d("HomePageActivity", "保存时间"+time);
+                    dengLuBean.setQqTime(ctime);
+                    dengLuBeanDao.update(dengLuBean);
 
                     int itemSize=items.size();
                     for (int i=0;i<itemSize;i++){
@@ -562,7 +576,7 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
                     int faultsSize=faults.size();
                     for (int i=0;i<faultsSize;i++){
                         FaultsBean faultsBean=gson.fromJson(faults.get(i),FaultsBean.class);
-                        Log.d("Fragment1", "faultsBean.getFaultTime():" + faultsBean.getFaultTime());
+                      //  Log.d("Fragment1", "faultsBean.getFaultTime():" + faultsBean.getFaultTime());
                         int i7=faultsBean.getDtoResult();
                         if (faultsBeanDao.load(faultsBean.getId())==null && (i7==1 || i7==2)){
                             faultsBeanDao.insert(faultsBean);
@@ -575,10 +589,7 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
                             //  Log.d("HomePageActivity", "删除menurefsBean");
                         }
                     }
-                    //保存时间
-                    Log.d("HomePageActivity", "保存时间"+time);
-                      dengLuBean.setQqTime(time);
-                      dengLuBeanDao.update(dengLuBean);
+
                     //  Log.d("HomePageActivity", dengLuBeanDao.load(123456L).getQqTime());
 
                     final List<FaultsBean> faultsBeanList = faultsBeanDao.loadAll();

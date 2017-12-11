@@ -8,22 +8,34 @@ public class JianChaBean {
 
 
     /**
-     * detection : 6
-     * device : 2
-     * items : 1
-     * menu : 65
-     * menuref : 14
-     * plan : 1
-     * total : 75
+     * ctime : 2017-12-11 16:10:17
+     * detection : 0
+     * device : 0
+     * fault : 0
+     * items : 0
+     * menu : 0
+     * menuref : 0
+     * plan : 0
+     * total : 0
      */
 
+    private String ctime;
     private int detection;
     private int device;
+    private int fault;
     private int items;
     private int menu;
     private int menuref;
     private int plan;
     private int total;
+
+    public String getCtime() {
+        return ctime;
+    }
+
+    public void setCtime(String ctime) {
+        this.ctime = ctime;
+    }
 
     public int getDetection() {
         return detection;
@@ -39,6 +51,14 @@ public class JianChaBean {
 
     public void setDevice(int device) {
         this.device = device;
+    }
+
+    public int getFault() {
+        return fault;
+    }
+
+    public void setFault(int fault) {
+        this.fault = fault;
     }
 
     public int getItems() {
