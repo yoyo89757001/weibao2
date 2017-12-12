@@ -19,6 +19,8 @@ import android.widget.Toast;
 import com.examples.weibao.DownloadService.DownloadService;
 import com.examples.weibao.MyAppLaction;
 import com.examples.weibao.R;
+import com.examples.weibao.allbeans.BaoZhangDengJiBean;
+import com.examples.weibao.allbeans.BaoZhangDengJiBeanDao;
 import com.examples.weibao.allbeans.BenDiMenusBean;
 import com.examples.weibao.allbeans.BenDiMenusBeanDao;
 import com.examples.weibao.allbeans.DengLuBean;
@@ -39,6 +41,7 @@ import com.examples.weibao.allbeans.PlansBean;
 import com.examples.weibao.allbeans.PlansBeanDao;
 import com.examples.weibao.beans.FanHuiBean;
 import com.examples.weibao.beans.JianChaBean;
+import com.examples.weibao.cookies.CookiesManager;
 import com.examples.weibao.dialogs.QueRenDialog;
 import com.examples.weibao.dialogs.TiJIaoDialog;
 import com.examples.weibao.ui.BaoZhangChuLiActivity;
@@ -65,10 +68,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -86,7 +91,8 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
     private TextView name,zhiwu1,zhiwu2;
     private DengLuBean dengLuBean=null;
     private DengLuBeanDao dengLuBeanDao=null;
-
+    private BaoZhangDengJiBeanDao baoZhangDengJiBeanDao=null;
+    private List<BaoZhangDengJiBean> baoZhangDengJiBeanList=null;
    // private LiXianBeans liXianBeans=null;
     private ItemsBeanDao itemsBeanDao=null;
    // private List<DevicesBean> devicesBeanList=null;
@@ -107,6 +113,7 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
     private BenDiMenusBeanDao benDiMenusBeanDao=null;
     private List<BenDiMenusBean> benDiMenusBeanList=null;
     private List<BenDiMenusBean> benDiMenusBeanList_ls=new ArrayList<>();
+    private List<String> stringList=new ArrayList<>();
 
     public Fragment1() {
 
@@ -142,6 +149,9 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
         menurefsBeanDao=MyAppLaction.myAppLaction.getDaoSession().getMenurefsBeanDao();
         faultsBeanDao=MyAppLaction.myAppLaction.getDaoSession().getFaultsBeanDao();
         benDiMenusBeanDao=MyAppLaction.myAppLaction.getDaoSession().getBenDiMenusBeanDao();
+        baoZhangDengJiBeanDao=MyAppLaction.myAppLaction.getDaoSession().getBaoZhangDengJiBeanDao();
+
+
     }
 
 
@@ -205,7 +215,7 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
-
+                                //本地维保与测试的
                                 benDiMenusBeanList=benDiMenusBeanDao.loadAll();
                                 if (benDiMenusBeanList!=null){
                                     if (benDiMenusBeanList_ls.size()>0){
@@ -255,11 +265,31 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
                                         e.printStackTrace();
                                     }
                                         link_shangchuan(jsonObject);
-                                    }else {
-                                        showMSG("没有可提交的数据",4);
                                     }
 
                                 }
+                                //本地报障的
+                                if (stringList.size()>0){
+                                    stringList.clear();
+                                }
+                                baoZhangDengJiBeanList=baoZhangDengJiBeanDao.loadAll();
+                               int sss= baoZhangDengJiBeanList.size();
+                                for (int i=0;i<sss;i++){
+                                    if (!baoZhangDengJiBeanList.get(i).getIsTijiao()){
+                                        //没有提交过的
+                                        String ss[] =baoZhangDengJiBeanList.get(i).getFaultImage().split(";");
+                                        int s=ss.length;
+                                        for (String s1 : ss) {
+                                            stringList.add(0, s1);
+                                        }
+                                        link_P1(stringList,baoZhangDengJiBeanList.get(i));
+                                    }
+
+
+                                }
+
+
+
 
                             }
                         }).start();
@@ -816,6 +846,136 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
                     //  startActivity(new Intent(MainActivity.this,HomePageActivity.class));
                     dismissDialog();
                     showMSG("获取数据失败",3);
+                    Log.d("WebsocketPushMsg", e.getMessage());
+                }
+            }
+        });
+
+    }
+
+
+    public static final int TIMEOUT = 1000 * 180;
+    private void link_P1(List<String> stringList, final BaoZhangDengJiBean dengJiBean) {
+        showDialog();
+        String nonce=Utils.getNonce();
+        String timestamp=Utils.getTimestamp();
+
+        //final MediaType JSON=MediaType.parse("application/json; charset=utf-8");
+        //http://192.168.2.4:8080/sign?cmd=getUnSignList&subjectId=jfgsdf
+        OkHttpClient okHttpClient= new OkHttpClient.Builder()
+                .writeTimeout(TIMEOUT, TimeUnit.MILLISECONDS)
+                .connectTimeout(TIMEOUT, TimeUnit.MILLISECONDS)
+                .readTimeout(TIMEOUT, TimeUnit.MILLISECONDS)
+                .cookieJar(new CookiesManager())
+                .retryOnConnectionFailure(true)
+                .build();
+        MultipartBody mBody;
+        MultipartBody.Builder builder=new MultipartBody.Builder().setType(MultipartBody.FORM);
+        int ss=stringList.size()-1;
+        for (int i=0;i<ss;i++){
+            File file1 = new File(FileUtil.SDPATH + File.separator + FileUtil.PATH + File.separator+stringList.get(i));
+            RequestBody fileBody1 = RequestBody.create(MediaType.parse("application/octet-stream") , file1);
+            builder. addFormDataPart("file" , stringList.get(i), fileBody1);
+            //  Log.d("BaoZhangDengJiActivity", stringList.get(i).substring(stringList.get(i).lastIndexOf("/")+1,stringList.get(i).length())+">>>>");
+        }
+        JSONObject tijiao = null;
+        // JSONArray jsonArray=null;
+        try {
+            tijiao = new JSONObject();
+            tijiao.put("status",0);
+            tijiao.put("id",0);
+            tijiao.put("accountId",dengLuBean.getUserId());
+            tijiao.put("address",dengJiBean.getAddress());
+            tijiao.put("companyId",dengLuBean.getCompanyId());
+            tijiao.put("deviceId",dengJiBean.getDeviceId());
+            tijiao.put("planId",dengJiBean.getPlanId());
+            tijiao.put("deviceNumber",dengJiBean.getDeviceNumber());
+            tijiao.put("faultTime",System.currentTimeMillis());
+            tijiao.put("remark",dengJiBean.getRemark());
+            tijiao.put("contactTel",dengJiBean.getContactTel());
+            tijiao.put("faultImage",dengJiBean.getFaultImage());
+
+            // jsonArray=new JSONArray();
+            // jsonArray.put(tijiao);
+
+            // jsonObject.put("cmd","100");
+            // jsonObject.put("faults",jsonArray);
+            //  Log.d("BaoZhangDengJiActivity", jsonObject.toString());
+            //   jsonObject.put("password",jiami);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        builder.addFormDataPart("cmd","100");
+        builder.addFormDataPart("fault",tijiao.toString());
+        mBody=builder.build();
+        //   Log.d("BaoZhangDengJiActivity", tijiao.toString());
+
+//         /* 第一个要上传的file */
+//       File file1 = new File(filename1);
+//        RequestBody fileBody1 = RequestBody.create(MediaType.parse("application/octet-stream") , file1);
+//        final String file1Name = System.currentTimeMillis()+"testFile1.jpg";
+//
+//
+//        MultipartBody mBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+//            /* 底下是上传了两个文件 */
+//                .addFormDataPart("file" , file1Name , fileBody1)
+//                  /* 上传一个普通的String参数 */
+//                //  .addFormDataPart("subject_id" , subject_id+"")
+//                //  .addFormDataPart("image_2" , file2Name , fileBody2)
+//                .build();
+        Request.Builder requestBuilder = new Request.Builder()
+                // .header("Content-Type", "application/json")
+                .header("nonce", nonce)
+                .header("timestamp", timestamp)
+                .header("userId", dengLuBean.getUserId()+"")
+                .header("sign", Utils.encode("100"+nonce+timestamp
+                        +dengLuBean.getUserId()+Utils.signaturePassword))
+                .post(mBody)
+                .url(dengLuBean.getZhuji() + "uploadFault.app");
+
+        // step 3：创建 Call 对象
+        Call call = okHttpClient.newCall(requestBuilder.build());
+
+        //step 4: 开始异步请求
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                dismissDialog();
+                showMSG("上传图片出错",4);
+                Log.d("AllConnects", "请求识别失败"+e.getMessage());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                dismissDialog();
+                Log.d("AllConnects", "请求识别成功"+call.request().toString());
+                //获得返回体
+                try {
+
+                    ResponseBody body = response.body();
+                    String ss=body.string();
+
+
+                    //  link_save(dengJiBean);
+                    Log.d("AllConnects", "aa   "+ss);
+
+                    JsonObject jsonObject= GsonUtil.parse(ss).getAsJsonObject();
+                    Gson gson=new Gson();
+                    FanHuiBean zhaoPianBean=gson.fromJson(jsonObject,FanHuiBean.class);
+                    if (zhaoPianBean.getDtoResult()==0){
+                        //更新状态
+                        dengJiBean.setIsTijiao(true);
+                        baoZhangDengJiBeanDao.update(dengJiBean);
+                        showMSG("提交成功",4);
+
+                    }else if (zhaoPianBean.getDtoResult()==-33){
+                        showMSG("登录过期,请重新登录",4);
+                    }
+
+                }catch (Exception e){
+                    dismissDialog();
+                    showMSG("上传图片出错",4);
                     Log.d("WebsocketPushMsg", e.getMessage());
                 }
             }

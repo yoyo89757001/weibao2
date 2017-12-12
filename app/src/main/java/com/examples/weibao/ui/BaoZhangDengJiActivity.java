@@ -348,6 +348,7 @@ public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
                     dengJiBean.setDeviceId((int) shebeiID);
                     dengJiBean.setDeviceNumber(bianhao);
                     dengJiBean.setRemark(s4);
+                    dengJiBean.setPlanId(itemsBeanList.get(p1).getId());
                     dengJiBean.setFaultTime(Long.parseLong(DateUtils.getTimes(s5)+"000"));
                     dengJiBean.setContactTel(s7);
                     dengJiBean.setIsTijiao(false);
@@ -369,7 +370,7 @@ public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
 
                     baoZhangDengJiBeanDao.insert(dengJiBean);
 
-                    if (ff){
+                    if (!Utils.getNetTypeName(BaoZhangDengJiActivity.this).equals("无网络")){
                         //传图片
                         if (stringList.size()>1){
                             link_P1(stringList,dengJiBean);
@@ -725,7 +726,7 @@ public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
 
                             @Override
                             public void onSuccess(File file) {
-                                Log.d("BaoZhangDengJiActivity", "file.length():" + file.length()+"  "+file.getAbsolutePath());
+                               // Log.d("BaoZhangDengJiActivity", "file.length():" + file.length()+"  "+file.getAbsolutePath());
                                 stringList.add(0,file.getAbsolutePath());
                                 zhaoPianAdapter.notifyDataSetChanged();
                             }

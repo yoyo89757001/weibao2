@@ -400,7 +400,7 @@ public class WangJiMiMaActivity extends Activity {
                         }else if (zhaoPianBean.getRole_id()==10000005){
                             //维保主管
                             type=1;
-                        }else if (zhaoPianBean.getRole_id()==10000006){
+                        }else {
                             //甲方
                             type=2;
                         }

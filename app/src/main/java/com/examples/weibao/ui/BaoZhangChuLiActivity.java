@@ -23,8 +23,6 @@ import com.examples.weibao.MyAppLaction;
 import com.examples.weibao.R;
 import com.examples.weibao.adapters.BaoZhangAdapter1;
 import com.examples.weibao.adapters.PopupWindowAdapter5;
-import com.examples.weibao.allbeans.DengLuBean;
-import com.examples.weibao.allbeans.DengLuBeanDao;
 import com.examples.weibao.allbeans.FaultsBean;
 import com.examples.weibao.allbeans.FaultsBeanDao;
 import com.examples.weibao.beans.XuanZeBean;
@@ -42,8 +40,8 @@ public class BaoZhangChuLiActivity extends Activity {
     private LRecyclerViewAdapter lRecyclerViewAdapter;
     private LinearLayoutManager linearLayoutManager;
     private BaoZhangAdapter1 adapter1=null;
-    private DengLuBeanDao dengLuBeanDao=null;
-    private DengLuBean dengLuBean=null;
+  //  private DengLuBeanDao dengLuBeanDao=null;
+ //   private DengLuBean dengLuBean=null;
     private FaultsBeanDao faultsBeanDao=null;
     private List<FaultsBean> faultsBeanList0=new ArrayList<>();
     private List<FaultsBean> faultsBeanList1=new ArrayList<>();
@@ -53,6 +51,7 @@ public class BaoZhangChuLiActivity extends Activity {
     private List<FaultsBean> faultsBeanList5=new ArrayList<>();
     private List<FaultsBean> faultsBeanList6=new ArrayList<>();
     private List<FaultsBean> faultsBeanList7=new ArrayList<>();
+    private List<FaultsBean> faultsBeanList8=new ArrayList<>();
     private PopupWindow popupWindow=null;
     private List<XuanZeBean> stringList=new ArrayList<>();
     private int p4=-1;
@@ -74,8 +73,8 @@ public class BaoZhangChuLiActivity extends Activity {
             tintManager.setStatusBarTintResource(R.color.lanse33);
         }
         faultsBeanDao= MyAppLaction.myAppLaction.getDaoSession().getFaultsBeanDao();
-        dengLuBeanDao=MyAppLaction.myAppLaction.getDaoSession().getDengLuBeanDao();
-        dengLuBean=dengLuBeanDao.load(123456L);
+      //  dengLuBeanDao=MyAppLaction.myAppLaction.getDaoSession().getDengLuBeanDao();
+       // dengLuBean=dengLuBeanDao.load(123456L);
 
         stringList.add(new XuanZeBean("全部",-1));
         stringList.add(new XuanZeBean("待回复",0));
@@ -86,7 +85,7 @@ public class BaoZhangChuLiActivity extends Activity {
         stringList.add(new XuanZeBean("处理审核通过",5));
         stringList.add(new XuanZeBean("处理审核不通过",6));
         stringList.add(new XuanZeBean("已完成处理",7));
-
+        stringList.add(new XuanZeBean("甲方不通过",8));
 
         findById();
         init();
@@ -162,7 +161,10 @@ public class BaoZhangChuLiActivity extends Activity {
                                 faultsBeanList.addAll(faultsBeanList7);
                                 adapter1.notifyDataSetChanged();
                                 break;
-
+                            case 8:
+                                faultsBeanList.addAll(faultsBeanList8);
+                                adapter1.notifyDataSetChanged();
+                                break;
                         }
 
                         popupWindow.dismiss();
@@ -244,6 +246,9 @@ public class BaoZhangChuLiActivity extends Activity {
                             case 7:
                                 faultsBeanList7.add(f.get(i));
                                 break;
+                            case 8:
+                                faultsBeanList8.add(f.get(i));
+                                break;
                         }
                     }
                     switch (p4){
@@ -273,6 +278,9 @@ public class BaoZhangChuLiActivity extends Activity {
                             break;
                         case 7:
                             faultsBeanList.addAll(faultsBeanList7);
+                            break;
+                        case 8:
+                            faultsBeanList.addAll(faultsBeanList8);
                             break;
                     }
 
@@ -353,6 +361,13 @@ public class BaoZhangChuLiActivity extends Activity {
                                                     .putExtra("status",faultsBeanList7.get(position).getStatus())
                                                     .putExtra("shebeiID",faultsBeanList7.get(position).getDeviceId())
                                                     .putExtra("baozhangID",faultsBeanList7.get(position).getId()));
+                                            break;
+                                        case 8:
+
+                                            startActivity(new Intent(BaoZhangChuLiActivity.this, BaoZhangChaKanActivity.class)
+                                                    .putExtra("status",faultsBeanList8.get(position).getStatus())
+                                                    .putExtra("shebeiID",faultsBeanList8.get(position).getDeviceId())
+                                                    .putExtra("baozhangID",faultsBeanList8.get(position).getId()));
                                             break;
 
                                     }

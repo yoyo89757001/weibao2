@@ -69,14 +69,15 @@ public class BaoZhangDengJiBean {
     private int pageNum;
     private int pageSize;
     private boolean isTijiao;
-    @Generated(hash = 871956218)
+    private long planId;
+    @Generated(hash = 319049205)
     public BaoZhangDengJiBean(@NotNull Long id, int status, int accountId,
             String address, int companyId, int deviceId, String deviceNumber,
             long faultTime, String remark, String contactTel, String faultImage,
             int replyBy, String replyContent, String replyUsername, long replyTime,
             long planCheckTime, int processBy, String processContent,
             String processUser, long processTime, long modifyTime, int dtoResult,
-            int pageNum, int pageSize, boolean isTijiao) {
+            int pageNum, int pageSize, boolean isTijiao, long planId) {
         this.id = id;
         this.status = status;
         this.accountId = accountId;
@@ -102,6 +103,7 @@ public class BaoZhangDengJiBean {
         this.pageNum = pageNum;
         this.pageSize = pageSize;
         this.isTijiao = isTijiao;
+        this.planId = planId;
     }
     @Generated(hash = 334163897)
     public BaoZhangDengJiBean() {
@@ -255,6 +257,12 @@ public class BaoZhangDengJiBean {
     }
     public void setIsTijiao(boolean isTijiao) {
         this.isTijiao = isTijiao;
+    }
+    public long getPlanId() {
+        return this.planId;
+    }
+    public void setPlanId(long planId) {
+        this.planId = planId;
     }
 
 

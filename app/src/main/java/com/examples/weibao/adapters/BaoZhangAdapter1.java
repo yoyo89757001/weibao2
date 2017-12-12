@@ -84,6 +84,10 @@ public class BaoZhangAdapter1 extends RecyclerView.Adapter<BaoZhangAdapter1.View
                 break;
             case 7:
                 viewHolder.zhuangtai.setText("已完成处理");
+                viewHolder.zhuangtai.setBackgroundResource(R.drawable.luse);
+                break;
+            case 8:
+                viewHolder.zhuangtai.setText("甲方不通过");
                 viewHolder.zhuangtai.setBackgroundResource(R.drawable.ju);
                 break;
 

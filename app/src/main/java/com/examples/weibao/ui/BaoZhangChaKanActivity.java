@@ -18,11 +18,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.examples.weibao.MyAppLaction;
 import com.examples.weibao.R;
-import com.examples.weibao.allbeans.BaoZhangDengJiBean;
-import com.examples.weibao.allbeans.BaoZhangDengJiBeanDao;
 import com.examples.weibao.allbeans.DengLuBean;
 import com.examples.weibao.allbeans.DengLuBeanDao;
 import com.examples.weibao.allbeans.DevicesBean;
@@ -39,16 +36,13 @@ import com.examples.weibao.utils.GsonUtil;
 import com.examples.weibao.utils.Utils;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.jude.rollviewpager.HintView;
 import com.jude.rollviewpager.RollPagerView;
 import com.jude.rollviewpager.adapter.LoopPagerAdapter;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.sdsmdg.tastytoast.TastyToast;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -56,7 +50,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -79,7 +72,7 @@ public class BaoZhangChaKanActivity extends Activity {
     private TextView shebei,baozhangtoubu_tv,bianhao,gongsi,weizhi,guzhangshijian,baozhangdianhua,
             lianxidianhua,shengyushijian,paichashijian,huifuren,chuliren;
     private EditText huifuneirong,chulineirong;
-    private ImageView tupian;
+   // private ImageView tupian;
     private RelativeLayout paicha_rl;
     private View view;
     private Button bt1,bt2;
@@ -148,7 +141,7 @@ public class BaoZhangChaKanActivity extends Activity {
 
     private class TestLoopAdapter extends LoopPagerAdapter {
 
-        public TestLoopAdapter(RollPagerView viewPager) {
+        private TestLoopAdapter(RollPagerView viewPager) {
             super(viewPager);
         }
 
@@ -223,17 +216,26 @@ public class BaoZhangChaKanActivity extends Activity {
                         break;
                     case 1:
                         //主管
-                        if (status==1){
-                            link_huifu_shenhe(2);
+                        if ( !Utils.getNetTypeName(BaoZhangChaKanActivity.this).equals("无网络")){
+                            //有网络
+                            if (status==1){
+                                link_huifu_shenhe(2);
 
-                        }else if (status==4){
-                            link_chuli_shenhe(5);
+                            }else if (status==4){
+                                link_chuli_shenhe(5);
+                            }
+
+                        }else {
+
+
+
                         }
+
 
                         break;
                     case 2:
                         //甲方
-
+                        link_chuli_shenhe(7);
 
                         break;
                 }
@@ -280,7 +282,7 @@ public class BaoZhangChaKanActivity extends Activity {
                     case 2:
                         //甲方
 
-
+                        link_chuli_shenhe(8);
                         break;
 
                 }
@@ -424,6 +426,15 @@ public class BaoZhangChaKanActivity extends Activity {
                             bt2.setVisibility(View.GONE);
 
                             break;
+                        case 8:
+                            //甲方确认不通过
+                            huifuneirong.setEnabled(false);
+                            paicha_rl.setEnabled(false);
+                            chulineirong.setEnabled(false);
+                            chulineirong.setHint("");
+                            bt2.setVisibility(View.GONE);
+
+                            break;
 
                     }
 
@@ -488,7 +499,13 @@ public class BaoZhangChaKanActivity extends Activity {
                             view.setVisibility(View.GONE);
 
                             break;
+                        case 8:
+                            //7已完成处理
+                            bt1.setVisibility(View.GONE);
+                            bt2.setVisibility(View.GONE);
+                            view.setVisibility(View.GONE);
 
+                            break;
                     }
                     break;
                 case 2:
@@ -549,7 +566,13 @@ public class BaoZhangChaKanActivity extends Activity {
                             bt2.setVisibility(View.GONE);
                             view.setVisibility(View.GONE);
                             break;
+                        case 8:
+                            //7已完成处理
 
+                            bt1.setVisibility(View.GONE);
+                            bt2.setVisibility(View.GONE);
+                            view.setVisibility(View.GONE);
+                            break;
                     }
                     break;
 
@@ -868,7 +891,7 @@ public class BaoZhangChaKanActivity extends Activity {
             tijiao.put("id",faultsBean.getId());
             tijiao.put("processBy",dengLuBean.getUserId());
             tijiao.put("processContent",chulineirong.getText().toString().trim());
-            tijiao.put("processUser",dengLuBean.getName());
+            tijiao.put("processUsername",dengLuBean.getName());
             tijiao.put("processTime",System.currentTimeMillis());
            // tijiao.put("planCheckTime",DateUtils.getTimes(paichashijian.getText().toString().trim()));
 

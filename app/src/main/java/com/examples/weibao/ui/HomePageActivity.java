@@ -345,7 +345,7 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
                 .header("nonce", nonce)
                 .header("timestamp", timestamp)
                 .header("userId", dengLuBean.getUserId()+"")
-                .header("sign", Utils.encode("100"+dengLuBean.getQqTime()+time+nonce+timestamp
+                .header("sign", Utils.encode("100"+dengLuBean.getQqTime()+ctime+nonce+timestamp
                         +dengLuBean.getUserId()+Utils.signaturePassword))
                 .post(body)
                 .url(dengLuBean.getZhuji() + "downloadData.app");
@@ -538,17 +538,16 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
                                      //   String ss[] = "dsfds.jpg;fdgg.jpg;hghghg.jpg;".split(";");
                                        int ds=ss.length;
 
-                                       for (int d=0;d<ds;d++){
-                                           String fn=ss[d];
-                                           FileUtil.isExists(FileUtil.PATH,fn);
+                                        for (String fn : ss) {
+                                            FileUtil.isExists(FileUtil.PATH, fn);
 
-                                           Intent intent33 = new Intent(HomePageActivity.this, DownloadService.class);
-                                           intent33.putExtra("url", "http://14.23.169.42:8090/faultImages/"+fn);
-                                           intent33.putExtra("receiver", new DownloadReceiver(new Handler()));
-                                           intent33.putExtra("faultsId",faultsBeanList.get(ii).getId());
-                                           intent33.putExtra("urlName",FileUtil.SDPATH+ File.separator+FileUtil.PATH+File.separator+fn);
-                                           startService(intent33);
-                                       }
+                                            Intent intent33 = new Intent(HomePageActivity.this, DownloadService.class);
+                                            intent33.putExtra("url", "http://14.23.169.42:8090/faultImages/" + fn);
+                                            intent33.putExtra("receiver", new DownloadReceiver(new Handler()));
+                                            intent33.putExtra("faultsId", faultsBeanList.get(ii).getId());
+                                            intent33.putExtra("urlName", FileUtil.SDPATH + File.separator + FileUtil.PATH + File.separator + fn);
+                                            startService(intent33);
+                                        }
 
 
                                     }
