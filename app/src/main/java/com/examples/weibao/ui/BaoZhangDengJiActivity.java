@@ -257,9 +257,10 @@ public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
             dianhua.setText(baoZhangDengJiBean.getContactTel());
 
             String ss[] =baoZhangDengJiBean.getFaultImage().split(";");
-            int s=ss.length;
-            for (int i=0;i<s;i++){
-                stringList.add(0,ss[i]);
+           // int s=ss.length;
+            ;
+            for (String s1 : ss) {
+                stringList.add(0, FileUtil.SDPATH + File.separator + FileUtil.PATH + File.separator + s1);
             }
 
         }else {
@@ -349,7 +350,7 @@ public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
                     dengJiBean.setDeviceNumber(bianhao);
                     dengJiBean.setRemark(s4);
                     dengJiBean.setPlanId(itemsBeanList.get(p1).getId());
-                    dengJiBean.setFaultTime(Long.parseLong(DateUtils.getTimes(s5)+"000"));
+                    dengJiBean.setFaultTime(Long.parseLong(DateUtils.getTimes(s5)));
                     dengJiBean.setContactTel(s7);
                     dengJiBean.setIsTijiao(false);
 
@@ -849,7 +850,6 @@ public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
                     ResponseBody body = response.body();
                     String ss=body.string();
 
-
                   //  link_save(dengJiBean);
                        Log.d("AllConnects", "aa   "+ss);
 
@@ -857,6 +857,9 @@ public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
                     Gson gson=new Gson();
                     FanHuiBean zhaoPianBean=gson.fromJson(jsonObject,FanHuiBean.class);
                     if (zhaoPianBean.getDtoResult()==0){
+                        dengJiBean.setIsTijiao(true);
+                        baoZhangDengJiBeanDao.update(dengJiBean);
+
                         showMSG("提交成功",4);
                         finish();
                     }else if (zhaoPianBean.getDtoResult()==-33){

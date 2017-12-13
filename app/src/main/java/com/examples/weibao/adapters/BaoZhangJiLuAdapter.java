@@ -1,6 +1,7 @@
 package com.examples.weibao.adapters;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,7 @@ public class BaoZhangJiLuAdapter extends RecyclerView.Adapter<BaoZhangJiLuAdapte
     //将数据与界面进行绑定的操作
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
+       // Log.d("BaoZhangJiLuAdapter", datas.get(position).getFaultTime() + "");
         viewHolder.time.setText("报障时间:"+ DateUtils.time(datas.get(position).getFaultTime()+""));
         viewHolder.jihua.setText("设备编号:"+datas.get(position).getDeviceNumber());
 

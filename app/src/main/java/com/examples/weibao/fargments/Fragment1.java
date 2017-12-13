@@ -45,7 +45,6 @@ import com.examples.weibao.cookies.CookiesManager;
 import com.examples.weibao.dialogs.QueRenDialog;
 import com.examples.weibao.dialogs.TiJIaoDialog;
 import com.examples.weibao.ui.BaoZhangChuLiActivity;
-import com.examples.weibao.ui.HomePageActivity;
 import com.examples.weibao.ui.TaiZhangActivity;
 import com.examples.weibao.ui.WeiBaoBaoGaoActivity;
 import com.examples.weibao.ui.WeiBaoJiHuaActivity;
@@ -278,18 +277,13 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
                                     if (!baoZhangDengJiBeanList.get(i).getIsTijiao()){
                                         //没有提交过的
                                         String ss[] =baoZhangDengJiBeanList.get(i).getFaultImage().split(";");
-                                        int s=ss.length;
+                                       // int s=ss.length;
                                         for (String s1 : ss) {
                                             stringList.add(0, s1);
                                         }
                                         link_P1(stringList,baoZhangDengJiBeanList.get(i));
                                     }
-
-
                                 }
-
-
-
 
                             }
                         }).start();
@@ -361,7 +355,6 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
                         +dengLuBean.getUserId()+Utils.signaturePassword))
                 .post(body)
                 .url(dengLuBean.getZhuji() + "checkDownload.app");
-
 
 
         // step 3：创建 Call 对象
@@ -749,6 +742,7 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
         });
     }
 
+    //维保与测试
     private void link_shangchuan(JSONObject jsonObject) {
         showDialog();
         final MediaType JSON=MediaType.parse("application/json; charset=utf-8");

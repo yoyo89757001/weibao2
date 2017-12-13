@@ -12,7 +12,7 @@ import org.greenrobot.greendao.annotation.Generated;
  */
 
 @Entity
-public class BaoZhangDengJiBean {
+public class   BaoZhangDengJiBean {
     @Id
     @NotNull
     private Long id;
