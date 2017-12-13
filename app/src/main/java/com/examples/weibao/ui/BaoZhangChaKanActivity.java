@@ -222,11 +222,25 @@ public class BaoZhangChaKanActivity extends Activity {
                                 link_huifu_shenhe(2);
 
                             }else if (status==4){
-                                link_chuli_shenhe(5);
+                                link_chuli_shenhe(5,99);
                             }
 
                         }else {
-
+                            if (status==1){
+                              //保存离线回复 通过
+                                faultsBean.setStatus(2);
+                                faultsBean.setIsShenhehuifu(false);
+                                faultsBeanDao.update(faultsBean);
+                                showMSG("离线保存成功,请在有网络时在主界面点击上传本地维保信息",4);
+                                finish();
+                            }else if (status==4){
+                               //保存离线处理 通过
+                                faultsBean.setStatus(5);
+                                faultsBean.setIsShenhechuli(false);
+                                faultsBeanDao.update(faultsBean);
+                                showMSG("离线保存成功,请在有网络时在主界面点击上传本地维保信息",4);
+                                finish();
+                            }
 
 
                         }
@@ -235,7 +249,17 @@ public class BaoZhangChaKanActivity extends Activity {
                         break;
                     case 2:
                         //甲方
-                        link_chuli_shenhe(7);
+                        if ( !Utils.getNetTypeName(BaoZhangChaKanActivity.this).equals("无网络")) {
+                            //有网络
+                            link_chuli_shenhe(7,88);
+
+                        }else {
+                            faultsBean.setStatus(7);
+                            faultsBean.setIsQueren(false);
+                            faultsBeanDao.update(faultsBean);
+                            showMSG("离线保存成功,请在有网络时在主界面点击上传本地维保信息",4);
+                            finish();
+                        }
 
                         break;
                 }
@@ -251,7 +275,22 @@ public class BaoZhangChaKanActivity extends Activity {
                         if (status==0) {
                             if (!huifuneirong.getText().toString().trim().equals("")) {
                                 if (!paichashijian.getText().toString().trim().equals("暂无")) {
-                                    link_save();
+                                    if ( !Utils.getNetTypeName(BaoZhangChaKanActivity.this).equals("无网络")) {
+                                        link_save();
+
+                                    }else {
+                                        //回复
+                                        faultsBean.setStatus(1);
+                                        faultsBean.setReplyContent(huifuneirong.getText().toString().trim());
+                                        faultsBean.setIsHuifu(false);
+                                        faultsBean.setPlanCheckTime(Long.parseLong(DateUtils.getTimes(paichashijian.getText().toString().trim())));
+                                        faultsBean.setReplyUsername(dengLuBean.getName());
+                                        faultsBeanDao.update(faultsBean);
+                                        showMSG("离线保存成功,请在有网络时在主界面点击上传本地维保信息",4);
+                                        finish();
+
+                                    }
+
                                 } else {
                                     showMSG("请选择上门排查时间", 4);
                                 }
@@ -261,7 +300,18 @@ public class BaoZhangChaKanActivity extends Activity {
                             }
                         }else if (status==2){
                             if (!chulineirong.getText().toString().trim().equals("")){
-                                link_tijiaochuli();
+                                if ( !Utils.getNetTypeName(BaoZhangChaKanActivity.this).equals("无网络")) {
+                                    link_tijiaochuli();
+                                }else {
+                                    faultsBean.setStatus(4);
+                                    faultsBean.setIsChuli(false);
+                                    faultsBean.setProcessUsername(dengLuBean.getName());
+                                    faultsBean.setProcessContent(chulineirong.getText().toString().trim());
+                                    faultsBeanDao.update(faultsBean);
+                                    showMSG("离线保存成功,请在有网络时在主界面点击上传本地维保信息",4);
+                                    finish();
+                                }
+
                             }else {
                                 showMSG("你没有填写处理内容", 4);
                             }
@@ -272,17 +322,44 @@ public class BaoZhangChaKanActivity extends Activity {
                     case 1:
                         //主管
                         if (status==1){
-                            link_huifu_shenhe(3);
+                            if ( !Utils.getNetTypeName(BaoZhangChaKanActivity.this).equals("无网络")) {
+                                link_huifu_shenhe(3);
+                            }else {
+                                faultsBean.setStatus(3);
+                                faultsBean.setIsShenhehuifu(false);
+                                faultsBeanDao.update(faultsBean);
+                                showMSG("离线保存成功,请在有网络时在主界面点击上传本地维保信息",4);
+                                finish();
+                            }
+
 
                         }else if (status==4){
-                            link_chuli_shenhe(6);
+                            if ( !Utils.getNetTypeName(BaoZhangChaKanActivity.this).equals("无网络")) {
+                                link_chuli_shenhe(6,99);
+                            }else {
+                                faultsBean.setStatus(6);
+                                faultsBean.setIsShenhechuli(false);
+                                faultsBeanDao.update(faultsBean);
+                                showMSG("离线保存成功,请在有网络时在主界面点击上传本地维保信息",4);
+                                finish();
+                            }
+
                         }
 
                         break;
                     case 2:
                         //甲方
+                        if ( !Utils.getNetTypeName(BaoZhangChaKanActivity.this).equals("无网络")) {
+                            link_chuli_shenhe(8,88);
 
-                        link_chuli_shenhe(8);
+                        }else {
+                            faultsBean.setStatus(8);
+                            faultsBean.setIsQueren(false);
+                            faultsBeanDao.update(faultsBean);
+                            showMSG("离线保存成功,请在有网络时在主界面点击上传本地维保信息",4);
+                            finish();
+                        }
+
                         break;
 
                 }
@@ -525,7 +602,9 @@ public class BaoZhangChaKanActivity extends Activity {
                             break;
                         case 1:
                             //回复待审核
-
+                            bt1.setVisibility(View.GONE);
+                            bt2.setVisibility(View.GONE);
+                            view.setVisibility(View.GONE);
                             //  link_huifu_shenhe();
 
                             break;
@@ -540,19 +619,21 @@ public class BaoZhangChaKanActivity extends Activity {
                             break;
                         case 3:
                             //回复审核不通过
-
+                            bt1.setVisibility(View.GONE);
+                            bt2.setVisibility(View.GONE);
+                            view.setVisibility(View.GONE);
                             break;
                         case 4:
                             //处理待审核
-
+                            bt1.setVisibility(View.GONE);
+                            bt2.setVisibility(View.GONE);
+                            view.setVisibility(View.GONE);
 
                             break;
                         case 5:
                             //处理审核通过
 
-                            bt1.setVisibility(View.GONE);
-                            bt2.setVisibility(View.GONE);
-                            view.setVisibility(View.GONE);
+
                             break;
                         case 6:
                             //处理审核不通过
@@ -678,7 +759,12 @@ public class BaoZhangChaKanActivity extends Activity {
                     Gson gson=new Gson();
                     FanHuiBean zhaoPianBean=gson.fromJson(jsonObject,FanHuiBean.class);
                     if (zhaoPianBean.getDtoResult()==0){
-
+                        faultsBean.setStatus(1);
+                        faultsBean.setReplyUsername(dengLuBean.getName());
+                        faultsBean.setPlanCheckTime(Long.parseLong(DateUtils.getTimes(paichashijian.getText().toString().trim())));
+                        faultsBean.setReplyContent(huifuneirong.getText().toString().trim());
+                        faultsBean.setIsHuifu(true);
+                        faultsBeanDao.update(faultsBean);
                         showMSG("保存成功",4);
                     }else if (zhaoPianBean.getDtoResult()==-33){
                         showMSG("账号登陆失效,请重新登陆",4);
@@ -697,7 +783,7 @@ public class BaoZhangChaKanActivity extends Activity {
     }
 
 
-    private void link_huifu_shenhe(int ooo) {
+    private void link_huifu_shenhe(final int ooo) {
         showDialog();
         final MediaType JSON=MediaType.parse("application/json; charset=utf-8");
         OkHttpClient okHttpClient= MyAppLaction.getOkHttpClient();
@@ -765,9 +851,11 @@ public class BaoZhangChaKanActivity extends Activity {
                     Gson gson=new Gson();
                     FanHuiBean zhaoPianBean=gson.fromJson(jsonObject,FanHuiBean.class);
                     if (zhaoPianBean.getDtoResult()==0){
-
+                        faultsBean.setStatus(ooo);
+                        faultsBean.setIsShenhehuifu(true);
+                        faultsBeanDao.update(faultsBean);
                         showMSG("审核成功",4);
-
+                        finish();
                     }else if (zhaoPianBean.getDtoResult()==-33){
                         showMSG("账号登陆失效,请重新登陆",4);
                     }else {
@@ -784,7 +872,7 @@ public class BaoZhangChaKanActivity extends Activity {
 
     }
 
-    private void link_chuli_shenhe(int ooo) {
+    private void link_chuli_shenhe(final int ooo, final int type) {
         showDialog();
         final MediaType JSON=MediaType.parse("application/json; charset=utf-8");
         OkHttpClient okHttpClient= MyAppLaction.getOkHttpClient();
@@ -852,9 +940,18 @@ public class BaoZhangChaKanActivity extends Activity {
                     Gson gson=new Gson();
                     FanHuiBean zhaoPianBean=gson.fromJson(jsonObject,FanHuiBean.class);
                     if (zhaoPianBean.getDtoResult()==0){
+                        if (type==99){
+                            faultsBean.setStatus(ooo);
+                            faultsBean.setIsShenhechuli(true);
+                            faultsBeanDao.update(faultsBean);
+                        }else {
+                            faultsBean.setStatus(ooo);
+                            faultsBean.setIsQueren(true);
+                            faultsBeanDao.update(faultsBean);
+                        }
 
                         showMSG("审核成功",4);
-
+                        finish();
                     }else if (zhaoPianBean.getDtoResult()==-33){
                         showMSG("账号登陆失效,请重新登陆",4);
                     }else {
@@ -895,7 +992,7 @@ public class BaoZhangChaKanActivity extends Activity {
             tijiao.put("processTime",System.currentTimeMillis());
            // tijiao.put("planCheckTime",DateUtils.getTimes(paichashijian.getText().toString().trim()));
 
-            Log.d("BaoZhangDengJiActivity", tijiao.toString());
+          //  Log.d("BaoZhangDengJiActivity", tijiao.toString());
             //   jsonObject.put("password",jiami);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -941,8 +1038,13 @@ public class BaoZhangChaKanActivity extends Activity {
                     Gson gson=new Gson();
                     FanHuiBean zhaoPianBean=gson.fromJson(jsonObject,FanHuiBean.class);
                     if (zhaoPianBean.getDtoResult()==0){
-
+                        faultsBean.setStatus(4);
+                        faultsBean.setProcessUsername(dengLuBean.getName());
+                        faultsBean.setProcessContent(chulineirong.getText().toString().trim());
+                        faultsBean.setIsChuli(true);
+                        faultsBeanDao.update(faultsBean);
                         showMSG("保存成功",4);
+                        finish();
                     }else if (zhaoPianBean.getDtoResult()==-33){
                         showMSG("账号登陆失效,请重新登陆",4);
                     }else {

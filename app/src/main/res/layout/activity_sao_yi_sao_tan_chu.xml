@@ -43,7 +43,7 @@
                 android:layout_marginRight="16dp"
                 android:layout_toRightOf="@+id/textView2"
                 android:gravity="right"
-                android:text="dsdsdsds"
+                android:text="名称"
                 android:textColor="@color/blake2"
                 android:textSize="16sp" />
 
@@ -82,7 +82,7 @@
                 android:layout_marginRight="16dp"
                 android:layout_toRightOf="@+id/t222"
                 android:gravity="right"
-                android:text="dsdsdsds"
+                android:text="编号"
                 android:textColor="@color/blake2"
                 android:textSize="16sp" />
 
@@ -121,7 +121,7 @@
                 android:layout_marginRight="16dp"
                 android:layout_toRightOf="@+id/t333"
                 android:gravity="right"
-                android:text="dsdsdsds"
+                android:text="地址"
                 android:textColor="@color/blake2"
                 android:textSize="16sp" />
 
@@ -160,7 +160,7 @@
                 android:layout_marginRight="16dp"
                 android:layout_toRightOf="@+id/t444"
                 android:gravity="right"
-                android:text="dsdsdsds"
+                android:text="项目"
                 android:textColor="@color/blake2"
                 android:textSize="16sp" />
 
@@ -199,7 +199,7 @@
                 android:layout_marginRight="16dp"
                 android:layout_toRightOf="@+id/t555"
                 android:gravity="right"
-                android:text="dsdsdsds"
+                android:text="公司"
                 android:textColor="@color/blake2"
                 android:textSize="16sp" />
 
@@ -239,7 +239,7 @@
                 android:layout_marginRight="16dp"
                 android:layout_toRightOf="@+id/t666"
                 android:gravity="right"
-                android:text="dsdsdsds"
+                android:text="暂无"
                 android:textColor="@color/blake2"
                 android:textSize="16sp" />
 
@@ -279,7 +279,7 @@
                 android:layout_marginRight="16dp"
                 android:layout_toRightOf="@+id/t777"
                 android:gravity="right"
-                android:text="dsdsdsds"
+                android:text="未知"
                 android:textColor="@color/blake2"
                 android:textSize="16sp" />
 

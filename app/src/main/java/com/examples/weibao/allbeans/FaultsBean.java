@@ -60,14 +60,21 @@ public class FaultsBean {
     private int status;
     private String faultImage;
     private boolean isXiazai;
-    @Generated(hash = 490351224)
+    private boolean isHuifu;
+    private boolean isShenhehuifu;
+    private boolean isChuli;
+    private boolean isShenhechuli;
+    private boolean isQueren;
+    @Generated(hash = 1340592956)
     public FaultsBean(int accountId, String address, int companyId,
             String contactTel, int deviceId, String deviceNumber, int dtoResult,
             long faultTime, @NotNull Long id, long modifyTime, int pageNum,
             int pageSize, long planCheckTime, int processBy, String remark,
             int replyBy, String replyContent, long replyTime, String replyUsername,
             String processUsername, String processContent, int status,
-            String faultImage, boolean isXiazai) {
+            String faultImage, boolean isXiazai, boolean isHuifu,
+            boolean isShenhehuifu, boolean isChuli, boolean isShenhechuli,
+            boolean isQueren) {
         this.accountId = accountId;
         this.address = address;
         this.companyId = companyId;
@@ -92,6 +99,11 @@ public class FaultsBean {
         this.status = status;
         this.faultImage = faultImage;
         this.isXiazai = isXiazai;
+        this.isHuifu = isHuifu;
+        this.isShenhehuifu = isShenhehuifu;
+        this.isChuli = isChuli;
+        this.isShenhechuli = isShenhechuli;
+        this.isQueren = isQueren;
     }
     @Generated(hash = 313645264)
     public FaultsBean() {
@@ -239,6 +251,36 @@ public class FaultsBean {
     }
     public void setIsXiazai(boolean isXiazai) {
         this.isXiazai = isXiazai;
+    }
+    public boolean getIsHuifu() {
+        return this.isHuifu;
+    }
+    public void setIsHuifu(boolean isHuifu) {
+        this.isHuifu = isHuifu;
+    }
+    public boolean getIsShenhehuifu() {
+        return this.isShenhehuifu;
+    }
+    public void setIsShenhehuifu(boolean isShenhehuifu) {
+        this.isShenhehuifu = isShenhehuifu;
+    }
+    public boolean getIsChuli() {
+        return this.isChuli;
+    }
+    public void setIsChuli(boolean isChuli) {
+        this.isChuli = isChuli;
+    }
+    public boolean getIsShenhechuli() {
+        return this.isShenhechuli;
+    }
+    public void setIsShenhechuli(boolean isShenhechuli) {
+        this.isShenhechuli = isShenhechuli;
+    }
+    public boolean getIsQueren() {
+        return this.isQueren;
+    }
+    public void setIsQueren(boolean isQueren) {
+        this.isQueren = isQueren;
     }
 
 }

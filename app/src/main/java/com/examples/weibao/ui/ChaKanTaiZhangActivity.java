@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.examples.weibao.MyAppLaction;
 import com.examples.weibao.R;
 import com.examples.weibao.adapters.ChaKanTaiZhangAdapter;
@@ -56,6 +55,7 @@ public class ChaKanTaiZhangActivity extends Activity {
 
        }
 
+
         setContentView(R.layout.activity_cha_kan_tai_zhang);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             //透明状态栏
@@ -75,7 +75,6 @@ public class ChaKanTaiZhangActivity extends Activity {
             //给导航栏设置资源
             // tintManager.setNavigationBarTintResource(R.color.dark_grey);
         }
-
         TextView title= (TextView) findViewById(R.id.title);
         title.setText("查看项目设备台帐");
         ImageView left= (ImageView) findViewById(R.id.leftim);
@@ -111,12 +110,11 @@ public class ChaKanTaiZhangActivity extends Activity {
             @Override
             public void onItemClick(View view, int position) {
                 startActivity(new Intent(ChaKanTaiZhangActivity.this,SaoYiSaoTanChuActivity.class)
-                        .putExtra("idid",devicesBeanList.get(position).getId()));
+                        .putExtra("idid",devicesBeanList.get(position).getId()).putExtra("type",99));
 
 
             }
         });
-
 
 
 

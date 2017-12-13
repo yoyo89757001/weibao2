@@ -468,7 +468,7 @@ public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
                             @Override
                             public void onSuccess(File file) {
                                 Log.d("BaoZhangDengJiActivity", "删除:" + mSavePhotoFile.delete());
-                                Log.d("BaoZhangDengJiActivity", "file.length():" + file.length()+"  "+file.getAbsolutePath());
+                              //  Log.d("BaoZhangDengJiActivity", "file.length():" + file.length()+"  "+file.getAbsolutePath());
                                 stringList.add(0,file.getAbsolutePath());
                                 zhaoPianAdapter.notifyDataSetChanged();
                             }

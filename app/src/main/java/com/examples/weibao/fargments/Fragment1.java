@@ -285,6 +285,42 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
                                     }
                                 }
 
+                                //提交本地回复和审核等
+                               List<FaultsBean> fff= faultsBeanDao.loadAll();
+                                for (int f=0;f<fff.size();f++){
+                                    switch (dengLuBean.getStatus()){
+                                        case 0:
+                                            //工程师
+                                            if (!fff.get(f).getIsHuifu()){
+                                                link_huifu(fff.get(f));
+                                            }
+                                            if (!fff.get(f).getIsChuli()){
+                                                link_tijiaochuli(fff.get(f));
+                                            }
+
+                                            break;
+                                        case 1:
+                                            //主管
+                                            if (!fff.get(f).getIsShenhehuifu()){
+                                                link_huifu_shenhe(fff.get(f));
+                                            }
+                                            if (!fff.get(f).getIsShenhechuli()){
+                                                link_chuli_shenhe(fff.get(f));
+                                            }
+
+
+                                            break;
+                                        case 2:
+                                            //甲方
+                                            if (!fff.get(f).getIsQueren()){
+                                                link_chuli_shenhe(fff.get(f));
+                                            }
+
+                                            break;
+                                    }
+
+                                }
+
                             }
                         }).start();
                         dialog.dismiss();
@@ -327,7 +363,6 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
         final MediaType JSON=MediaType.parse("application/json; charset=utf-8");
         OkHttpClient okHttpClient= MyAppLaction.getOkHttpClient();
 
-
         String nonce=Utils.getNonce();
         String timestamp=Utils.getTimestamp();
         String time= DateUtils.getTodayDateTimes();
@@ -340,8 +375,8 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
           //  jsonObject.put("itemId","0");
             jsonObject.put("stime",dengLuBean.getQqTime());
             jsonObject.put("etime", time);
-            Log.d("HomePageActivity","开始"+ dengLuBean.getQqTime());
-            Log.d("HomePageActivity","结束"+ time);
+            //Log.d("HomePageActivity","开始"+ dengLuBean.getQqTime());
+           // Log.d("HomePageActivity","结束"+ time);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -465,11 +500,12 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
                // dismissDialog();
                 ItemsBean zhaoPianBean=null;
                 Log.d("AllConnects", "请求识别成功"+call.request().toString());
+                String ss=null;
                 //获得返回体
                 try {
 
                     ResponseBody body = response.body();
-                    String ss=body.string().trim();
+                     ss=body.string().trim();
                     int i9 = 0;
                     while (true) {
                         if (i9 + 4000 >= ss.length()) {
@@ -662,9 +698,18 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
                     showMSG("更新成功",4);
                 }catch (Exception e){
 
-                    dismissDialog();
-                    showMSG("更新数据失败",3);
-                    Log.d("WebsocketPushMsg", e.getMessage());
+                    try {
+                        JsonObject jsonObject= GsonUtil.parse(ss).getAsJsonObject();
+                        Gson gson=new Gson();
+                        FanHuiBean ddd=gson.fromJson(jsonObject,FanHuiBean.class);
+                        if (ddd.getDtoResult()==-33){
+                            showMSG("账号登陆过期,请重新登陆",3);
+                        }
+                    }catch (Exception ee){
+                        dismissDialog();
+                        showMSG("更新数据失败",3);
+                        Log.d("WebsocketPushMsg", e.getMessage());
+                    }
                 }
             }
         });
@@ -976,5 +1021,372 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
         });
 
     }
+
+
+    private void link_huifu(final FaultsBean faultsBean) {
+        showDialog();
+        final MediaType JSON=MediaType.parse("application/json; charset=utf-8");
+        OkHttpClient okHttpClient= MyAppLaction.getOkHttpClient();
+        MultipartBody mBody;
+        MultipartBody.Builder builder=new MultipartBody.Builder().setType(MultipartBody.FORM);
+        //  String jiami=Utils.jiami(mima).toUpperCase();
+        String nonce= Utils.getNonce();
+        String timestamp=Utils.getTimestamp();
+
+//    /* form的分割线,自己定义 */
+//        String boundary = "xx--------------------------------------------------------------xx";
+        JSONObject tijiao =null;
+        try {
+            tijiao = new JSONObject();
+            tijiao.put("status",1);
+            tijiao.put("id",faultsBean.getId());
+            tijiao.put("replyBy",dengLuBean.getUserId());
+            tijiao.put("replyContent",faultsBean.getReplyContent());
+            tijiao.put("replyUsername",dengLuBean.getName());
+            tijiao.put("replyTime",System.currentTimeMillis());
+            tijiao.put("planCheckTime",faultsBean.getPlanCheckTime());
+
+            Log.d("BaoZhangDengJiActivity", tijiao.toString());
+            //   jsonObject.put("password",jiami);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        builder.addFormDataPart("cmd","101");
+        builder.addFormDataPart("fault",tijiao.toString());
+        mBody=builder.build();
+
+
+        Request.Builder requestBuilder = new Request.Builder()
+                .header("nonce", nonce)
+                .header("timestamp", timestamp)
+                .header("userId", dengLuBean.getUserId()+"")
+                .header("sign", Utils.encode("101"+nonce+timestamp
+                        +dengLuBean.getUserId()+Utils.signaturePassword))
+                .post(mBody)
+                .url(dengLuBean.getZhuji() + "uploadFault.app");
+
+        // step 3：创建 Call 对象
+        Call  call = okHttpClient.newCall(requestBuilder.build());
+
+        //step 4: 开始异步请求
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d("AllConnects", "请求识别失败"+e.getMessage());
+                dismissDialog();
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                dismissDialog();
+                Log.d("AllConnects", "请求识别成功"+call.request().toString());
+                //获得返回体
+                try {
+
+                    ResponseBody body = response.body();
+                    String ss=body.string().trim();
+                    Log.d("InFoActivity", "ss" + ss);
+                    JsonObject jsonObject= GsonUtil.parse(ss).getAsJsonObject();
+                    Gson gson=new Gson();
+                    FanHuiBean zhaoPianBean=gson.fromJson(jsonObject,FanHuiBean.class);
+                    if (zhaoPianBean.getDtoResult()==0){
+                       // faultsBean.setStatus(1);
+                        faultsBean.setIsHuifu(true);
+                        faultsBeanDao.update(faultsBean);
+                      //  showMSG("保存成功",4);
+                    }else if (zhaoPianBean.getDtoResult()==-33){
+                        showMSG("账号登陆失效,请重新登陆",4);
+                    }else {
+                        showMSG(zhaoPianBean.getDtoDesc(),4);
+                    }
+                }catch (Exception e){
+
+                    dismissDialog();
+                    showMSG("获取数据失败",3);
+                    Log.d("WebsocketPushMsg", e.getMessage());
+                }
+            }
+        });
+
+    }
+
+
+    private void link_huifu_shenhe(final FaultsBean faultsBean) {
+        showDialog();
+        final MediaType JSON=MediaType.parse("application/json; charset=utf-8");
+        OkHttpClient okHttpClient= MyAppLaction.getOkHttpClient();
+        MultipartBody mBody;
+        MultipartBody.Builder builder=new MultipartBody.Builder().setType(MultipartBody.FORM);
+        //  String jiami=Utils.jiami(mima).toUpperCase();
+        String nonce= Utils.getNonce();
+        String timestamp=Utils.getTimestamp();
+
+//    /* form的分割线,自己定义 */
+//        String boundary = "xx--------------------------------------------------------------xx";
+        JSONObject jsonObject = new JSONObject();
+        JSONArray jsonArray=new JSONArray();
+        JSONObject tijiao=null;
+        try {
+            tijiao = new JSONObject();
+            tijiao.put("status",faultsBean.getStatus());
+            tijiao.put("id",faultsBean.getId());
+
+            jsonArray.put(tijiao);
+            jsonObject.put("cmd","102");
+            jsonObject.put("faults",jsonArray);
+
+            //  Log.d("BaoZhangDengJiActivity", tijiao.toString());
+            //   jsonObject.put("password",jiami);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        RequestBody body = RequestBody.create(JSON, jsonObject.toString());
+
+        Log.d("BaoZhangChaKanActivity", jsonObject.toString());
+
+        Request.Builder requestBuilder = new Request.Builder()
+                .header("nonce", nonce)
+                .header("timestamp", timestamp)
+                .header("userId", dengLuBean.getUserId()+"")
+                .header("sign", Utils.encode("102"+nonce+timestamp
+                        +dengLuBean.getUserId()+Utils.signaturePassword))
+                .post(body)
+                .url(dengLuBean.getZhuji() + "auditFault.app");
+
+        // step 3：创建 Call 对象
+        Call  call = okHttpClient.newCall(requestBuilder.build());
+
+        //step 4: 开始异步请求
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d("AllConnects", "请求识别失败"+e.getMessage());
+                dismissDialog();
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                dismissDialog();
+                Log.d("AllConnects", "请求识别成功"+call.request().toString());
+                //获得返回体
+                try {
+
+                    ResponseBody body = response.body();
+                    String ss=body.string().trim();
+                    Log.d("InFoActivity", "ss" + ss);
+                    JsonObject jsonObject= GsonUtil.parse(ss).getAsJsonObject();
+                    Gson gson=new Gson();
+                    FanHuiBean zhaoPianBean=gson.fromJson(jsonObject,FanHuiBean.class);
+                    if (zhaoPianBean.getDtoResult()==0){
+
+                        faultsBean.setIsShenhehuifu(true);
+                        faultsBeanDao.update(faultsBean);
+
+                      //  showMSG("审核成功",4);
+                    }else if (zhaoPianBean.getDtoResult()==-33){
+                        showMSG("账号登陆失效,请重新登陆",4);
+                    }else {
+                        showMSG(zhaoPianBean.getDtoDesc(),4);
+                    }
+                }catch (Exception e){
+
+                    dismissDialog();
+                    showMSG("获取数据失败",3);
+                    Log.d("WebsocketPushMsg", e.getMessage());
+                }
+            }
+        });
+
+    }
+
+    private void link_chuli_shenhe(final FaultsBean faultsBean) {
+        showDialog();
+        final MediaType JSON=MediaType.parse("application/json; charset=utf-8");
+        OkHttpClient okHttpClient= MyAppLaction.getOkHttpClient();
+        MultipartBody mBody;
+        MultipartBody.Builder builder=new MultipartBody.Builder().setType(MultipartBody.FORM);
+        //  String jiami=Utils.jiami(mima).toUpperCase();
+        String nonce= Utils.getNonce();
+        String timestamp=Utils.getTimestamp();
+
+//    /* form的分割线,自己定义 */
+//        String boundary = "xx--------------------------------------------------------------xx";
+        JSONObject jsonObject = new JSONObject();
+        JSONArray jsonArray=new JSONArray();
+        JSONObject tijiao=null;
+        try {
+            tijiao = new JSONObject();
+            tijiao.put("status",faultsBean.getStatus());
+            tijiao.put("id",faultsBean.getId());
+
+            jsonArray.put(tijiao);
+            jsonObject.put("cmd","102");
+            jsonObject.put("faults",jsonArray);
+
+            //  Log.d("BaoZhangDengJiActivity", tijiao.toString());
+            //   jsonObject.put("password",jiami);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        RequestBody body = RequestBody.create(JSON, jsonObject.toString());
+
+        Log.d("BaoZhangChaKanActivity", jsonObject.toString());
+
+        Request.Builder requestBuilder = new Request.Builder()
+                .header("nonce", nonce)
+                .header("timestamp", timestamp)
+                .header("userId", dengLuBean.getUserId()+"")
+                .header("sign", Utils.encode("102"+nonce+timestamp
+                        +dengLuBean.getUserId()+Utils.signaturePassword))
+                .post(body)
+                .url(dengLuBean.getZhuji() + "auditFault.app");
+
+        // step 3：创建 Call 对象
+        Call  call = okHttpClient.newCall(requestBuilder.build());
+
+        //step 4: 开始异步请求
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d("AllConnects", "请求识别失败"+e.getMessage());
+                dismissDialog();
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                dismissDialog();
+                Log.d("AllConnects", "请求识别成功"+call.request().toString());
+                //获得返回体
+                try {
+
+                    ResponseBody body = response.body();
+                    String ss=body.string().trim();
+                    Log.d("InFoActivity", "ss" + ss);
+                    JsonObject jsonObject= GsonUtil.parse(ss).getAsJsonObject();
+                    Gson gson=new Gson();
+                    FanHuiBean zhaoPianBean=gson.fromJson(jsonObject,FanHuiBean.class);
+                    if (zhaoPianBean.getDtoResult()==0){
+                        if (faultsBean.getStatus()==5 ||faultsBean.getStatus()==6){
+                           // faultsBean.setStatus(ooo);
+                            faultsBean.setIsShenhechuli(true);
+                            faultsBeanDao.update(faultsBean);
+                        }else {
+                           // faultsBean.setStatus(ooo);
+                            faultsBean.setIsQueren(true);
+                            faultsBeanDao.update(faultsBean);
+                        }
+
+                      //  showMSG("审核成功",4);
+
+                    }else if (zhaoPianBean.getDtoResult()==-33){
+                        showMSG("账号登陆失效,请重新登陆",4);
+                    }else {
+                        showMSG(zhaoPianBean.getDtoDesc(),4);
+                    }
+                }catch (Exception e){
+
+                    dismissDialog();
+                    showMSG("获取数据失败",3);
+                    Log.d("WebsocketPushMsg", e.getMessage());
+                }
+            }
+        });
+
+    }
+
+
+    private void link_tijiaochuli(final  FaultsBean faultsBean) {
+        showDialog();
+        final MediaType JSON=MediaType.parse("application/json; charset=utf-8");
+        OkHttpClient okHttpClient= MyAppLaction.getOkHttpClient();
+        MultipartBody mBody;
+        MultipartBody.Builder builder=new MultipartBody.Builder().setType(MultipartBody.FORM);
+        //  String jiami=Utils.jiami(mima).toUpperCase();
+        String nonce= Utils.getNonce();
+        String timestamp=Utils.getTimestamp();
+
+//    /* form的分割线,自己定义 */
+//        String boundary = "xx--------------------------------------------------------------xx";
+        JSONObject tijiao =null;
+        try {
+            tijiao = new JSONObject();
+            tijiao.put("status",4);
+            tijiao.put("id",faultsBean.getId());
+            tijiao.put("processBy",dengLuBean.getUserId());
+            tijiao.put("processContent",faultsBean.getProcessContent());
+            tijiao.put("processUsername",dengLuBean.getName());
+            tijiao.put("processTime",System.currentTimeMillis());
+            // tijiao.put("planCheckTime",DateUtils.getTimes(paichashijian.getText().toString().trim()));
+
+            //  Log.d("BaoZhangDengJiActivity", tijiao.toString());
+            //   jsonObject.put("password",jiami);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        builder.addFormDataPart("cmd","102");
+        builder.addFormDataPart("fault",tijiao.toString());
+        mBody=builder.build();
+
+
+        Request.Builder requestBuilder = new Request.Builder()
+                .header("nonce", nonce)
+                .header("timestamp", timestamp)
+                .header("userId", dengLuBean.getUserId()+"")
+                .header("sign", Utils.encode("102"+nonce+timestamp
+                        +dengLuBean.getUserId()+Utils.signaturePassword))
+                .post(mBody)
+                .url(dengLuBean.getZhuji() + "uploadFault.app");
+
+        // step 3：创建 Call 对象
+        Call  call = okHttpClient.newCall(requestBuilder.build());
+
+        //step 4: 开始异步请求
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d("AllConnects", "请求识别失败"+e.getMessage());
+                dismissDialog();
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                dismissDialog();
+                Log.d("AllConnects", "请求识别成功"+call.request().toString());
+                //获得返回体
+                try {
+
+                    ResponseBody body = response.body();
+                    String ss=body.string().trim();
+                    Log.d("InFoActivity", "ss" + ss);
+                    JsonObject jsonObject= GsonUtil.parse(ss).getAsJsonObject();
+                    Gson gson=new Gson();
+                    FanHuiBean zhaoPianBean=gson.fromJson(jsonObject,FanHuiBean.class);
+                    if (zhaoPianBean.getDtoResult()==0){
+
+                        faultsBean.setIsChuli(true);
+                        faultsBeanDao.update(faultsBean);
+                     //   showMSG("保存成功",4);
+                    }else if (zhaoPianBean.getDtoResult()==-33){
+                        showMSG("账号登陆失效,请重新登陆",4);
+                    }else {
+                        showMSG(zhaoPianBean.getDtoDesc(),4);
+                    }
+                }catch (Exception e){
+
+                    dismissDialog();
+                    showMSG("获取数据失败",3);
+                    Log.d("WebsocketPushMsg", e.getMessage());
+                }
+            }
+        });
+
+    }
+
 
 }

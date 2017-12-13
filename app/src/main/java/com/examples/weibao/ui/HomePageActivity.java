@@ -368,12 +368,13 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
                 dismissDialog();
                 Log.d("AllConnects", "请求识别成功"+call.request().toString());
                 ItemsBean zhaoPianBean=null;
+                String ss=null;
                 //获得返回体
                 try {
 
 
                     ResponseBody body = response.body();
-                    String ss = body.string().trim();
+                     ss = body.string().trim();
                     int i9 = 0;
                     while (true) {
                         if (i9 + 4000 >= ss.length()) {
@@ -563,9 +564,20 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
                 }
                 }catch (Exception e){
 
-                    dismissDialog();
-                    showMSG("更新数据失败",3);
-                    Log.d("WebsocketPushMsg", e.getMessage());
+                    try {
+                        JsonObject jsonObject= GsonUtil.parse(ss).getAsJsonObject();
+                        Gson gson=new Gson();
+                        FanHuiBean ddd=gson.fromJson(jsonObject,FanHuiBean.class);
+                        if (ddd.getDtoResult()==-33){
+                            showMSG("账号登陆过期,请重新登陆",3);
+                        }
+                    }catch (Exception ee){
+                        dismissDialog();
+                        showMSG("更新数据失败",3);
+                        Log.d("WebsocketPushMsg", e.getMessage());
+                    }
+
+
                 }
             }
         });
