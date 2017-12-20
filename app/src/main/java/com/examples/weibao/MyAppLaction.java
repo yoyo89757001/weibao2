@@ -3,15 +3,12 @@ package com.examples.weibao;
 import android.app.Application;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
-
-
 import com.examples.weibao.allbeans.DaoMaster;
 import com.examples.weibao.allbeans.DaoSession;
 import com.examples.weibao.allbeans.DengLuBean;
 import com.examples.weibao.cookies.CookiesManager;
 import com.tencent.bugly.Bugly;
 import java.util.concurrent.TimeUnit;
-
 import okhttp3.OkHttpClient;
 
 
@@ -117,6 +114,9 @@ public class MyAppLaction extends Application {
 //            0是待提交，也就是客户端报障未提交到后台的状态
 
 //根据角色判断提交
+
+ //   项目id&设备编号&省编号&市编号&单元编号&楼栋编号&楼层编号&功能区编号&细区编号&系统类型编号&子系统编号
+
 
 
 }

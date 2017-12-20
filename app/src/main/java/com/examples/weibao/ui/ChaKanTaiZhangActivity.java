@@ -46,9 +46,9 @@ public class ChaKanTaiZhangActivity extends Activity {
         devicesBeanDao= MyAppLaction.myAppLaction.getDaoSession().getDevicesBeanDao();
 
        if (position!=-1){
-           Log.d("ChaKanTaiZhangActivity", "position:" + position);
+          // Log.d("ChaKanTaiZhangActivity", "position:" + position);
         List<DevicesBean> ddd=devicesBeanDao.queryBuilder().where(DevicesBeanDao.Properties.ItemId.eq(position)).list();
-           Log.d("ChaKanTaiZhangActivity", "ddd.size():" + ddd.size());
+          // Log.d("ChaKanTaiZhangActivity", "ddd.size():" + ddd.size());
            if (ddd!=null){
                devicesBeanList.addAll(ddd);
            }

@@ -194,7 +194,6 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
                    s=menurefsBeanList.size();
                }
 
-
                 //通过菜单menurefsBeanList中的id查出所有菜单
                 for (int i=0;i<s;i++){
                    MenusBean menusBean= menusBeanDao.queryBuilder().where(MenusBeanDao.Properties.Id.eq(menurefsBeanList.get(i).getWeibaoMenuId())).unique();
@@ -228,6 +227,8 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
                 popupWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));//设置背景
                 if (menusBeanList3.size()!=0){
                     popupWindow.showAsDropDown(r3,go3.getLeft()-600,0);
+                }else {
+                    showMSG("该项没有数据",4);
                 }
 
                 break;
@@ -266,6 +267,8 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
                 popupWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));//设置背景
                 if (menusBeanList4.size()!=0){
                     popupWindow.showAsDropDown(r4,go4.getLeft()-600,0);
+                }else {
+                    showMSG("该项没有数据",4);
                 }
 
                 break;
@@ -283,13 +286,14 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
                             putExtra("xitong",menusBeanList3.get(p3).getName()).
                             putExtra("weibaoxiang",menusBeanList4.get(p4).getName()).putExtras(bundle));
                 }else {
-                    showMSG("信息没有选择完整!",4);
+                    showMSG("信息没有选择完整,不能进行下一步",4);
                 }
 
                 break;
             case R.id.jihua_rl:
 
                 if (p1==-1){
+
                     break;
                 }
                 if (plansBeanList.size()!=0){
@@ -327,6 +331,8 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
                 popupWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));//设置背景
                 if (plansBeanList.size()!=0){
                     popupWindow.showAsDropDown(jihua_rl,go6.getLeft()-600,0);
+                }else {
+                    showMSG("该项没有数据",4);
                 }
 
                 break;

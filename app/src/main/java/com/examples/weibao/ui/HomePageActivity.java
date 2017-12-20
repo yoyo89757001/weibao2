@@ -743,8 +743,9 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if(result != null) {
             if(result.getContents() != null) {
-                Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
-                startActivity(new Intent(HomePageActivity.this,SaoYiSaoTanChuActivity.class));
+                Log.d("HomePageActivity", result.getContents());
+              //  Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
+                startActivity(new Intent(HomePageActivity.this,SaoYiSaoTanChuActivity.class).putExtra("scanned",result.getContents()));
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);

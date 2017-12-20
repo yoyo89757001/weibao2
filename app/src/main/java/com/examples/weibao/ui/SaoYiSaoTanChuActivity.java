@@ -36,6 +36,7 @@ public class SaoYiSaoTanChuActivity extends Activity {
     private MenusBeanDao menusBeanDao=null;
     private MenusBean menusBean=null;
     private int type;
+    private String scanned=null;
 
 
     @Override
@@ -47,6 +48,7 @@ public class SaoYiSaoTanChuActivity extends Activity {
         menusBeanDao=MyAppLaction.myAppLaction.getDaoSession().getMenusBeanDao();
         idid=getIntent().getLongExtra("idid",0);
         type=getIntent().getIntExtra("type",0);
+        scanned=getIntent().getStringExtra("scanned");
         if (idid!=0){
             devicesBean=devicesBeanDao.load(idid);
             if (devicesBean!=null){
@@ -54,10 +56,13 @@ public class SaoYiSaoTanChuActivity extends Activity {
                 menusBean=menusBeanDao.load(Long.parseLong(devicesBean.getWeibaoSubSystemId()));
 //                Log.d("SaoYiSaoTanChuActivity", menusBean.getName());
             }
-
+        }
+        dengLuBean=dengLuBeanDao.load(123456L);
+        if (scanned!=null){
+            String ss[] =scanned.split("&");
+            Log.d("SaoYiSaoTanChuActivity", "ss.length:" + ss.length);
         }
 
-        dengLuBean=dengLuBeanDao.load(123456L);
         setContentView(R.layout.activity_sao_yi_sao_tan_chu);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             //透明状态栏
