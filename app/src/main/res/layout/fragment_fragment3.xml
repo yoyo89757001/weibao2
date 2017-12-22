@@ -5,14 +5,16 @@
     android:background="#F5F5F9"
     tools:context="com.examples.weibao.fargments.Fragment3">
 
-    <include
-        android:id="@+id/err"
-        layout="@layout/base_title"/>
 
-    <com.github.jdsjlzx.recyclerview.LRecyclerView
+
+
+    <WebView
+        android:id="@+id/web"
+        android:background="#F5F5F9"
         android:layout_width="match_parent"
-        android:layout_below="@+id/err"
-        android:id="@+id/lrecyclerview"
-        android:layout_height="match_parent"/>
+        android:layout_marginBottom="1dp"
+        android:layout_height="match_parent">
+
+    </WebView>
 
 </RelativeLayout>
