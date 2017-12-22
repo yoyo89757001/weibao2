@@ -1,46 +1,27 @@
 package com.examples.weibao.fargments;
 
 
-import android.content.Context;
-import android.content.Intent;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import com.examples.weibao.MyAppLaction;
 import com.examples.weibao.R;
-import com.examples.weibao.adapters.BaoZhangJiLuAdapter;
-import com.examples.weibao.allbeans.BaoZhangDengJiBean;
 import com.examples.weibao.allbeans.DengLuBean;
 import com.examples.weibao.allbeans.DengLuBeanDao;
 import com.examples.weibao.dialogs.TiJIaoDialog;
-import com.examples.weibao.ui.ZiXunActivity;
 import com.examples.weibao.utils.Utils;
-import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
-import com.github.jdsjlzx.interfaces.OnItemClickListener;
-import com.github.jdsjlzx.recyclerview.LRecyclerView;
-import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.sdsmdg.tastytoast.TastyToast;
-
-
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Cookie;
@@ -50,7 +31,6 @@ import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 /**
  * A simple {@link Fragment} subclass.
