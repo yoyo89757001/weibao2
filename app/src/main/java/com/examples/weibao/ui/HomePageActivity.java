@@ -487,6 +487,7 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
 
                     int menurefsSize = menurefs.size();
                     for (int i = 0; i < menurefsSize; i++) {
+                       // Log.d("HomePageActivity", menurefs.get(i).toString());
                         MenurefsBean menurefsBean = gson.fromJson(menurefs.get(i), MenurefsBean.class);
                         int i6 = menurefsBean.getDtoResult();
                         if (menurefsBeanDao.load(menurefsBean.getId()) == null && (i6 == 1 || i6 == 2)) {

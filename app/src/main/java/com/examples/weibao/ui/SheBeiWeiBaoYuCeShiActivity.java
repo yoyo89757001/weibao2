@@ -54,8 +54,8 @@ public class SheBeiWeiBaoYuCeShiActivity extends Activity  {
         super.onCreate(savedInstanceState);
         ceShiCSBean = Parcels.unwrap(getIntent().getParcelableExtra("chuansong"));
         itemId=getIntent().getLongExtra("itemId",0);
-        serialNumber3=getIntent().getStringExtra("serialNumber3");
-        serialNumber4=getIntent().getStringExtra("serialNumber4");
+        serialNumber3=getIntent().getStringExtra("serialNumber3");//系统的
+        serialNumber4=getIntent().getStringExtra("serialNumber4");//维保项的
         xitong=getIntent().getStringExtra("xitong");
         dizhi=getIntent().getStringExtra("dizhi");
         weibaoxiang=getIntent().getStringExtra("weibaoxiang");
@@ -63,19 +63,13 @@ public class SheBeiWeiBaoYuCeShiActivity extends Activity  {
         menusBeanDao= MyAppLaction.myAppLaction.getDaoSession().getMenusBeanDao();
         devicesBeanDao= MyAppLaction.myAppLaction.getDaoSession().getDevicesBeanDao();
 
-        if (serialNumber4!=null){
-            List<DevicesBean> bb=devicesBeanDao.queryBuilder().where(DevicesBeanDao.Properties.WeibaoSystemId.eq(serialNumber3)
-                    ,DevicesBeanDao.Properties.WeibaoSubSystemId.eq(serialNumber4),DevicesBeanDao.Properties.ItemId.eq(itemId)).list();
-            if (bb.size()>0){
-                devicesBeanList.addAll(bb);
-            }
-        }else {
-            List<DevicesBean> bb=devicesBeanDao.queryBuilder().where(DevicesBeanDao.Properties.WeibaoSystemId.eq(serialNumber3)
-                    ,DevicesBeanDao.Properties.ItemId.eq(itemId)).list();
-            if (bb.size()>0){
-                devicesBeanList.addAll(bb);
-            }
+
+        List<DevicesBean> bb=devicesBeanDao.queryBuilder().where(DevicesBeanDao.Properties.WeibaoDeviceId.eq(serialNumber4)
+                ,DevicesBeanDao.Properties.WeibaoSubSystemId.eq(serialNumber3),DevicesBeanDao.Properties.ItemId.eq(itemId)).list();
+        if (bb.size()>0){
+            devicesBeanList.addAll(bb);
         }
+
         menusBeanList2=menusBeanDao.queryBuilder().where(MenusBeanDao.Properties.ParentId.eq(parentId)).list();
 
         setContentView(R.layout.activity_she_bei_wei_bao_yu_ce_shi);

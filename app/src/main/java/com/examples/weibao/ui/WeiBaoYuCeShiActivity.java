@@ -18,7 +18,6 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.examples.weibao.MyAppLaction;
 import com.examples.weibao.R;
 import com.examples.weibao.adapters.PopupWindowAdapter;
@@ -40,9 +39,7 @@ import com.examples.weibao.allbeans.PlansBeanDao;
 import com.examples.weibao.beans.WeiBaoCeShiCSBean;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.sdsmdg.tastytoast.TastyToast;
-
 import org.parceler.Parcels;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,7 +49,6 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
     private Button button;
     private PopupWindow popupWindow=null;
     private ImageView go,go3,go4,go6;
-
     private List<ItemsBean> itemsBeanList=new ArrayList<>();
     private ItemsBean itemsBean=null;
     private ItemsBeanDao itemsBeanDao=null;
@@ -78,6 +74,7 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
     private int p3=-1;
     private int p6=-1;
     private WeiBaoCeShiCSBean ceShiCSBean=new WeiBaoCeShiCSBean();
+    private long xmId=-2;
 
 
     @Override
@@ -185,13 +182,14 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
                 }
 
                 //项目ID
-                long mb =itemsBeanList.get(p1).getId();
+                 xmId =itemsBeanList.get(p1).getId();
 
                 //通过项目ID 在项目关系表中找出所有一级项目菜单
-               menurefsBeanList = menurefsBeanDao.queryBuilder().where(MenurefsBeanDao.Properties.ItemId.eq(mb)).list();
+               menurefsBeanList = menurefsBeanDao.queryBuilder().where(MenurefsBeanDao.Properties.ItemId.eq(xmId)).list();
                int s=0;
                if (menurefsBeanList!=null){
                    s=menurefsBeanList.size();
+                   Log.d("WeiBaoYuCeShiActivity", "该项目下关系表个数" + s);
                }
 
                 //通过菜单menurefsBeanList中的id查出所有菜单
@@ -200,8 +198,8 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
                     if (menusBean!=null && menusBean.getParentId()==-1){
                         menusBeanList3.add(menusBean);
                     }
-
                 }
+                Log.d("WeiBaoYuCeShiActivity", "系统个数:" + menusBeanList3.size());
 
                 View contentView3 = LayoutInflater.from(WeiBaoYuCeShiActivity.this).inflate(R.layout.xiangmu_po_item, null);
                 popupWindow=new PopupWindow(contentView3,600, 600);
@@ -243,8 +241,19 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
                 Long  mb4 =menusBeanList3.get(p3).getId();
                 //通过菜单ID找出下一级
                 List<MenusBean> beanList=menusBeanDao.queryBuilder().where(MenusBeanDao.Properties.ParentId.eq(mb4)).list();
-                menusBeanList4.addAll(beanList==null?new ArrayList<MenusBean>():beanList);
+                int p=beanList.size();
+             //   Log.d("WeiBaoYuCeShiActivity", "p:" + p);
+                for (int i=0;i<p;i++){
+                    if (menurefsBeanDao.queryBuilder().where(MenurefsBeanDao.Properties.ItemId.eq(xmId),
+                            MenurefsBeanDao.Properties.WeibaoMenuId.eq(beanList.get(i).getId())).unique()!=null)
+                    {
+                        menusBeanList4.add(beanList.get(i));
 
+                    }
+                }
+
+             //   menusBeanList4.addAll(beanList==null?new ArrayList<MenusBean>():beanList);
+                Log.d("WeiBaoYuCeShiActivity", "维保项个数" + menusBeanList4.size());
 
                 View contentView4 = LayoutInflater.from(WeiBaoYuCeShiActivity.this).inflate(R.layout.xiangmu_po_item, null);
                 popupWindow=new PopupWindow(contentView4,600, 540);
@@ -286,6 +295,7 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
                             putExtra("xitong",menusBeanList3.get(p3).getName()).
                             putExtra("weibaoxiang",menusBeanList4.get(p4).getName()).putExtras(bundle));
                 }else {
+
                     showMSG("信息没有选择完整,不能进行下一步",4);
                 }
 

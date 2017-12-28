@@ -100,324 +100,331 @@ import org.greenrobot.greendao.annotation.Generated;
     private String weibaoSubSystemId;
     private String weibaoSystemId;
     private boolean isXiazai;
-    @Generated(hash = 1816797761)
-    public DevicesBean(@NotNull Long id, Long devid, long allocationTime,
-            String area, int auditBy, long auditTime, String buildingNum,
-            String checkCase, int checkPeriod, long checkTime, String city,
-            int createBy, long createTime, String deviceNum, int dtoResult,
-            long failureTime, String floor, String groupDuty, int isDetection,
-            int itemId, String manageMemberDuty, String manageMemberDutyTel,
-            String memberDuty, String memberDutyTel, String model, long modifyTime,
-            String name, String other, String otherMember, int pageNum,
-            int pageSize, long producedTime, String provider, String province,
-            String qrCodePath, String sign, int status, String submitter,
-            String unit, long validTime, String weibaoSubSystemId,
-            String weibaoSystemId, boolean isXiazai) {
-        this.id = id;
-        this.devid = devid;
-        this.allocationTime = allocationTime;
-        this.area = area;
-        this.auditBy = auditBy;
-        this.auditTime = auditTime;
-        this.buildingNum = buildingNum;
-        this.checkCase = checkCase;
-        this.checkPeriod = checkPeriod;
-        this.checkTime = checkTime;
-        this.city = city;
-        this.createBy = createBy;
-        this.createTime = createTime;
-        this.deviceNum = deviceNum;
-        this.dtoResult = dtoResult;
-        this.failureTime = failureTime;
-        this.floor = floor;
-        this.groupDuty = groupDuty;
-        this.isDetection = isDetection;
-        this.itemId = itemId;
-        this.manageMemberDuty = manageMemberDuty;
-        this.manageMemberDutyTel = manageMemberDutyTel;
-        this.memberDuty = memberDuty;
-        this.memberDutyTel = memberDutyTel;
-        this.model = model;
-        this.modifyTime = modifyTime;
-        this.name = name;
-        this.other = other;
-        this.otherMember = otherMember;
-        this.pageNum = pageNum;
-        this.pageSize = pageSize;
-        this.producedTime = producedTime;
-        this.provider = provider;
-        this.province = province;
-        this.qrCodePath = qrCodePath;
-        this.sign = sign;
-        this.status = status;
-        this.submitter = submitter;
-        this.unit = unit;
-        this.validTime = validTime;
-        this.weibaoSubSystemId = weibaoSubSystemId;
-        this.weibaoSystemId = weibaoSystemId;
-        this.isXiazai = isXiazai;
-    }
-    @Generated(hash = 1295633009)
-    public DevicesBean() {
-    }
-    public Long getId() {
-        return this.id;
-    }
-    public void setId(Long id) {
-        this.id = id;
-    }
-    public Long getDevid() {
-        return this.devid;
-    }
-    public void setDevid(Long devid) {
-        this.devid = devid;
-    }
-    public long getAllocationTime() {
-        return this.allocationTime;
-    }
-    public void setAllocationTime(long allocationTime) {
-        this.allocationTime = allocationTime;
-    }
-    public String getArea() {
-        return this.area;
-    }
-    public void setArea(String area) {
-        this.area = area;
-    }
-    public int getAuditBy() {
-        return this.auditBy;
-    }
-    public void setAuditBy(int auditBy) {
-        this.auditBy = auditBy;
-    }
-    public long getAuditTime() {
-        return this.auditTime;
-    }
-    public void setAuditTime(long auditTime) {
-        this.auditTime = auditTime;
-    }
-    public String getBuildingNum() {
-        return this.buildingNum;
-    }
-    public void setBuildingNum(String buildingNum) {
-        this.buildingNum = buildingNum;
-    }
-    public String getCheckCase() {
-        return this.checkCase;
-    }
-    public void setCheckCase(String checkCase) {
-        this.checkCase = checkCase;
-    }
-    public int getCheckPeriod() {
-        return this.checkPeriod;
-    }
-    public void setCheckPeriod(int checkPeriod) {
-        this.checkPeriod = checkPeriod;
-    }
-    public long getCheckTime() {
-        return this.checkTime;
-    }
-    public void setCheckTime(long checkTime) {
-        this.checkTime = checkTime;
-    }
-    public String getCity() {
-        return this.city;
-    }
-    public void setCity(String city) {
-        this.city = city;
-    }
-    public int getCreateBy() {
-        return this.createBy;
-    }
-    public void setCreateBy(int createBy) {
-        this.createBy = createBy;
-    }
-    public long getCreateTime() {
-        return this.createTime;
-    }
-    public void setCreateTime(long createTime) {
-        this.createTime = createTime;
-    }
-    public String getDeviceNum() {
-        return this.deviceNum;
-    }
-    public void setDeviceNum(String deviceNum) {
-        this.deviceNum = deviceNum;
-    }
-    public int getDtoResult() {
-        return this.dtoResult;
-    }
-    public void setDtoResult(int dtoResult) {
-        this.dtoResult = dtoResult;
-    }
-    public long getFailureTime() {
-        return this.failureTime;
-    }
-    public void setFailureTime(long failureTime) {
-        this.failureTime = failureTime;
-    }
-    public String getFloor() {
-        return this.floor;
-    }
-    public void setFloor(String floor) {
-        this.floor = floor;
-    }
-    public String getGroupDuty() {
-        return this.groupDuty;
-    }
-    public void setGroupDuty(String groupDuty) {
-        this.groupDuty = groupDuty;
-    }
-    public int getIsDetection() {
-        return this.isDetection;
-    }
-    public void setIsDetection(int isDetection) {
-        this.isDetection = isDetection;
-    }
-    public int getItemId() {
-        return this.itemId;
-    }
-    public void setItemId(int itemId) {
-        this.itemId = itemId;
-    }
-    public String getManageMemberDuty() {
-        return this.manageMemberDuty;
-    }
-    public void setManageMemberDuty(String manageMemberDuty) {
-        this.manageMemberDuty = manageMemberDuty;
-    }
-    public String getManageMemberDutyTel() {
-        return this.manageMemberDutyTel;
-    }
-    public void setManageMemberDutyTel(String manageMemberDutyTel) {
-        this.manageMemberDutyTel = manageMemberDutyTel;
-    }
-    public String getMemberDuty() {
-        return this.memberDuty;
-    }
-    public void setMemberDuty(String memberDuty) {
-        this.memberDuty = memberDuty;
-    }
-    public String getMemberDutyTel() {
-        return this.memberDutyTel;
-    }
-    public void setMemberDutyTel(String memberDutyTel) {
-        this.memberDutyTel = memberDutyTel;
-    }
-    public String getModel() {
-        return this.model;
-    }
-    public void setModel(String model) {
-        this.model = model;
-    }
-    public long getModifyTime() {
-        return this.modifyTime;
-    }
-    public void setModifyTime(long modifyTime) {
-        this.modifyTime = modifyTime;
-    }
-    public String getName() {
-        return this.name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
-    public String getOther() {
-        return this.other;
-    }
-    public void setOther(String other) {
-        this.other = other;
-    }
-    public String getOtherMember() {
-        return this.otherMember;
-    }
-    public void setOtherMember(String otherMember) {
-        this.otherMember = otherMember;
-    }
-    public int getPageNum() {
-        return this.pageNum;
-    }
-    public void setPageNum(int pageNum) {
-        this.pageNum = pageNum;
-    }
-    public int getPageSize() {
-        return this.pageSize;
-    }
-    public void setPageSize(int pageSize) {
-        this.pageSize = pageSize;
-    }
-    public long getProducedTime() {
-        return this.producedTime;
-    }
-    public void setProducedTime(long producedTime) {
-        this.producedTime = producedTime;
-    }
-    public String getProvider() {
-        return this.provider;
-    }
-    public void setProvider(String provider) {
-        this.provider = provider;
-    }
-    public String getProvince() {
-        return this.province;
-    }
-    public void setProvince(String province) {
-        this.province = province;
-    }
-    public String getQrCodePath() {
-        return this.qrCodePath;
-    }
-    public void setQrCodePath(String qrCodePath) {
-        this.qrCodePath = qrCodePath;
-    }
-    public String getSign() {
-        return this.sign;
-    }
-    public void setSign(String sign) {
-        this.sign = sign;
-    }
-    public int getStatus() {
-        return this.status;
-    }
-    public void setStatus(int status) {
-        this.status = status;
-    }
-    public String getSubmitter() {
-        return this.submitter;
-    }
-    public void setSubmitter(String submitter) {
-        this.submitter = submitter;
-    }
-    public String getUnit() {
-        return this.unit;
-    }
-    public void setUnit(String unit) {
-        this.unit = unit;
-    }
-    public long getValidTime() {
-        return this.validTime;
-    }
-    public void setValidTime(long validTime) {
-        this.validTime = validTime;
-    }
-    public String getWeibaoSubSystemId() {
-        return this.weibaoSubSystemId;
-    }
-    public void setWeibaoSubSystemId(String weibaoSubSystemId) {
-        this.weibaoSubSystemId = weibaoSubSystemId;
-    }
-    public String getWeibaoSystemId() {
-        return this.weibaoSystemId;
-    }
-    public void setWeibaoSystemId(String weibaoSystemId) {
-        this.weibaoSystemId = weibaoSystemId;
-    }
-    public boolean getIsXiazai() {
-        return this.isXiazai;
-    }
-    public void setIsXiazai(boolean isXiazai) {
-        this.isXiazai = isXiazai;
-    }
-
+   private  String weibaoDeviceId;
+@Generated(hash = 301499598)
+public DevicesBean(@NotNull Long id, Long devid, long allocationTime,
+        String area, int auditBy, long auditTime, String buildingNum,
+        String checkCase, int checkPeriod, long checkTime, String city,
+        int createBy, long createTime, String deviceNum, int dtoResult,
+        long failureTime, String floor, String groupDuty, int isDetection,
+        int itemId, String manageMemberDuty, String manageMemberDutyTel,
+        String memberDuty, String memberDutyTel, String model, long modifyTime,
+        String name, String other, String otherMember, int pageNum,
+        int pageSize, long producedTime, String provider, String province,
+        String qrCodePath, String sign, int status, String submitter,
+        String unit, long validTime, String weibaoSubSystemId,
+        String weibaoSystemId, boolean isXiazai, String weibaoDeviceId) {
+    this.id = id;
+    this.devid = devid;
+    this.allocationTime = allocationTime;
+    this.area = area;
+    this.auditBy = auditBy;
+    this.auditTime = auditTime;
+    this.buildingNum = buildingNum;
+    this.checkCase = checkCase;
+    this.checkPeriod = checkPeriod;
+    this.checkTime = checkTime;
+    this.city = city;
+    this.createBy = createBy;
+    this.createTime = createTime;
+    this.deviceNum = deviceNum;
+    this.dtoResult = dtoResult;
+    this.failureTime = failureTime;
+    this.floor = floor;
+    this.groupDuty = groupDuty;
+    this.isDetection = isDetection;
+    this.itemId = itemId;
+    this.manageMemberDuty = manageMemberDuty;
+    this.manageMemberDutyTel = manageMemberDutyTel;
+    this.memberDuty = memberDuty;
+    this.memberDutyTel = memberDutyTel;
+    this.model = model;
+    this.modifyTime = modifyTime;
+    this.name = name;
+    this.other = other;
+    this.otherMember = otherMember;
+    this.pageNum = pageNum;
+    this.pageSize = pageSize;
+    this.producedTime = producedTime;
+    this.provider = provider;
+    this.province = province;
+    this.qrCodePath = qrCodePath;
+    this.sign = sign;
+    this.status = status;
+    this.submitter = submitter;
+    this.unit = unit;
+    this.validTime = validTime;
+    this.weibaoSubSystemId = weibaoSubSystemId;
+    this.weibaoSystemId = weibaoSystemId;
+    this.isXiazai = isXiazai;
+    this.weibaoDeviceId = weibaoDeviceId;
+}
+@Generated(hash = 1295633009)
+public DevicesBean() {
+}
+public Long getId() {
+    return this.id;
+}
+public void setId(Long id) {
+    this.id = id;
+}
+public Long getDevid() {
+    return this.devid;
+}
+public void setDevid(Long devid) {
+    this.devid = devid;
+}
+public long getAllocationTime() {
+    return this.allocationTime;
+}
+public void setAllocationTime(long allocationTime) {
+    this.allocationTime = allocationTime;
+}
+public String getArea() {
+    return this.area;
+}
+public void setArea(String area) {
+    this.area = area;
+}
+public int getAuditBy() {
+    return this.auditBy;
+}
+public void setAuditBy(int auditBy) {
+    this.auditBy = auditBy;
+}
+public long getAuditTime() {
+    return this.auditTime;
+}
+public void setAuditTime(long auditTime) {
+    this.auditTime = auditTime;
+}
+public String getBuildingNum() {
+    return this.buildingNum;
+}
+public void setBuildingNum(String buildingNum) {
+    this.buildingNum = buildingNum;
+}
+public String getCheckCase() {
+    return this.checkCase;
+}
+public void setCheckCase(String checkCase) {
+    this.checkCase = checkCase;
+}
+public int getCheckPeriod() {
+    return this.checkPeriod;
+}
+public void setCheckPeriod(int checkPeriod) {
+    this.checkPeriod = checkPeriod;
+}
+public long getCheckTime() {
+    return this.checkTime;
+}
+public void setCheckTime(long checkTime) {
+    this.checkTime = checkTime;
+}
+public String getCity() {
+    return this.city;
+}
+public void setCity(String city) {
+    this.city = city;
+}
+public int getCreateBy() {
+    return this.createBy;
+}
+public void setCreateBy(int createBy) {
+    this.createBy = createBy;
+}
+public long getCreateTime() {
+    return this.createTime;
+}
+public void setCreateTime(long createTime) {
+    this.createTime = createTime;
+}
+public String getDeviceNum() {
+    return this.deviceNum;
+}
+public void setDeviceNum(String deviceNum) {
+    this.deviceNum = deviceNum;
+}
+public int getDtoResult() {
+    return this.dtoResult;
+}
+public void setDtoResult(int dtoResult) {
+    this.dtoResult = dtoResult;
+}
+public long getFailureTime() {
+    return this.failureTime;
+}
+public void setFailureTime(long failureTime) {
+    this.failureTime = failureTime;
+}
+public String getFloor() {
+    return this.floor;
+}
+public void setFloor(String floor) {
+    this.floor = floor;
+}
+public String getGroupDuty() {
+    return this.groupDuty;
+}
+public void setGroupDuty(String groupDuty) {
+    this.groupDuty = groupDuty;
+}
+public int getIsDetection() {
+    return this.isDetection;
+}
+public void setIsDetection(int isDetection) {
+    this.isDetection = isDetection;
+}
+public int getItemId() {
+    return this.itemId;
+}
+public void setItemId(int itemId) {
+    this.itemId = itemId;
+}
+public String getManageMemberDuty() {
+    return this.manageMemberDuty;
+}
+public void setManageMemberDuty(String manageMemberDuty) {
+    this.manageMemberDuty = manageMemberDuty;
+}
+public String getManageMemberDutyTel() {
+    return this.manageMemberDutyTel;
+}
+public void setManageMemberDutyTel(String manageMemberDutyTel) {
+    this.manageMemberDutyTel = manageMemberDutyTel;
+}
+public String getMemberDuty() {
+    return this.memberDuty;
+}
+public void setMemberDuty(String memberDuty) {
+    this.memberDuty = memberDuty;
+}
+public String getMemberDutyTel() {
+    return this.memberDutyTel;
+}
+public void setMemberDutyTel(String memberDutyTel) {
+    this.memberDutyTel = memberDutyTel;
+}
+public String getModel() {
+    return this.model;
+}
+public void setModel(String model) {
+    this.model = model;
+}
+public long getModifyTime() {
+    return this.modifyTime;
+}
+public void setModifyTime(long modifyTime) {
+    this.modifyTime = modifyTime;
+}
+public String getName() {
+    return this.name;
+}
+public void setName(String name) {
+    this.name = name;
+}
+public String getOther() {
+    return this.other;
+}
+public void setOther(String other) {
+    this.other = other;
+}
+public String getOtherMember() {
+    return this.otherMember;
+}
+public void setOtherMember(String otherMember) {
+    this.otherMember = otherMember;
+}
+public int getPageNum() {
+    return this.pageNum;
+}
+public void setPageNum(int pageNum) {
+    this.pageNum = pageNum;
+}
+public int getPageSize() {
+    return this.pageSize;
+}
+public void setPageSize(int pageSize) {
+    this.pageSize = pageSize;
+}
+public long getProducedTime() {
+    return this.producedTime;
+}
+public void setProducedTime(long producedTime) {
+    this.producedTime = producedTime;
+}
+public String getProvider() {
+    return this.provider;
+}
+public void setProvider(String provider) {
+    this.provider = provider;
+}
+public String getProvince() {
+    return this.province;
+}
+public void setProvince(String province) {
+    this.province = province;
+}
+public String getQrCodePath() {
+    return this.qrCodePath;
+}
+public void setQrCodePath(String qrCodePath) {
+    this.qrCodePath = qrCodePath;
+}
+public String getSign() {
+    return this.sign;
+}
+public void setSign(String sign) {
+    this.sign = sign;
+}
+public int getStatus() {
+    return this.status;
+}
+public void setStatus(int status) {
+    this.status = status;
+}
+public String getSubmitter() {
+    return this.submitter;
+}
+public void setSubmitter(String submitter) {
+    this.submitter = submitter;
+}
+public String getUnit() {
+    return this.unit;
+}
+public void setUnit(String unit) {
+    this.unit = unit;
+}
+public long getValidTime() {
+    return this.validTime;
+}
+public void setValidTime(long validTime) {
+    this.validTime = validTime;
+}
+public String getWeibaoSubSystemId() {
+    return this.weibaoSubSystemId;
+}
+public void setWeibaoSubSystemId(String weibaoSubSystemId) {
+    this.weibaoSubSystemId = weibaoSubSystemId;
+}
+public String getWeibaoSystemId() {
+    return this.weibaoSystemId;
+}
+public void setWeibaoSystemId(String weibaoSystemId) {
+    this.weibaoSystemId = weibaoSystemId;
+}
+public boolean getIsXiazai() {
+    return this.isXiazai;
+}
+public void setIsXiazai(boolean isXiazai) {
+    this.isXiazai = isXiazai;
+}
+public String getWeibaoDeviceId() {
+    return this.weibaoDeviceId;
+}
+public void setWeibaoDeviceId(String weibaoDeviceId) {
+    this.weibaoDeviceId = weibaoDeviceId;
+}
    
 }
