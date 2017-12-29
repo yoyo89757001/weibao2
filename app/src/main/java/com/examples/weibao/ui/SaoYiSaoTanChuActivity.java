@@ -23,6 +23,7 @@ import com.examples.weibao.allbeans.MenusBean;
 import com.examples.weibao.allbeans.MenusBeanDao;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
+
 public class SaoYiSaoTanChuActivity extends Activity {
     private TextView t1,t2,t3,t4,t5,t6,t7;
     private Button b1,b2;
@@ -37,6 +38,9 @@ public class SaoYiSaoTanChuActivity extends Activity {
     private MenusBean menusBean=null;
     private int type;
     private String scanned=null;
+    private  String []ss;
+    private String itemId;
+    private String sbBianhao;
 
 
     @Override
@@ -59,8 +63,25 @@ public class SaoYiSaoTanChuActivity extends Activity {
         }
         dengLuBean=dengLuBeanDao.load(123456L);
         if (scanned!=null){
-            String ss[] =scanned.split("&");
-            Log.d("SaoYiSaoTanChuActivity", "ss.length:" + ss.length);
+          String  []ss =scanned.split("&");
+          int size=ss.length;
+
+            for (int i=0;i<size;i++){
+                if (i==0){
+                    itemId=ss[0];
+                }
+                if (i==size-1){
+                    sbBianhao=ss[size-1];
+                }
+
+            }
+            try {
+                itemsBean=itemsBeanDao.load(Long.valueOf(itemId));
+                devicesBean=devicesBeanDao.queryBuilder().where(DevicesBeanDao.Properties.ItemId.eq(itemId),
+                        DevicesBeanDao.Properties.DeviceNum.eq(sbBianhao)).unique();
+            }catch (Exception e){
+                Log.d("SaoYiSaoTanChuActivity", "e:" + e);
+            }
         }
 
         setContentView(R.layout.activity_sao_yi_sao_tan_chu);
@@ -115,9 +136,8 @@ public class SaoYiSaoTanChuActivity extends Activity {
         b2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-
+                startActivity(new Intent(SaoYiSaoTanChuActivity.this,WeiBaoYuCeShiActivity.class)
+                .putExtra("xiangmuId",itemId).putExtra("shebeibianhao",sbBianhao).putExtra("type",99));
             }
         });
 

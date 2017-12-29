@@ -65,7 +65,7 @@ public class SheBeiAdapter extends RecyclerView.Adapter<SheBeiAdapter.ViewHolder
     //将数据与界面进行绑定的操作
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
-        viewHolder.bianhao.setText(datas.get(position).getDeviceNum()+"");
+        viewHolder.bianhao.setText(datas.get(position).getName()+" "+datas.get(position).getDeviceNum()+"");
       //  if (allMenusBeanList.get(position).getType()==1){
            // menusBeanList1=menusBeanDao.queryBuilder().where(MenusBeanDao.Properties.ParentId.eq(datas.get(position).getId())).list();
           //  Log.d("SheBeiAdapter", "menusBeanList1.size():" + menusBeanList1.size());

@@ -56,8 +56,8 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
     private DevicesBean devicesBean=null;
     private DevicesBeanDao devicesBeanDao=null;
     private List<DetectionsBean> detectionsBeanList=null;
-    private DetectionsBean detectionsBean=null;
-    private DetectionsBeanDao detectionsBeanDao=null;
+   // private DetectionsBean detectionsBean=null;
+   // private DetectionsBeanDao detectionsBeanDao=null;
     private List<MenusBean> menusBeanList=null;
     private MenusBean menusBean=null;
     private MenusBeanDao menusBeanDao=null;
@@ -75,11 +75,17 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
     private int p6=-1;
     private WeiBaoCeShiCSBean ceShiCSBean=new WeiBaoCeShiCSBean();
     private long xmId=-2;
-
+    private int type=0;
+    private String xiangmuId=null,shebeibianhao=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        xiangmuId=getIntent().getStringExtra("xiangmuId");
+        shebeibianhao=getIntent().getStringExtra("shebeibianhao");
+        type=getIntent().getIntExtra("type",0);
+
         setContentView(R.layout.activity_wei_bao_yu_ce_shi);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -98,10 +104,40 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
         itemsBeanDao=MyAppLaction.myAppLaction.getDaoSession().getItemsBeanDao();
         itemsBeanList.addAll(itemsBeanDao.loadAll());
         devicesBeanDao=MyAppLaction.myAppLaction.getDaoSession().getDevicesBeanDao();
-        detectionsBeanDao=MyAppLaction.myAppLaction.getDaoSession().getDetectionsBeanDao();
+       // detectionsBeanDao=MyAppLaction.myAppLaction.getDaoSession().getDetectionsBeanDao();
         menusBeanDao=MyAppLaction.myAppLaction.getDaoSession().getMenusBeanDao();
         plansBeanDao=MyAppLaction.myAppLaction.getDaoSession().getPlansBeanDao();
         menurefsBeanDao=MyAppLaction.myAppLaction.getDaoSession().getMenurefsBeanDao();
+        if (xiangmuId!=null && shebeibianhao!=null){
+          ItemsBean item= itemsBeanDao.load(Long.valueOf(xiangmuId));
+          //  Log.d("WeiBaoYuCeShiActivity", "shebeibianhao:" + shebeibianhao);
+          List<DevicesBean> devs=devicesBeanDao.queryBuilder().where(DevicesBeanDao.Properties.ItemId.eq(xiangmuId),
+                  DevicesBeanDao.Properties.DeviceNum.eq(shebeibianhao)).list();
+            List<MenusBean> mens=menusBeanDao.queryBuilder().where(MenusBeanDao.Properties.SerialNumber.eq(devs.get(0).getWeibaoSubSystemId())).list();//维保系统
+            List<MenusBean> mens2=menusBeanDao.queryBuilder().where(MenusBeanDao.Properties.SerialNumber.eq(devs.get(0).getWeibaoDeviceId())).list();//维保项
+          //  Log.d("WeiBaoYuCeShiActivity", mens.get(0).getName()+mens.size());
+          //  Log.d("WeiBaoYuCeShiActivity", mens2.get(0).getName()+mens2.size());
+            ceShiCSBean.setMenuLevel1Id(mens.get(0).getId().intValue());
+            ceShiCSBean.setMenuId(mens2.get(0).getId().intValue());
+            List<PlansBean> pps = plansBeanDao.queryBuilder().where(PlansBeanDao.Properties.ItemId.eq(xiangmuId)).list();
+            if (pps.size()>0)
+            ceShiCSBean.setPlanId(pps.get(pps.size()-1).getId().intValue());
+
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("chuansong", Parcels.wrap(ceShiCSBean));
+            startActivity(new Intent(WeiBaoYuCeShiActivity.this,SheBeiWeiBaoYuCeShiActivity.class).
+                    putExtra("itemId",item.getId()).
+                    putExtra("serialNumber3",mens.get(0).getSerialNumber()).
+                    putExtra("serialNumber4",mens2.get(0).getSerialNumber()).
+                    putExtra("parentId",mens2.get(0).getId()).
+                    putExtra("dizhi",item.getAddress()).
+                    putExtra("xitong",mens.get(0).getName()).
+                    putExtra("weibaoxiang",mens2.get(0).getName()).putExtras(bundle));
+            finish();
+
+        }
+
+
     }
 
     private void initView() {
@@ -189,7 +225,7 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
                int s=0;
                if (menurefsBeanList!=null){
                    s=menurefsBeanList.size();
-                   Log.d("WeiBaoYuCeShiActivity", "该项目下关系表个数" + s);
+                 //  Log.d("WeiBaoYuCeShiActivity", "该项目下关系表个数" + s);
                }
 
                 //通过菜单menurefsBeanList中的id查出所有菜单
@@ -199,7 +235,7 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
                         menusBeanList3.add(menusBean);
                     }
                 }
-                Log.d("WeiBaoYuCeShiActivity", "系统个数:" + menusBeanList3.size());
+              //  Log.d("WeiBaoYuCeShiActivity", "系统个数:" + menusBeanList3.size());
 
                 View contentView3 = LayoutInflater.from(WeiBaoYuCeShiActivity.this).inflate(R.layout.xiangmu_po_item, null);
                 popupWindow=new PopupWindow(contentView3,600, 600);
@@ -253,7 +289,7 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
                 }
 
              //   menusBeanList4.addAll(beanList==null?new ArrayList<MenusBean>():beanList);
-                Log.d("WeiBaoYuCeShiActivity", "维保项个数" + menusBeanList4.size());
+             //   Log.d("WeiBaoYuCeShiActivity", "维保项个数" + menusBeanList4.size());
 
                 View contentView4 = LayoutInflater.from(WeiBaoYuCeShiActivity.this).inflate(R.layout.xiangmu_po_item, null);
                 popupWindow=new PopupWindow(contentView4,600, 540);

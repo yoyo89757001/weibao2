@@ -49,6 +49,7 @@ public class SheBeiWeiBaoYuCeShiActivity extends Activity  {
     private WeiBaoCeShiCSBean ceShiCSBean=null;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,8 +70,8 @@ public class SheBeiWeiBaoYuCeShiActivity extends Activity  {
         if (bb.size()>0){
             devicesBeanList.addAll(bb);
         }
-
         menusBeanList2=menusBeanDao.queryBuilder().where(MenusBeanDao.Properties.ParentId.eq(parentId)).list();
+
 
         setContentView(R.layout.activity_she_bei_wei_bao_yu_ce_shi);
 
