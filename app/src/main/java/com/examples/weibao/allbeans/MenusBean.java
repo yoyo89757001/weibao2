@@ -46,11 +46,12 @@ import org.greenrobot.greendao.annotation.Generated;
         private int sort;
         private int status;
         private int type;
-        @Generated(hash = 517547332)
+        private String desc;
+        @Generated(hash = 915733445)
         public MenusBean(@NotNull Long id, long mid, int createBy, long createTime,
                 int dtoResult, int level, int modifyBy, long modifyTime, String name,
                 String pageNum, String pageSize, int parentId, String serialNumber,
-                int sort, int status, int type) {
+                int sort, int status, int type, String desc) {
             this.id = id;
             this.mid = mid;
             this.createBy = createBy;
@@ -67,6 +68,7 @@ import org.greenrobot.greendao.annotation.Generated;
             this.sort = sort;
             this.status = status;
             this.type = type;
+            this.desc = desc;
         }
         @Generated(hash = 265781856)
         public MenusBean() {
@@ -167,6 +169,13 @@ import org.greenrobot.greendao.annotation.Generated;
         public void setType(int type) {
             this.type = type;
         }
+        public String getDesc() {
+            return this.desc;
+        }
+        public void setDesc(String desc) {
+            this.desc = desc;
+        }
+
 
 
 

@@ -24,7 +24,7 @@ import java.util.List;
  * Created by Administrator on 2017/10/3.
  */
 //  设备的 Adapter
-public class SheBeiAdapter extends RecyclerView.Adapter<SheBeiAdapter.ViewHolder> {
+public class SheBeiAdapter extends RecyclerView.Adapter<SheBeiAdapter.ViewHolder>{
     private List<DevicesBean> datas;
     private ClickIntface clickIntface;
     private List<MenusBean> menusBeanList1=new ArrayList<>();
@@ -64,8 +64,14 @@ public class SheBeiAdapter extends RecyclerView.Adapter<SheBeiAdapter.ViewHolder
     }
     //将数据与界面进行绑定的操作
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         viewHolder.bianhao.setText(datas.get(position).getName()+" "+datas.get(position).getDeviceNum()+"");
+        viewHolder.bianhao.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clickIntface.BackId(position,"s");
+            }
+        });
       //  if (allMenusBeanList.get(position).getType()==1){
            // menusBeanList1=menusBeanDao.queryBuilder().where(MenusBeanDao.Properties.ParentId.eq(datas.get(position).getId())).list();
           //  Log.d("SheBeiAdapter", "menusBeanList1.size():" + menusBeanList1.size());
@@ -107,6 +113,9 @@ public class SheBeiAdapter extends RecyclerView.Adapter<SheBeiAdapter.ViewHolder
     public int getItemCount() {
         return datas.size();
     }
+
+
+
     //自定义的ViewHolder，持有每个Item的的所有界面元素
       class ViewHolder extends RecyclerView.ViewHolder {
         private TextView bianhao,ceshi,weibaoxiang,ceshixiang;

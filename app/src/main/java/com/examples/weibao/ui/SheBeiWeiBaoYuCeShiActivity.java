@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -17,6 +18,8 @@ import com.examples.weibao.allbeans.DevicesBeanDao;
 import com.examples.weibao.allbeans.MenusBean;
 import com.examples.weibao.allbeans.MenusBeanDao;
 import com.examples.weibao.beans.WeiBaoCeShiCSBean;
+import com.examples.weibao.dialogs.XinXiDialog;
+import com.examples.weibao.intface.ClickIntface;
 import com.examples.weibao.utils.Utils;
 import com.github.jdsjlzx.ItemDecoration.DividerDecoration;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
@@ -26,7 +29,7 @@ import org.parceler.Parcels;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SheBeiWeiBaoYuCeShiActivity extends Activity  {
+public class SheBeiWeiBaoYuCeShiActivity extends Activity implements ClickIntface {
     private int dw,dh;
     private LRecyclerView lRecyclerView;
     private TextView t1,t2,t3;
@@ -71,8 +74,8 @@ public class SheBeiWeiBaoYuCeShiActivity extends Activity  {
             devicesBeanList.addAll(bb);
         }
         menusBeanList2=menusBeanDao.queryBuilder().where(MenusBeanDao.Properties.ParentId.eq(parentId)).list();
-
-
+      //  Log.d("SheBeiWeiBaoYuCeShiActi", "menusBeanList2.size():" + menusBeanList2.size());
+        //Log.d("SheBeiWeiBaoYuCeShiActi", "devicesBeanList.size():" + devicesBeanList.size());
         setContentView(R.layout.activity_she_bei_wei_bao_yu_ce_shi);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -108,6 +111,7 @@ public class SheBeiWeiBaoYuCeShiActivity extends Activity  {
         lRecyclerView= (LRecyclerView) findViewById(R.id.lrecyclerview);
         sheBeiAdapter=new SheBeiAdapter(devicesBeanList,menusBeanDao,SheBeiWeiBaoYuCeShiActivity.this,menusBeanList2,ceShiCSBean);
         lRecyclerViewAdapter = new LRecyclerViewAdapter(sheBeiAdapter);
+        sheBeiAdapter.setClickIntface(this);
 
         linearLayoutManager=new LinearLayoutManager(SheBeiWeiBaoYuCeShiActivity.this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -137,4 +141,22 @@ public class SheBeiWeiBaoYuCeShiActivity extends Activity  {
     }
 
 
+    @Override
+    public int BackId(int id, String s) {
+
+        if (menusBeanList2.size()>0 && menusBeanList2.get(id).getDesc()!=null){
+            final XinXiDialog xinXiDialog=new XinXiDialog(SheBeiWeiBaoYuCeShiActivity.this);
+            xinXiDialog.setCountText(menusBeanList2.get(id).getDesc());
+            xinXiDialog.setOnPositiveListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (xinXiDialog.isShowing())
+                        xinXiDialog.dismiss();
+                }
+            });
+            xinXiDialog.show();
+        }
+
+        return 0;
+    }
 }

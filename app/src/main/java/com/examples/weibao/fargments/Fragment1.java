@@ -237,7 +237,7 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
                                         JSONArray jsonArray=new JSONArray();
                                         try {
                                         for (int i=0;i<si;i++){
-
+                                           // Log.d("Fragment1", "benDiMenusBeanList_ls.get(i).getPlanId():" + benDiMenusBeanList_ls.get(i).getPlanId());
                                                 JSONObject tijiao = new JSONObject();
                                                 //  tijiao.put("status",0);
                                                 tijiao.put("id",0);

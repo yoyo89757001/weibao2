@@ -25,7 +25,6 @@ import com.examples.weibao.adapters.PopupWindowAdapter4;
 import com.examples.weibao.adapters.PopupWindowAdapter3;
 import com.examples.weibao.adapters.PopupWindowAdapter_jihua;
 import com.examples.weibao.allbeans.DetectionsBean;
-import com.examples.weibao.allbeans.DetectionsBeanDao;
 import com.examples.weibao.allbeans.DevicesBean;
 import com.examples.weibao.allbeans.DevicesBeanDao;
 import com.examples.weibao.allbeans.ItemsBean;
