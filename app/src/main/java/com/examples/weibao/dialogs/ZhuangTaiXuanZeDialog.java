@@ -1,7 +1,6 @@
 package com.examples.weibao.dialogs;
 import android.app.Activity;
 import android.app.Dialog;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,26 +21,10 @@ import com.examples.weibao.allbeans.DetectionsBean;
 import com.examples.weibao.allbeans.DetectionsBeanDao;
 import com.examples.weibao.allbeans.MenusBean;
 import com.examples.weibao.allbeans.MenusBeanDao;
-import com.examples.weibao.beans.FanHuiBean;
 import com.examples.weibao.beans.WeiBaoCeShiCSBean;
-import com.examples.weibao.utils.GsonUtil;
-import com.examples.weibao.utils.Utils;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.sdsmdg.tastytoast.TastyToast;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import java.io.IOException;
 import java.util.List;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
+
 
 
 /**
@@ -81,8 +64,6 @@ public class ZhuangTaiXuanZeDialog extends Dialog   {
         detectionsBeanDao= MyAppLaction.myAppLaction.getDaoSession().getDetectionsBeanDao();
         setCustomDialog();
     }
-
-
 
 
     //4个数据的
@@ -136,7 +117,7 @@ public class ZhuangTaiXuanZeDialog extends Dialog   {
                     }
 
 
-                }else if (menusBeanList.get(position).getName().equals("其他")){
+                }else if (menusBeanList.get(position).getName().contains("其")){
                         final QiTaDialog qiTaDialog=new QiTaDialog(context);
                         qiTaDialog.setOnPositiveListener(new View.OnClickListener() {
                             @Override
