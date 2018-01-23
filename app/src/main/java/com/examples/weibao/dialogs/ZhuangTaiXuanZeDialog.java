@@ -104,7 +104,7 @@ public class ZhuangTaiXuanZeDialog extends Dialog   {
                 menusBeanList.get(position).setPageNum("ww");
                 adapter.notifyDataSetChanged();
 
-                if (menusBeanList.get(position).getName().equals("设备异常")){
+                if (menusBeanList.get(position).getName().contains("异常")){
                   //  Log.d("ZhuangTaiXuanZeDialog", "menusBeanList.get(position).getId():" + menusBeanList.get(position).getId());
                     List<DetectionsBean> menusBeanListss=detectionsBeanDao.queryBuilder().where(DetectionsBeanDao.Properties.WeibaoMenuId.eq( menusBeanList.get(position).getId())).list();
                     if (menusBeanListss!=null){

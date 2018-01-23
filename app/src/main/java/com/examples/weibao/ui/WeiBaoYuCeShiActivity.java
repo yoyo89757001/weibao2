@@ -291,7 +291,7 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
              //   Log.d("WeiBaoYuCeShiActivity", "维保项个数" + menusBeanList4.size());
 
                 View contentView4 = LayoutInflater.from(WeiBaoYuCeShiActivity.this).inflate(R.layout.xiangmu_po_item, null);
-                popupWindow=new PopupWindow(contentView4,600, 540);
+                popupWindow=new PopupWindow(contentView4,600, 400);
                 ListView listView4= (ListView) contentView4.findViewById(R.id.dddddd);
                 PopupWindowAdapter4 adapter4=new PopupWindowAdapter4(WeiBaoYuCeShiActivity.this,menusBeanList4);
                 listView4.setOnItemClickListener(new AdapterView.OnItemClickListener() {

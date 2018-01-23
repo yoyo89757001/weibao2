@@ -144,7 +144,7 @@ public class SheBeiWeiBaoYuCeShiActivity extends Activity implements ClickIntfac
     @Override
     public int BackId(int id, String s) {
 
-        if (menusBeanList2.size()>0 && menusBeanList2.get(id).getDesc()!=null){
+        if (menusBeanList2.size()>0 && menusBeanList2.size()>id && menusBeanList2.get(id).getDesc()!=null){
             final XinXiDialog xinXiDialog=new XinXiDialog(SheBeiWeiBaoYuCeShiActivity.this);
             xinXiDialog.setCountText(menusBeanList2.get(id).getDesc());
             xinXiDialog.setOnPositiveListener(new View.OnClickListener() {
