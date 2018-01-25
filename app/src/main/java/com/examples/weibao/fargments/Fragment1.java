@@ -251,13 +251,14 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
                                                 tijiao.put("testData",benDiMenusBeanList_ls.get(i).getName());
                                                 tijiao.put("createBy",dengLuBean.getUserId());
                                                 tijiao.put("createTime",System.currentTimeMillis());
-
                                                 jsonArray.put(tijiao);
 
                                                 //    Log.d("ZhuangTaiXuanZeDialog", benDiMenusBean.getRemark());
                                                 // jsonObject.put("password",jiami);
 
                                         }
+
+
                                         jsonObject.put("cmd","100");
                                         jsonObject.put("records",jsonArray);
                                         } catch (JSONException e) {

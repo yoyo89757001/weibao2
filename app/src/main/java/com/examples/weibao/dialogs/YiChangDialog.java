@@ -1,6 +1,7 @@
 package com.examples.weibao.dialogs;
 import android.app.Dialog;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -25,27 +26,27 @@ import java.util.List;
  * @Time: 下午12:37:43
  * @author Tom.Cai
  */
-public class YiChangDialog extends Dialog   {
-    private TextView que,qu;
+public class YiChangDialog extends Dialog {
+    private TextView que, qu;
     private ListView listView;
     private YiChangAdapter adapter;
-    private List<DetectionsBean> menusBeanList=null;
-    private MenusBeanDao menusBeanDao=null;
+    private List<DetectionsBean> menusBeanList = null;
+    private MenusBeanDao menusBeanDao = null;
     private Context context;
-    private BenDiMenusBeanDao benDiMenusBeanDao=null;
-    private int p=-1;
-    private long sheBeiId=0;
-   // private ClickIntface clickIntface;
-    private String lv4Id="";
+    private BenDiMenusBeanDao benDiMenusBeanDao = null;
+    private int p = -1;
+    private long sheBeiId = 0;
+    // private ClickIntface clickIntface;
+    private String lv4Id = "";
 
 
-    public YiChangDialog(Context context, List<DetectionsBean> menusBeanList, MenusBeanDao menusBeanDao,long shedianId) {
+    public YiChangDialog(Context context, List<DetectionsBean> menusBeanList, MenusBeanDao menusBeanDao, long shedianId) {
         super(context, R.style.dialog_style2);
-        this.menusBeanList=menusBeanList;
-        this.menusBeanDao=menusBeanDao;
-        this.context=context;
-        this.sheBeiId=shedianId;
-        benDiMenusBeanDao= MyAppLaction.myAppLaction.getDaoSession().getBenDiMenusBeanDao();
+        this.menusBeanList = menusBeanList;
+        this.menusBeanDao = menusBeanDao;
+        this.context = context;
+        this.sheBeiId = shedianId;
+        benDiMenusBeanDao = MyAppLaction.myAppLaction.getDaoSession().getBenDiMenusBeanDao();
         setCustomDialog();
     }
 
@@ -57,20 +58,20 @@ public class YiChangDialog extends Dialog   {
     //4个数据的
     private void setCustomDialog() {
         View mView = LayoutInflater.from(getContext()).inflate(R.layout.yichang, null);
-        que= (TextView) mView.findViewById(R.id.queding);
-        qu= (TextView) mView.findViewById(R.id.quxiao);
-        listView= (ListView) mView.findViewById(R.id.listview);
-        adapter=new YiChangAdapter(getContext(),menusBeanList,sheBeiId);
+        que = (TextView) mView.findViewById(R.id.queding);
+        qu = (TextView) mView.findViewById(R.id.quxiao);
+        listView = (ListView) mView.findViewById(R.id.listview);
+        adapter = new YiChangAdapter(getContext(), menusBeanList, sheBeiId);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                p=position;
-                lv4Id=menusBeanList.get(position).getRemark();
-               int s= menusBeanList.size();
-               for (int i=0;i<s;i++){
-                  menusBeanList.get(i).setPageNum("qq");
-               }
+                p = position;
+                lv4Id = menusBeanList.get(position).getRemark();
+                int s = menusBeanList.size();
+                for (int i = 0; i < s; i++) {
+                    menusBeanList.get(i).setPageNum("qq");
+                }
                 menusBeanList.get(position).setPageNum("ww");
                 adapter.notifyDataSetChanged();
 
@@ -83,37 +84,37 @@ public class YiChangDialog extends Dialog   {
 
     }
 
-    public String  getLv4Id(){
+    public String getLv4Id() {
         return lv4Id;
     }
 
-    public void baocun(SheBei2Adapter adapter){
-        if (p!=-1){
-
-//           BenDiMenusBean gg= benDiMenusBeanDao.queryBuilder().where(BenDiMenusBeanDao.Properties.MensuId.eq(menusBeanList.get(p).getParentId())).unique();
-//            if (gg==null){
-//                BenDiMenusBean benDiMenusBean=new BenDiMenusBean();
-//                benDiMenusBean.setId(System.currentTimeMillis());
-//                benDiMenusBean.setMensuId(menusBeanList.get(p).getParentId());
-//                benDiMenusBean.setIsQiTa(false);
-//                benDiMenusBean.setIsYiChang(false);
-//                benDiMenusBean.setName(menusBeanList.get(p).getName());
-//               benDiMenusBeanDao.insert(benDiMenusBean);
+//    public void baocun(SheBei2Adapter adapter){
+//        if (p!=-1){
 //
-//            }else {
-//                BenDiMenusBean benDiMenusBean=new BenDiMenusBean();
-//                benDiMenusBean.setId(gg.getId());
-//                benDiMenusBean.setMensuId(menusBeanList.get(p).getParentId());
-//                benDiMenusBean.setIsQiTa(false);
-//                benDiMenusBean.setIsYiChang(false);
-//                benDiMenusBean.setName(menusBeanList.get(p).getName());
-//                benDiMenusBeanDao.update(benDiMenusBean);
+////           BenDiMenusBean gg= benDiMenusBeanDao.queryBuilder().where(BenDiMenusBeanDao.Properties.MensuId.eq(menusBeanList.get(p).getParentId())).unique();
+////            if (gg==null){
+////                BenDiMenusBean benDiMenusBean=new BenDiMenusBean();
+////                benDiMenusBean.setId(System.currentTimeMillis());
+////                benDiMenusBean.setMensuId(menusBeanList.get(p).getParentId());
+////                benDiMenusBean.setIsQiTa(false);
+////                benDiMenusBean.setIsYiChang(false);
+////                benDiMenusBean.setName(menusBeanList.get(p).getName());
+////               benDiMenusBeanDao.insert(benDiMenusBean);
+////
+////            }else {
+////                BenDiMenusBean benDiMenusBean=new BenDiMenusBean();
+////                benDiMenusBean.setId(gg.getId());
+////                benDiMenusBean.setMensuId(menusBeanList.get(p).getParentId());
+////                benDiMenusBean.setIsQiTa(false);
+////                benDiMenusBean.setIsYiChang(false);
+////                benDiMenusBean.setName(menusBeanList.get(p).getName());
+////                benDiMenusBeanDao.update(benDiMenusBean);
+//
+//         //   }
+//           // adapter.gengxin();
+//        }
 
-         //   }
-           // adapter.gengxin();
-        }
 
-    }
 
 
     @Override

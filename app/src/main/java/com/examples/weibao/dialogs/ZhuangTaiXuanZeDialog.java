@@ -1,6 +1,7 @@
 package com.examples.weibao.dialogs;
 import android.app.Activity;
 import android.app.Dialog;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -85,57 +86,58 @@ public class ZhuangTaiXuanZeDialog extends Dialog   {
                 menusBeanList.get(position).setPageNum("ww");
                 adapter.notifyDataSetChanged();
 
-                if (menusBeanList.get(position).getName().contains("异常")){
+                if (menusBeanList.get(position).getName().contains("其")){
                   //  Log.d("ZhuangTaiXuanZeDialog", "menusBeanList.get(position).getId():" + menusBeanList.get(position).getId());
+
+                    final QiTaDialog qiTaDialog=new QiTaDialog(context);
+                    qiTaDialog.setOnPositiveListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            qiTaDialog.dismiss();
+                        }
+                    });
+                    qiTaDialog.setOnQuXiaoListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            neirong=qiTaDialog.getContents();
+                            i4=false;
+                            i3=true;
+                            qiTaDialog.dismiss();
+                        }
+                    });
+                    qiTaDialog.show();
+                }else {
                     List<DetectionsBean> menusBeanListss=detectionsBeanDao.queryBuilder().where(DetectionsBeanDao.Properties.WeibaoMenuId.eq( menusBeanList.get(position).getId())).list();
                     if (menusBeanListss!=null){
 
                         int s2= menusBeanListss.size();
-                      //  Log.d("ZhuangTaiXuanZeDialog", "s2:" + s2);
-                        for (int i=0;i<s2;i++){
-                            menusBeanListss.get(i).setPageNum("qq");
+                        //  Log.d("ZhuangTaiXuanZeDialog", "s2:" + s2);
+                        if (s2>0) {
+                            for (int i = 0; i < s2; i++) {
+                                menusBeanListss.get(i).setPageNum("qq");
+                            }
+
+                            final YiChangDialog dialog = new YiChangDialog(context, menusBeanListss, menusBeanDao, shebeiId);
+                            dialog.setOnPositiveListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    lv4Id = dialog.getLv4Id();
+                                    i3 = false;
+                                    i4 = true;
+                                    dialog.dismiss();
+
+                                }
+                            });
+                            dialog.setOnQuXiaoListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    dialog.dismiss();
+                                }
+                            });
+                            dialog.show();
                         }
-
-                        final YiChangDialog dialog=new YiChangDialog(context,menusBeanListss,menusBeanDao,shebeiId);
-                        dialog.setOnPositiveListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                lv4Id=dialog.getLv4Id();
-                                i3=true;
-                                i4=false;
-                                dialog.dismiss();
-
-                            }
-                        });
-                        dialog.setOnQuXiaoListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialog.dismiss();
-                            }
-                        });
-                        dialog.show();
                     }
-
-
-                }else if (menusBeanList.get(position).getName().contains("其")){
-                        final QiTaDialog qiTaDialog=new QiTaDialog(context);
-                        qiTaDialog.setOnPositiveListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-
-                                qiTaDialog.dismiss();
-                            }
-                        });
-                        qiTaDialog.setOnQuXiaoListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                neirong=qiTaDialog.getContents();
-                                i4=true;
-                                i3=false;
-                                qiTaDialog.dismiss();
-                            }
-                        });
-                        qiTaDialog.show();
 
                 }
             }
@@ -174,11 +176,10 @@ public class ZhuangTaiXuanZeDialog extends Dialog   {
                 }
                 if (i4){
                     benDiMenusBean.setRemark(lv4Id);
-
-                    }
+                }
 
                benDiMenusBeanDao.insert(benDiMenusBean);
-
+               // Log.d("ZhuangTaiXuanZeDialog", benDiMenusBean.getRemark()+"dd");
             }else {
                 benDiMenusBean=new BenDiMenusBean();
                 benDiMenusBean.setId(gg.getId());
@@ -196,6 +197,7 @@ public class ZhuangTaiXuanZeDialog extends Dialog   {
 
                 benDiMenusBean.setMenuLevel4Id(menusBeanList.get(p).getId().intValue());
                 if (i3){
+
                     benDiMenusBean.setRemark(neirong);
                 }
                 if (i4){
