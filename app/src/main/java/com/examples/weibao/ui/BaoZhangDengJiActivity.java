@@ -802,6 +802,7 @@ public class BaoZhangDengJiActivity extends Activity implements ClickIntface {
 
         builder.addFormDataPart("cmd","100");
         builder.addFormDataPart("fault",tijiao.toString());
+
         mBody=builder.build();
      //   Log.d("BaoZhangDengJiActivity", tijiao.toString());
 
