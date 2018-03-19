@@ -65,7 +65,9 @@ public class SheBeiAdapter extends RecyclerView.Adapter<SheBeiAdapter.ViewHolder
     //将数据与界面进行绑定的操作
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
+
         viewHolder.bianhao.setText(datas.get(position).getName()+" "+datas.get(position).getDeviceNum()+"");
+      //  Log.d("SheBeiAdapter", "datas.get(position).getId():" + datas.get(position).getId());
         viewHolder.bianhao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,9 +77,13 @@ public class SheBeiAdapter extends RecyclerView.Adapter<SheBeiAdapter.ViewHolder
       //  if (allMenusBeanList.get(position).getType()==1){
            // menusBeanList1=menusBeanDao.queryBuilder().where(MenusBeanDao.Properties.ParentId.eq(datas.get(position).getId())).list();
           //  Log.d("SheBeiAdapter", "menusBeanList1.size():" + menusBeanList1.size());
-            ceShiCSBean.setDeviceId(datas.get(position).getId().intValue());
+       // ceShiCSBean.setDeviceId(datas.get(position).getId().intValue());
+            WeiBaoCeShiCSBean csBean=new WeiBaoCeShiCSBean(ceShiCSBean.getId(),ceShiCSBean.getPlanId(),ceShiCSBean.getMenuLevel1Id(),ceShiCSBean.getMenuId(),ceShiCSBean.getMenuLevel3Id()
+            ,ceShiCSBean.getMenuLevel4Id(),datas.get(position).getId().intValue(),ceShiCSBean.getRemark(),ceShiCSBean.getTestData(),ceShiCSBean.getCreateBy(),ceShiCSBean.getCreateTime());
+
+
             if (menusBeanList1!=null){
-            SheBei2Adapter sheBei2Adapter=new SheBei2Adapter(context,menusBeanList1,menusBeanDao,datas.get(position).getId(),ceShiCSBean);
+            SheBei2Adapter sheBei2Adapter=new SheBei2Adapter(context,menusBeanList1,menusBeanDao,datas.get(position).getId(),csBean);
             viewHolder.listView1.setAdapter(sheBei2Adapter);
            // fixListViewHeight(viewHolder.listView1);
 

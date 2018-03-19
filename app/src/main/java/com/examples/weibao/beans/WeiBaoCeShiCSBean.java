@@ -8,6 +8,40 @@ import org.parceler.Parcel;
 @Parcel
 public class WeiBaoCeShiCSBean {
 
+    public WeiBaoCeShiCSBean() {
+    }
+
+    public WeiBaoCeShiCSBean(int id, int planId, int menuLevel1Id, int menuId, int menuLevel3Id, int menuLevel4Id,
+                             int deviceId, String remark, String testData, int createBy, long createTime) {
+        this.id = id;
+        this.planId = planId;
+        this.menuLevel1Id = menuLevel1Id;
+        this.menuId = menuId;
+        this.menuLevel3Id = menuLevel3Id;
+        this.menuLevel4Id = menuLevel4Id;
+        this.deviceId = deviceId;
+        this.remark = remark;
+        this.testData = testData;
+        this.createBy = createBy;
+        this.createTime = createTime;
+    }
+
+    @Override
+    public String toString() {
+        return "WeiBaoCeShiCSBean{" +
+                "id=" + id +
+                ", planId=" + planId +
+                ", menuLevel1Id=" + menuLevel1Id +
+                ", menuId=" + menuId +
+                ", menuLevel3Id=" + menuLevel3Id +
+                ", menuLevel4Id=" + menuLevel4Id +
+                ", deviceId=" + deviceId +
+                ", remark='" + remark + '\'' +
+                ", testData='" + testData + '\'' +
+                ", createBy=" + createBy +
+                ", createTime=" + createTime +
+                '}';
+    }
 
     /**
      * id : 0

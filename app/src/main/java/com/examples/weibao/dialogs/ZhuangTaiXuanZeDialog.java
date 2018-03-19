@@ -150,7 +150,8 @@ public class ZhuangTaiXuanZeDialog extends Dialog   {
 
     public void baocun(SheBei2Adapter adapter, long shebeiId, WeiBaoCeShiCSBean ceShiCSBean){
 
-     //   Log.d("ZhuangTaiXuanZeDialog", "shebeiId:" + shebeiId);
+      //  Log.d("Fragment1", "shebeiId:" + shebeiId);
+      //  Log.d("Fragment1", "ceShiCSBean.getDeviceId():" + ceShiCSBean.toString());
     //    Log.d("ZhuangTaiXuanZeDialog", "menusBeanList.get(p).getParentId():" + menusBeanList.get(p).getParentId());
         if (p!=-1){
            BenDiMenusBean gg= benDiMenusBeanDao.queryBuilder().where(BenDiMenusBeanDao.Properties.MensuId.eq(menusBeanList.get(p).getParentId()),
@@ -166,7 +167,7 @@ public class ZhuangTaiXuanZeDialog extends Dialog   {
                 benDiMenusBean.setName(menusBeanList.get(p).getName());
                 benDiMenusBean.setPlanId(ceShiCSBean.getPlanId());
                 benDiMenusBean.setMenuId2(ceShiCSBean.getMenuId());
-                benDiMenusBean.setDeviceId(ceShiCSBean.getDeviceId());
+                benDiMenusBean.setDeviceId((int) shebeiId);
                 benDiMenusBean.setIsTijiao(false);
                 benDiMenusBean.setMenuLevel1Id(ceShiCSBean.getMenuLevel1Id());
                 benDiMenusBean.setMenuLevel3Id(ceShiCSBean.getMenuLevel3Id());
@@ -179,7 +180,8 @@ public class ZhuangTaiXuanZeDialog extends Dialog   {
                 }
 
                benDiMenusBeanDao.insert(benDiMenusBean);
-               // Log.d("ZhuangTaiXuanZeDialog", benDiMenusBean.getRemark()+"dd");
+                //Log.d("Fragment1", benDiMenusBean.toString());
+
             }else {
                 benDiMenusBean=new BenDiMenusBean();
                 benDiMenusBean.setId(gg.getId());
@@ -189,7 +191,7 @@ public class ZhuangTaiXuanZeDialog extends Dialog   {
                 benDiMenusBean.setIsYiChang(false);
                 benDiMenusBean.setIsTijiao(false);
                 benDiMenusBean.setName(menusBeanList.get(p).getName());
-                benDiMenusBean.setDeviceId(ceShiCSBean.getDeviceId());
+                benDiMenusBean.setDeviceId((int) shebeiId);
                 benDiMenusBean.setPlanId(ceShiCSBean.getPlanId());
                 benDiMenusBean.setMenuId2(ceShiCSBean.getMenuId());//维保项ID 用于上传
                 benDiMenusBean.setMenuLevel1Id(ceShiCSBean.getMenuLevel1Id());
@@ -205,7 +207,7 @@ public class ZhuangTaiXuanZeDialog extends Dialog   {
                 }
 
                 benDiMenusBeanDao.update(benDiMenusBean);
-
+              //  Log.d("Fragment1", benDiMenusBean.toString());
             }
             adapter.gengxin();
          //  boolean ff = !Utils.getNetTypeName(context).equals("无网络");

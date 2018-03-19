@@ -29,6 +29,30 @@ public class BenDiMenusBean {
     private int createBy;
     private long createTime;
     private boolean isTijiao;
+
+    @Override
+    public String toString() {
+        return "BenDiMenusBean{" +
+                "id=" + id +
+                ", isYiChang=" + isYiChang +
+                ", mensuId=" + mensuId +
+                ", parentId=" + parentId +
+                ", name='" + name + '\'' +
+                ", isQiTa=" + isQiTa +
+                ", planId=" + planId +
+                ", menuLevel1Id=" + menuLevel1Id +
+                ", menuId2=" + menuId2 +
+                ", menuLevel3Id=" + menuLevel3Id +
+                ", menuLevel4Id=" + menuLevel4Id +
+                ", deviceId=" + deviceId +
+                ", remark='" + remark + '\'' +
+                ", testData='" + testData + '\'' +
+                ", createBy=" + createBy +
+                ", createTime=" + createTime +
+                ", isTijiao=" + isTijiao +
+                '}';
+    }
+
     @Generated(hash = 251480049)
     public BenDiMenusBean(@NotNull Long id, boolean isYiChang, long mensuId,
             long parentId, String name, boolean isQiTa, int planId,

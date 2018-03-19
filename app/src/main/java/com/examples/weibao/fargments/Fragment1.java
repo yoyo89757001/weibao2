@@ -225,9 +225,13 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
                                         if (!benDiMenusBeanList.get(i).getIsTijiao()){
                                             //没有提交的
                                             benDiMenusBeanList_ls.add(benDiMenusBeanList.get(i));
+                                          //  Log.d("Fragment1", "benDiMenusBeanList.get(i).getDeviceId():" + benDiMenusBeanList.get(i).getDeviceId());
                                         }else {
                                             //提交过的
+                                         //   Log.d("Fragment1", "删除本地维保" + benDiMenusBeanList.get(i).getDeviceId());
+
                                             benDiMenusBeanDao.delete(benDiMenusBeanList.get(i));
+
                                         }
 
                                     }
