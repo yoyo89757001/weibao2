@@ -141,7 +141,7 @@ public class WeiBaoFragment2 extends Fragment {
         lRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Log.d("WeiBaoFragment2", "点");
+               // Log.d("WeiBaoFragment2", "点");
 
                  p=position;
                 Intent intent33 = new Intent(getActivity(),ChaKanShiShiBaoGaoActivity.class);

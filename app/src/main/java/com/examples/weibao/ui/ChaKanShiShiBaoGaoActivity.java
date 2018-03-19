@@ -59,6 +59,7 @@ public class ChaKanShiShiBaoGaoActivity extends Activity  {
     private String ididid=null;
     private Button baocun;
     private String uil=null;
+    private int styleee;
 //    public  final String PATH_DOC =Environment.getExternalStorageDirectory().getAbsolutePath()+File.separator+ "docpathdoc"+File.separator;
 //    public  final String PATH_IMAGE =Environment.getExternalStorageDirectory().getAbsolutePath()+File.separator+ "docpathim"+File.separator;
 //    public  final String PATH_HTML =Environment.getExternalStorageDirectory().getAbsolutePath()+File.separator+ "docpathhtml"+File.separator;
@@ -71,6 +72,7 @@ public class ChaKanShiShiBaoGaoActivity extends Activity  {
         dengLuBeanDao=MyAppLaction.myAppLaction.getDaoSession().getDengLuBeanDao();
         dengLuBean=dengLuBeanDao.load(123456L);
         uil=getIntent().getStringExtra("url");
+        styleee=getIntent().getIntExtra("styleee",0);
 
         setContentView(R.layout.activity_cha_kan_shi_shi_bao_gao);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -107,6 +109,9 @@ public class ChaKanShiShiBaoGaoActivity extends Activity  {
         }
 
         if (planId==-1){
+            baocun.setVisibility(View.GONE);
+        }
+        if (styleee!=0){
             baocun.setVisibility(View.GONE);
         }
 

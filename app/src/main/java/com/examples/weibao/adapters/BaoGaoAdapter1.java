@@ -125,7 +125,9 @@ public class BaoGaoAdapter1 extends RecyclerView.Adapter<BaoGaoAdapter1.ViewHold
         viewHolder.myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                context.startActivity(new Intent(context, ChaKanShiShiBaoGaoActivity.class).putExtra("planId",plansBeanList.get(position).getId()));
+                context.startActivity(new Intent(context, ChaKanShiShiBaoGaoActivity.class)
+                        .putExtra("planId",plansBeanList.get(position).getId())
+                        .putExtra("styleee",plansBeanList.get(position).getStatus()));
             }
         });
 
