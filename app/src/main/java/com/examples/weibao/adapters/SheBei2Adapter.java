@@ -34,16 +34,18 @@ public class SheBei2Adapter extends BaseAdapter {
     private MenusBeanDao menusBeanDao=null;
     private long shebeiId=0;
     private WeiBaoCeShiCSBean ceShiCSBean=null;
+    private int iii;
 
 
     /*构造函数*/
-    public SheBei2Adapter(Activity context, List<MenusBean> fuWuQiBeanList, MenusBeanDao menusBeanDao, Long id, WeiBaoCeShiCSBean ceShiCSBean) {
+    public SheBei2Adapter(Activity context, List<MenusBean> fuWuQiBeanList, MenusBeanDao menusBeanDao, Long id, WeiBaoCeShiCSBean ceShiCSBean, int i) {
         this.mInflater = LayoutInflater.from(context);
         this.fuWuQiBeanList=fuWuQiBeanList;
         this.context=context;
         this.ceShiCSBean=ceShiCSBean;
         this.menusBeanDao=menusBeanDao;
         this.shebeiId=id;
+        this.iii=i;
         benDiMenusBeanDao=MyAppLaction.myAppLaction.getDaoSession().getBenDiMenusBeanDao();
     }
 
@@ -102,10 +104,12 @@ public class SheBei2Adapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 ceShiCSBean.setMenuLevel3Id(fuWuQiBeanList.get(position).getId().intValue());
-              //  Log.d("SheBei2Adapter", "点击"+position);
-                List<MenusBean> menusBeanList=menusBeanDao.queryBuilder().where(MenusBeanDao.Properties.ParentId.eq(fuWuQiBeanList.get(position).getId())).list();
+
+               // Log.d("SheBei2Adapter", "点击"+fuWuQiBeanList.get(position).getId());
+                List<MenusBean> menusBeanList=menusBeanDao.queryBuilder().where(MenusBeanDao.Properties.ParentId.eq(fuWuQiBeanList.get(position).getId()),
+                        MenusBeanDao.Properties.Type.eq(iii)).list();
                 if (menusBeanList!=null){
-                   // Log.d("SheBei2Adapter", "menusBeanList.size():" + menusBeanList.size());
+                 //   Log.d("SheBei2Adapter", "menusBeanList.size():" + menusBeanList.size());
                     int s= menusBeanList.size();
                     for (int i=0;i<s;i++){
                         menusBeanList.get(i).setPageNum("qq");

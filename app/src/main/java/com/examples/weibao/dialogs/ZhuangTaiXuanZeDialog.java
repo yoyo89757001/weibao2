@@ -80,6 +80,9 @@ public class ZhuangTaiXuanZeDialog extends Dialog   {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 p=position;
                int s= menusBeanList.size();
+
+                Log.d("ZhuangTaiXuanZeDialog", "s:" + s);
+
                for (int i=0;i<s;i++){
                   menusBeanList.get(i).setPageNum("qq");
                }

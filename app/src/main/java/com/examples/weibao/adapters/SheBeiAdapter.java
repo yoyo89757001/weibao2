@@ -50,7 +50,7 @@ public class SheBeiAdapter extends RecyclerView.Adapter<SheBeiAdapter.ViewHolder
         for (int i=0;i<s;i++){
             if (allMenusBeanList.get(i).getType()==1){
                 menusBeanList1.add(allMenusBeanList.get(i));
-            }else {
+            }else if (allMenusBeanList.get(i).getType()==2){
                 menusBeanList2.add(allMenusBeanList.get(i));
             }
         }
@@ -83,7 +83,7 @@ public class SheBeiAdapter extends RecyclerView.Adapter<SheBeiAdapter.ViewHolder
 
 
             if (menusBeanList1!=null){
-            SheBei2Adapter sheBei2Adapter=new SheBei2Adapter(context,menusBeanList1,menusBeanDao,datas.get(position).getId(),csBean);
+            SheBei2Adapter sheBei2Adapter=new SheBei2Adapter(context,menusBeanList1,menusBeanDao,datas.get(position).getId(),csBean,1);
             viewHolder.listView1.setAdapter(sheBei2Adapter);
            // fixListViewHeight(viewHolder.listView1);
 
@@ -92,7 +92,7 @@ public class SheBeiAdapter extends RecyclerView.Adapter<SheBeiAdapter.ViewHolder
 
          //   menusBeanList2=menusBeanDao.queryBuilder().where(MenusBeanDao.Properties.ParentId.eq(datas.get(position).getId())).list();
             if (menusBeanList2!=null){
-                SheBei2Adapter sheBei2Adapter=new SheBei2Adapter(context,menusBeanList2,menusBeanDao,datas.get(position).getId(),ceShiCSBean);
+                SheBei2Adapter sheBei2Adapter=new SheBei2Adapter(context,menusBeanList2,menusBeanDao,datas.get(position).getId(),csBean,2);
                 viewHolder.listView2.setAdapter(sheBei2Adapter);
               //  fixListViewHeight(viewHolder.listView2);
             }
