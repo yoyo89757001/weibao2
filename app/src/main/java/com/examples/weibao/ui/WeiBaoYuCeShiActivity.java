@@ -131,6 +131,7 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
                     putExtra("parentId",mens2.get(0).getId()).
                     putExtra("dizhi",item.getAddress()).
                     putExtra("xitong",mens.get(0).getName()).
+                    putExtra("xitongID",mens2.get(0).getId()).
                     putExtra("weibaoxiang",mens2.get(0).getName()).putExtras(bundle));
             finish();
 
@@ -328,6 +329,7 @@ public class WeiBaoYuCeShiActivity extends Activity implements View.OnClickListe
                             putExtra("parentId",menusBeanList4.get(p4).getId()).
                             putExtra("dizhi",itemsBeanList.get(p1).getAddress()).
                             putExtra("xitong",menusBeanList3.get(p3).getName()).
+                            putExtra("xitongID",menusBeanList4.get(p4).getId()).
                             putExtra("weibaoxiang",menusBeanList4.get(p4).getName()).putExtras(bundle));
                 }else {
 

@@ -50,6 +50,7 @@ public class SheBeiWeiBaoYuCeShiActivity extends Activity implements ClickIntfac
     private String serialNumber3="";
     private String serialNumber4="";
     private WeiBaoCeShiCSBean ceShiCSBean=null;
+    private Long xitongID;
 
 
 
@@ -61,6 +62,7 @@ public class SheBeiWeiBaoYuCeShiActivity extends Activity implements ClickIntfac
         serialNumber3=getIntent().getStringExtra("serialNumber3");//系统的
         serialNumber4=getIntent().getStringExtra("serialNumber4");//维保项的
         xitong=getIntent().getStringExtra("xitong");
+        xitongID=getIntent().getLongExtra("xitongID",0L);
         dizhi=getIntent().getStringExtra("dizhi");
         weibaoxiang=getIntent().getStringExtra("weibaoxiang");
         parentId=getIntent().getLongExtra("parentId",-2L);
@@ -109,7 +111,9 @@ public class SheBeiWeiBaoYuCeShiActivity extends Activity implements ClickIntfac
         l.invalidate();
 
         lRecyclerView= (LRecyclerView) findViewById(R.id.lrecyclerview);
-        sheBeiAdapter=new SheBeiAdapter(devicesBeanList,menusBeanDao,SheBeiWeiBaoYuCeShiActivity.this,menusBeanList2,ceShiCSBean);
+        sheBeiAdapter=new SheBeiAdapter(devicesBeanList,menusBeanDao,SheBeiWeiBaoYuCeShiActivity.this,menusBeanList2,ceShiCSBean,xitongID);
+      //  Log.d("SheBeiWeiBaoYuCeShiActi", ceShiCSBean.toString());
+
         lRecyclerViewAdapter = new LRecyclerViewAdapter(sheBeiAdapter);
         sheBeiAdapter.setClickIntface(this);
 

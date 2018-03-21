@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.examples.weibao.MyAppLaction;
+import com.examples.weibao.allbeans.DeviceRefBean;
+import com.examples.weibao.allbeans.DeviceRefBeanDao;
 import com.examples.weibao.allbeans.DevicesBean;
 import com.examples.weibao.allbeans.MenusBean;
 import com.examples.weibao.allbeans.MenusBeanDao;
@@ -34,18 +37,22 @@ public class SheBeiAdapter extends RecyclerView.Adapter<SheBeiAdapter.ViewHolder
     private Activity context;
     private List<MenusBean> allMenusBeanList=null;
     private WeiBaoCeShiCSBean ceShiCSBean=null;
+    private DeviceRefBeanDao deviceRefBeanDao=null;
+    private Long xitongID;
 
 
     public void setClickIntface(ClickIntface clickIntface){
         this.clickIntface=clickIntface;
     }
 
-    public SheBeiAdapter(List<DevicesBean> datas, MenusBeanDao menusBeanDao, Activity context, List<MenusBean> menusBeanList22, WeiBaoCeShiCSBean ceShiCSBean) {
+    public SheBeiAdapter(List<DevicesBean> datas, MenusBeanDao menusBeanDao, Activity context, List<MenusBean> menusBeanList22, WeiBaoCeShiCSBean ceShiCSBean,Long xitongID) {
         this.datas = datas;
         this.menusBeanDao=menusBeanDao;
         this.context=context;
         this.ceShiCSBean=ceShiCSBean;
+        this.xitongID=xitongID;
         allMenusBeanList=menusBeanList22;
+        deviceRefBeanDao= MyAppLaction.myAppLaction.getDaoSession().getDeviceRefBeanDao();
         int s=menusBeanList22.size();
         for (int i=0;i<s;i++){
             if (allMenusBeanList.get(i).getType()==1){
@@ -81,6 +88,7 @@ public class SheBeiAdapter extends RecyclerView.Adapter<SheBeiAdapter.ViewHolder
             WeiBaoCeShiCSBean csBean=new WeiBaoCeShiCSBean(ceShiCSBean.getId(),ceShiCSBean.getPlanId(),ceShiCSBean.getMenuLevel1Id(),ceShiCSBean.getMenuId(),ceShiCSBean.getMenuLevel3Id()
             ,ceShiCSBean.getMenuLevel4Id(),datas.get(position).getId().intValue(),ceShiCSBean.getRemark(),ceShiCSBean.getTestData(),ceShiCSBean.getCreateBy(),ceShiCSBean.getCreateTime());
 
+     //   Log.d("SheBeiAdapter", csBean.toString());
 
             if (menusBeanList1!=null){
             SheBei2Adapter sheBei2Adapter=new SheBei2Adapter(context,menusBeanList1,menusBeanDao,datas.get(position).getId(),csBean,1);
@@ -92,9 +100,22 @@ public class SheBeiAdapter extends RecyclerView.Adapter<SheBeiAdapter.ViewHolder
 
          //   menusBeanList2=menusBeanDao.queryBuilder().where(MenusBeanDao.Properties.ParentId.eq(datas.get(position).getId())).list();
             if (menusBeanList2!=null){
-                SheBei2Adapter sheBei2Adapter=new SheBei2Adapter(context,menusBeanList2,menusBeanDao,datas.get(position).getId(),csBean,2);
-                viewHolder.listView2.setAdapter(sheBei2Adapter);
-              //  fixListViewHeight(viewHolder.listView2);
+
+                DeviceRefBean deviceRefBean= deviceRefBeanDao.queryBuilder().where(DeviceRefBeanDao.Properties.PlanId.eq(csBean.getPlanId()),
+                        DeviceRefBeanDao.Properties.WeibaoMenuId.eq(xitongID),
+                        DeviceRefBeanDao.Properties.DeviceId.eq(csBean.getDeviceId())).unique();
+                //Log.d("SheBeiAdapter", "xitongID:" + xitongID);
+                // Log.d("SheBeiAdapter", deviceRefBean.toString());
+                if (deviceRefBean!=null && deviceRefBean.getIsDetection()==1){ //1显示
+                    SheBei2Adapter sheBei2Adapter=new SheBei2Adapter(context,menusBeanList2,menusBeanDao,datas.get(position).getId(),csBean,2);
+                    viewHolder.listView2.setAdapter(sheBei2Adapter);
+
+                }else {
+                    SheBei2Adapter sheBei2Adapter=new SheBei2Adapter(context,new ArrayList<MenusBean>(),menusBeanDao,datas.get(position).getId(),csBean,2);
+                    viewHolder.listView2.setAdapter(sheBei2Adapter);
+                }
+
+              //  Log.d("SheBeiAdapter", menusBeanList2.get(position).getName());
             }
 
      //   }
@@ -102,13 +123,26 @@ public class SheBeiAdapter extends RecyclerView.Adapter<SheBeiAdapter.ViewHolder
         if (menusBeanList1==null || menusBeanList1.size()==0){
             viewHolder.weibaoxiang.setVisibility(View.GONE);
         }else {
+
             viewHolder.weibaoxiang.setVisibility(View.VISIBLE);
         }
 
         if (menusBeanList2==null || menusBeanList2.size()==0){
             viewHolder.ceshixiang.setVisibility(View.GONE);
+
         }else {
-            viewHolder.ceshixiang.setVisibility(View.VISIBLE);
+
+            DeviceRefBean deviceRefBean= deviceRefBeanDao.queryBuilder().where(DeviceRefBeanDao.Properties.PlanId.eq(csBean.getPlanId()),
+                    DeviceRefBeanDao.Properties.WeibaoMenuId.eq(xitongID),
+                    DeviceRefBeanDao.Properties.DeviceId.eq(csBean.getDeviceId())).unique();
+            //Log.d("SheBeiAdapter", "xitongID:" + xitongID);
+           // Log.d("SheBeiAdapter", deviceRefBean.toString());
+            if (deviceRefBean!=null && deviceRefBean.getIsDetection()==1){ //1显示
+                viewHolder.ceshixiang.setVisibility(View.VISIBLE);
+            }else {
+                viewHolder.ceshixiang.setVisibility(View.GONE);
+            }
+
         }
 
 

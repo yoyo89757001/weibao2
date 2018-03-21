@@ -27,6 +27,8 @@ import com.examples.weibao.allbeans.DengLuBean;
 import com.examples.weibao.allbeans.DengLuBeanDao;
 import com.examples.weibao.allbeans.DetectionsBean;
 import com.examples.weibao.allbeans.DetectionsBeanDao;
+import com.examples.weibao.allbeans.DeviceRefBean;
+import com.examples.weibao.allbeans.DeviceRefBeanDao;
 import com.examples.weibao.allbeans.DevicesBean;
 import com.examples.weibao.allbeans.DevicesBeanDao;
 import com.examples.weibao.allbeans.FaultsBean;
@@ -94,6 +96,7 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
     private List<BaoZhangDengJiBean> baoZhangDengJiBeanList=null;
    // private LiXianBeans liXianBeans=null;
     private ItemsBeanDao itemsBeanDao=null;
+    private DeviceRefBeanDao deviceRefBeanDao=null;
    // private List<DevicesBean> devicesBeanList=null;
     private DevicesBeanDao devicesBeanDao=null;
    // private List<DetectionsBean> detectionsBeanList=null;
@@ -145,6 +148,7 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
         detectionsBeanDao=MyAppLaction.myAppLaction.getDaoSession().getDetectionsBeanDao();
         menusBeanDao=MyAppLaction.myAppLaction.getDaoSession().getMenusBeanDao();
         plansBeanDao=MyAppLaction.myAppLaction.getDaoSession().getPlansBeanDao();
+        deviceRefBeanDao=MyAppLaction.myAppLaction.getDaoSession().getDeviceRefBeanDao();
         menurefsBeanDao=MyAppLaction.myAppLaction.getDaoSession().getMenurefsBeanDao();
         faultsBeanDao=MyAppLaction.myAppLaction.getDaoSession().getFaultsBeanDao();
         benDiMenusBeanDao=MyAppLaction.myAppLaction.getDaoSession().getBenDiMenusBeanDao();
@@ -511,6 +515,8 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
 
                     ResponseBody body = response.body();
                      ss=body.string().trim();
+
+
                     int i9 = 0;
                     while (true) {
                         if (i9 + 4000 >= ss.length()) {
@@ -531,6 +537,7 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
                     JsonArray plans= jsonObject.get("plans").getAsJsonArray();
                     JsonArray menurefs= jsonObject.get("menurefs").getAsJsonArray();
                     JsonArray faults= jsonObject.get("faults").getAsJsonArray();
+                    JsonArray deviceRef = jsonObject.get("menuDeviceRef").getAsJsonArray();
 
                     //保存时间
                     Log.d("HomePageActivity", "保存时间"+time);
@@ -651,6 +658,22 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
                         }else {
                             faultsBeanDao.delete(faultsBean);
                             //  Log.d("HomePageActivity", "删除menurefsBean");
+                        }
+                    }
+
+                    int deviceRefSize = deviceRef.size();
+                    for (int i = 0; i < deviceRefSize; i++) {
+                        DeviceRefBean deviceRefBean = gson.fromJson(deviceRef.get(i), DeviceRefBean.class);
+                        int i1 = deviceRefBean.getDtoResult();
+                        if (deviceRefBeanDao.load(deviceRefBean.getId()) == null && (i1 == 1 || i1 == 2)) {
+                            // Log.d("HomePageActivity", "插入items");
+                            deviceRefBeanDao.insert(deviceRefBean);
+                        } else if (i1 == 1 || i1 == 2) {
+                            deviceRefBeanDao.update(deviceRefBean);
+                            // Log.d("HomePageActivity", "更新items");
+                        } else {
+                            deviceRefBeanDao.delete(deviceRefBean);
+                            //  Log.d("HomePageActivity", "删除items");
                         }
                     }
 
